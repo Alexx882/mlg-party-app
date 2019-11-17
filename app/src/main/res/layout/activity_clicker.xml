@@ -5,7 +5,7 @@
     android:id="@+id/constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Clicker.ClickerGame">
+    tools:context=".clicker.ClickerGame">
 
     <TextView
         android:id="@+id/tv_clicker"
