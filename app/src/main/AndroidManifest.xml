@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".rps.Rps_Game" />
+        <activity android:name=".rps.RpsGame" />
     </application>
 
 </manifest>

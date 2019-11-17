@@ -1,6 +1,6 @@
 package at.aau.ase.mlg_party_app.rps;
 
-class Rps_Logic {
+class RpsLogic {
    enum option {ROCK, PAPER, SCISSOR}
    enum result {DRAW, WON, LOST, ERROR}
 

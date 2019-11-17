@@ -10,13 +10,15 @@ import android.widget.TextView;
 
 import at.aau.ase.mlg_party_app.R;
 
-public class Rps_Game extends AppCompatActivity implements View.OnClickListener{
-    ImageView enemyView, playerView;
-    ImageButton buttonRock, buttonPaper, buttonScissor;
+public class RpsGame extends AppCompatActivity implements View.OnClickListener{
+    ImageView enemyView;
+    ImageView playerView;
+    ImageButton buttonRock;
+    ImageButton buttonPaper;
+    ImageButton buttonScissor;
     TextView textOutput;
-    Rps_Logic.option option;
-    Rps_Logic.result status;
-    Rps_Logic logic = new Rps_Logic();
+    RpsLogic.result status;
+    RpsLogic logic = new RpsLogic();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,22 +40,22 @@ public class Rps_Game extends AppCompatActivity implements View.OnClickListener{
         int id = v.getId();
         switch (id) {
             case R.id.imageButton_Rock:
-                status = logic.checkResult(Rps_Logic.option.ROCK, Rps_Logic.option.PAPER);
-                setUserChoice(Rps_Logic.option.ROCK,status);
+                status = logic.checkResult(RpsLogic.option.ROCK, RpsLogic.option.PAPER);
+                setUserChoice(RpsLogic.option.ROCK,status);
                 break;
             case R.id.imageButton_Paper:
-                status = logic.checkResult(Rps_Logic.option.PAPER, Rps_Logic.option.PAPER);
-                setUserChoice(Rps_Logic.option.PAPER,status);
+                status = logic.checkResult(RpsLogic.option.PAPER, RpsLogic.option.PAPER);
+                setUserChoice(RpsLogic.option.PAPER,status);
                 break;
             case R.id.imageButton_Scissor:
-                status = logic.checkResult(Rps_Logic.option.SCISSOR, Rps_Logic.option.PAPER);
-                setUserChoice(Rps_Logic.option.SCISSOR,status);
+                status = logic.checkResult(RpsLogic.option.SCISSOR, RpsLogic.option.PAPER);
+                setUserChoice(RpsLogic.option.SCISSOR,status);
                 break;
             default:
-                status = Rps_Logic.result.ERROR;
+                status = RpsLogic.result.ERROR;
         }
     }
-    private void setUserChoice(Rps_Logic.option option, Rps_Logic.result result) {
+    private void setUserChoice(RpsLogic.option option, RpsLogic.result result) {
         textOutput.setText(""+result);
         switch (option) {
             case ROCK:
@@ -65,6 +67,8 @@ public class Rps_Game extends AppCompatActivity implements View.OnClickListener{
             case SCISSOR:
                 playerView.setImageResource(R.drawable.scissor);
                 break;
+            default:
+                playerView.setImageResource(R.drawable.ic_launcher_foreground);
         }
     }
 }
