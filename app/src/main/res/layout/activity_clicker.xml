@@ -33,7 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_clicker"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@android:drawable/star_big_off" />
+        app:srcCompat="@drawable/lvl0" />
 
     <ImageView
         android:id="@+id/iv_hitmarker"

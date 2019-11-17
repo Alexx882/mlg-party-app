@@ -81,7 +81,7 @@ public class ClickerGame extends AppCompatActivity {
 
     public void image_setup() {
         if (counter >= 30 && counter < 60) {
-            ivClicker.setImageResource(R.drawable.lvl30);
+            ivClicker.setImageResource(R.drawable.lvl45);
         } else if (counter >= 60) {
             if(counter==69)
                 ivClicker.setImageResource(R.drawable.lvl69);
@@ -97,7 +97,7 @@ public class ClickerGame extends AppCompatActivity {
         if (counter < 30)
             ivClicker.setImageResource(android.R.drawable.star_big_off);
         else if (counter >= 30 && counter < 60) {
-            ivClicker.setImageResource(R.drawable.lvl30);
+            ivClicker.setImageResource(R.drawable.lvl45);
         } else if (counter >= 60) {
             ivClicker.setImageResource(R.drawable.lvl60);
         }
