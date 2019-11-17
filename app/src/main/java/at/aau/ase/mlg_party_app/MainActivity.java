@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import at.aau.ase.mlg_party_app.game_setup.NewGameActivity;
+import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.buttonJoinGame).setOnClickListener((view)->joinGame());
         findViewById(R.id.buttonNewGame).setOnClickListener((view)->createGame());
+
     }
 
     private void createGame(){

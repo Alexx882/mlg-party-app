@@ -1,6 +1,7 @@
 package at.aau.ase.mlg_party_app.game_setup;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -16,7 +17,7 @@ import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class NewGameActivity extends AppCompatActivity {
 
-    TextView textViewWaiting ;
+    TextView textViewWaiting;
     TextView textViewPlayerList;
     Button buttonStartGame;
 
@@ -39,21 +40,31 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     private void requestNewGame() {
+        WebSocketClient.getInstance().connectToServer();
+
         WebSocketClient.getInstance().registerCallback(MessageType.CreateLobby, this::handleNewGame);
         WebSocketClient.getInstance().registerCallback(MessageType.PlayerJoined, this::handlePlayerJoined);
 
-        WebSocketClient.getInstance().sendMessage(new CreateLobbyRequest());
+        CreateLobbyRequest req = new CreateLobbyRequest();
+        req.type = "CreateLobby";
+
+        WebSocketClient.getInstance().sendMessage(req);
     }
 
-    private void handleNewGame(CreateLobbyResponse response){
-        if(response.lobbyName == null){
-            String error = "Lobby could not be created";
-            Log.w("mlg-party", error);
-            textViewWaiting.setText(error);
+    private void handleNewGame(CreateLobbyResponse response) {
+        if (response.lobbyName == null) {
+            runOnUiThread(() ->
+            {
+                String error = "Lobby could not be created";
+                Log.w("mlg-party", error);
+                textViewWaiting.setText(error);
+            });
             return;
         }
 
-        updateUi(response.lobbyName);
+        runOnUiThread(() -> updateUi(response.lobbyName));
+
+        // todo show lobby number, store player id
     }
 
     private void handlePlayerJoined(PlayerJoinedResponse response) {

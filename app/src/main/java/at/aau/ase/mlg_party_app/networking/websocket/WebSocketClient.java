@@ -11,6 +11,7 @@ import at.aau.ase.mlg_party_app.networking.JsonParser;
 import at.aau.ase.mlg_party_app.networking.NetworkConstants;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyRequest;
+import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.PlayerJoinedResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -51,7 +52,7 @@ public class WebSocketClient extends WebSocketListener {
 
         } else if (base.type.equals(MessageType.CreateLobby.name())) {
             if (callbacks.containsKey(MessageType.CreateLobby))
-                callbacks.get(MessageType.CreateLobby).callback(jsonParser.fromJson(text, CreateLobbyRequest.class));
+                callbacks.get(MessageType.CreateLobby).callback(jsonParser.fromJson(text, CreateLobbyResponse.class));
 
         } else if (base.type.equals(MessageType.PlayerJoined.name())) {
             if (callbacks.containsKey(MessageType.PlayerJoined))
