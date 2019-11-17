@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".rps.Rps_Game">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="309dp"
+        android:layout_height="41dp"
+        android:text="Rock, Paper, Scissor."
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.039" />
+
+    <ImageView
+        android:id="@+id/imageView_Enemy"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:rotation="180"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_Own"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:srcCompat="@drawable/paper"
+        tools:srcCompat="@drawable/paper" />
+
+    <ImageView
+        android:id="@+id/imageView_Own"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="328dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/presence_invisible"
+        tools:srcCompat="@android:drawable/presence_invisible" />
+
+    <ImageButton
+        android:id="@+id/imageButton_Rock"
+        android:layout_width="90dp"
+        android:layout_height="84dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="100dp"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
+        android:src="@drawable/rock"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@drawable/rock" />
+
+    <ImageButton
+        android:id="@+id/imageButton_Scissor"
+        android:layout_width="90dp"
+        android:layout_height="84dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="100dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/scissor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_Paper"
+        tools:srcCompat="@drawable/scissor" />
+
+    <ImageButton
+        android:id="@+id/imageButton_Paper"
+        android:layout_width="90dp"
+        android:layout_height="84dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="100dp"
+        android:adjustViewBounds="false"
+        android:scaleType="fitCenter"
+        android:src="@drawable/paper"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_Rock"
+        tools:srcCompat="@drawable/paper" />
+
+    <TextView
+        android:id="@+id/textView_Result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Result:"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton_Paper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_Own" />
+
+    <TextView
+        android:id="@+id/textView_Rock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="32dp"
+        android:text="Rock"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton_Rock" />
+
+    <TextView
+        android:id="@+id/textView_Paper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="32dp"
+        android:text="Paper"
+        app:layout_constraintStart_toEndOf="@+id/textView_Rock"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton_Paper" />
+
+    <TextView
+        android:id="@+id/textView_Scissor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="32dp"
+        android:text="Scissor"
+        app:layout_constraintStart_toEndOf="@+id/textView_Paper"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton_Scissor" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
