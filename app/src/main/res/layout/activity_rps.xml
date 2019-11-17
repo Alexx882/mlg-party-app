@@ -136,4 +136,23 @@
         app:layout_constraintStart_toEndOf="@+id/textView_Paper"
         app:layout_constraintTop_toBottomOf="@+id/imageButton_Scissor" />
 
+    <TextView
+        android:id="@+id/textView_Timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Time left:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_TimeLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView_Timer" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

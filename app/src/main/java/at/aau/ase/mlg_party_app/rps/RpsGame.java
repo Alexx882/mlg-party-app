@@ -3,6 +3,7 @@ package at.aau.ase.mlg_party_app.rps;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,8 +18,10 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
     ImageButton buttonPaper;
     ImageButton buttonScissor;
     TextView textOutput;
+    TextView textTimer;
     RpsLogic.result status;
     RpsLogic logic = new RpsLogic();
+    CountDownTimer cTimer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +33,11 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
         buttonPaper = findViewById(R.id.imageButton_Paper);
         buttonScissor = findViewById(R.id.imageButton_Scissor);
         textOutput =  findViewById(R.id.textView_Result);
+        textTimer = findViewById(R.id.textView_TimeLeft);
         buttonPaper.setOnClickListener(this);
         buttonRock.setOnClickListener(this);
         buttonScissor.setOnClickListener(this);
+        startTimer();
     }
 
     @Override
@@ -71,4 +76,24 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
                 playerView.setImageResource(R.drawable.ic_launcher_foreground);
         }
     }
+
+    void startTimer() {
+        cTimer = new CountDownTimer(10000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                textTimer.setText(""+millisUntilFinished / 1000);
+            }
+            public void onFinish() {
+                textTimer.setText("Time out!");
+            }
+        };
+        cTimer.start();
+    }
+
+
+    //cancel timer
+    void cancelTimer() {
+        if(cTimer!=null)
+            cTimer.cancel();
+    }
+
 }
