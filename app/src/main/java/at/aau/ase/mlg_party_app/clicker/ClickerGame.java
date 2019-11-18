@@ -1,13 +1,6 @@
 package at.aau.ase.mlg_party_app.clicker;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,20 +9,22 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.security.SecureRandom;
 
 import at.aau.ase.mlg_party_app.R;
+import pl.droidsonroids.gif.GifImageView;
 
 public class ClickerGame extends AppCompatActivity {
 
     private ImageView ivClicker;
     private TextView tvCounter;
-    private ConstraintLayout cl;
     private ImageView ivHitmarker;
+    private GifImageView gifBackground;
 
     private int counter;
-    private int size;
+    private int fontsize;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -39,83 +34,64 @@ public class ClickerGame extends AppCompatActivity {
 
         ivClicker = findViewById(R.id.iv_clicker);
         tvCounter = findViewById(R.id.tv_clicker);
-        cl = findViewById(R.id.constraint);
         ivHitmarker = findViewById(R.id.iv_hitmarker);
+        gifBackground = findViewById(R.id.gifBackground);
         counter = 0;
-        size = 20;
-        bg_color();
+        fontsize = 20;
 
 
         ivClicker.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    cookie_counter();
+                    tvCounter.setText(cookie_counter());
                     textview_setup();
                     image_setup();
+                    image_animation();
                     hitmarker(ivClicker.getX() + event.getX() - ivHitmarker.getWidth() / 2, ivClicker.getY() + event.getY() - ivHitmarker.getHeight() / 2);
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                   // press_img();
                     ivHitmarker.setVisibility(View.INVISIBLE);
-
                 }
-
                 return true;
             }
         });
-
-
     }
 
 
-    public void cookie_counter() {
+    public String cookie_counter() {
         incCounter();
         if (counter == 69) {
-            tvCounter.setText("Nice");
-
+            return "Nice";
         } else
-            tvCounter.setText(getCounter() + "");
+            return getCounter() + "";
 
     }
 
     public void image_setup() {
-        if (counter >= 30 && counter < 60) {
+        if (counter == 15) {
+            ivClicker.setImageResource(R.drawable.lvl15);
+        } else if (counter == 30) {
+            ivClicker.setImageResource(R.drawable.lvl30);
+        } else if (counter == 45) {
             ivClicker.setImageResource(R.drawable.lvl45);
-        } else if (counter >= 60) {
-            if(counter==69)
-                ivClicker.setImageResource(R.drawable.lvl69);
-            else
-                ivClicker.setImageResource(R.drawable.lvl60);
-
-        }
-        image_animation();
-
-    }
-
-    public void press_img() {
-        if (counter < 30)
-            ivClicker.setImageResource(android.R.drawable.star_big_off);
-        else if (counter >= 30 && counter < 60) {
-            ivClicker.setImageResource(R.drawable.lvl45);
-        } else if (counter >= 60) {
+        } else if (counter == 60)
             ivClicker.setImageResource(R.drawable.lvl60);
+        else if (counter == 69)
+            ivClicker.setImageResource(R.drawable.lvl69);
+        else if (counter == 70)
+            ivClicker.setImageResource(R.drawable.lvl60);
+        else if (counter == 75) {
+            gifBackground.setImageResource(R.drawable.asci);
+            ivClicker.setImageResource(R.drawable.endboss);
         }
+
     }
 
     public void image_animation() {
         ScaleAnimation animationBig = new ScaleAnimation(1f, 0.8f, 1f, 0.8f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animationBig.setDuration(100);
         ivClicker.setAnimation(animationBig);
-    }
-
-    public void bg_color() {
-        ValueAnimator colorAnim = ObjectAnimator.ofInt(cl, "backgroundColor", Color.RED, Color.BLUE);
-        colorAnim.setDuration(3000);
-        colorAnim.setEvaluator(new ArgbEvaluator());
-        colorAnim.setRepeatCount(ValueAnimator.INFINITE);
-        colorAnim.setRepeatMode(ValueAnimator.REVERSE);
-        colorAnim.start();
     }
 
     public void textview_setup() {
@@ -148,7 +124,7 @@ public class ClickerGame extends AppCompatActivity {
 
 
     public int incsize() {
-        return size++;
+        return fontsize++;
     }
 
 
