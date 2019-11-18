@@ -12,7 +12,7 @@ import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.PlayerJoinedResponse;
-import at.aau.ase.mlg_party_app.networking.websocket.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.MessageType;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class NewGameActivity extends AppCompatActivity {

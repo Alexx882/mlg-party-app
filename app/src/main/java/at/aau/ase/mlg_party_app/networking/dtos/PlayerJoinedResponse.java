@@ -1,6 +1,6 @@
 package at.aau.ase.mlg_party_app.networking.dtos;
 
-public class PlayerJoinedResponse {
+public class PlayerJoinedResponse extends BaseResponse {
 
     public String playerName;
 
