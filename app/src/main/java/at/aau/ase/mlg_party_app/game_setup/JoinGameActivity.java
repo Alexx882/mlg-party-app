@@ -12,6 +12,7 @@ import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.JoinLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.PlayerJoinedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class JoinGameActivity extends AppCompatActivity {
@@ -29,21 +30,25 @@ public class JoinGameActivity extends AppCompatActivity {
     }
 
     private void initMessaging() {
+        WebSocketClient.getInstance().connectToServer();
         WebSocketClient.getInstance().registerCallback(MessageType.JoinLobby, this::handleJoinLobby);
+        WebSocketClient.getInstance().registerCallback(MessageType.PlayerJoined, this::handlePlayerJoined);
+    }
+
+    private void handlePlayerJoined(PlayerJoinedResponse response) {
+        // todo show players
     }
 
     private void handleJoinLobby(JoinLobbyResponse response) {
-
+        // todo disable button and store playerId
     }
-
 
     private void initUi() {
         editTextLobbyName = findViewById(R.id.editTextLobbyName);
         editTextPlayerName = findViewById(R.id.editTextPlayerName);
         buttonConnect = findViewById(R.id.buttonConnect);
 
-        buttonConnect.setOnClickListener(v ->
-                connectToLobby());
+        buttonConnect.setOnClickListener(v -> connectToLobby());
     }
 
     private void connectToLobby() {
@@ -56,6 +61,4 @@ public class JoinGameActivity extends AppCompatActivity {
         req.playerName = playername;
         WebSocketClient.getInstance().sendMessage(req);
     }
-
-
 }

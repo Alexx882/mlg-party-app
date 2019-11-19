@@ -10,7 +10,9 @@ import at.aau.ase.mlg_party_app.Callback;
 import at.aau.ase.mlg_party_app.networking.JsonParser;
 import at.aau.ase.mlg_party_app.networking.NetworkConstants;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
+import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.MessageType;
 import at.aau.ase.mlg_party_app.networking.dtos.PlayerJoinedResponse;
 import okhttp3.OkHttpClient;
@@ -18,6 +20,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
+import okio.ByteString;
 
 public class WebSocketClient extends WebSocketListener {
     private OkHttpClient client;
@@ -45,7 +48,7 @@ public class WebSocketClient extends WebSocketListener {
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
-        BaseRequest base = jsonParser.fromJson(text, BaseRequest.class);
+        BaseResponse base = jsonParser.fromJson(text, BaseResponse.class);
 
         if (base.type == null) {
             Log.e("mlg-party", "JSON must not have type null");
@@ -57,6 +60,10 @@ public class WebSocketClient extends WebSocketListener {
         } else if (base.type.equals(MessageType.PlayerJoined.name())) {
             if (callbacks.containsKey(MessageType.PlayerJoined))
                 callbacks.get(MessageType.PlayerJoined).callback(jsonParser.fromJson(text, PlayerJoinedResponse.class));
+
+        } else if (base.type.equals(MessageType.JoinLobby.name())) {
+            if (callbacks.containsKey(MessageType.JoinLobby))
+                callbacks.get(MessageType.JoinLobby).callback(jsonParser.fromJson(text, JoinLobbyResponse.class));
         }
     }
 
@@ -82,4 +89,5 @@ public class WebSocketClient extends WebSocketListener {
         super.onFailure(webSocket, t, response);
         // todo
     }
+
 }
