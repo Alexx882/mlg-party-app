@@ -1,8 +1,6 @@
 package at.aau.ase.mlg_party_app.networking.websocket;
 
 
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,9 +8,11 @@ import at.aau.ase.mlg_party_app.Callback;
 import at.aau.ase.mlg_party_app.networking.JsonParser;
 import at.aau.ase.mlg_party_app.networking.NetworkConstants;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
-import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyRequest;
-import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.PlayerJoinedResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
+import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -43,27 +43,25 @@ public class WebSocketClient extends WebSocketListener {
         webSocket = client.newWebSocket(request, this);
     }
 
+    public void disconnectFromServer() {
+        webSocket.close(0, null);
+    }
+
     @Override
     public void onMessage(WebSocket webSocket, String text) {
-        BaseRequest base = jsonParser.fromJson(text, BaseRequest.class);
 
-        if (base.type == null) {
-            Log.e("mlg-party", "JSON must not have type null");
+    }
 
-        } else if (base.type.equals(MessageType.CreateLobby.name())) {
-            if (callbacks.containsKey(MessageType.CreateLobby))
-                callbacks.get(MessageType.CreateLobby).callback(jsonParser.fromJson(text, CreateLobbyResponse.class));
+    public void handleMessage(String json, Map<MessageType, Callback> callbacks) {
+        BaseResponse base = jsonParser.fromJson(json, BaseResponse.class);
 
-        } else if (base.type.equals(MessageType.PlayerJoined.name())) {
-            if (callbacks.containsKey(MessageType.PlayerJoined))
-                callbacks.get(MessageType.PlayerJoined).callback(jsonParser.fromJson(text, PlayerJoinedResponse.class));
-        }
+        if (callbacks.containsKey(base.type))
+            callbacks.get(base.type).callback(jsonParser.fromJson(json, CreateLobbyResponse.class));
     }
 
     public void sendMessage(BaseRequest request) {
         webSocket.send(jsonParser.toJson(request));
     }
-
 
     public <T> void registerCallback(MessageType messageType, Callback<T> callback) {
         if (!callbacks.containsKey(messageType)) {
@@ -82,4 +80,5 @@ public class WebSocketClient extends WebSocketListener {
         super.onFailure(webSocket, t, response);
         // todo
     }
+
 }

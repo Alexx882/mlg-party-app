@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import at.aau.ase.mlg_party_app.game_setup.JoinGameActivity;
 import at.aau.ase.mlg_party_app.game_setup.NewGameActivity;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
@@ -26,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void joinGame(){
-
+        Intent intent = new Intent(this, JoinGameActivity.class);
+        startActivity(intent);
     }
 
 }
