@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import at.aau.ase.mlg_party_app.game_setup.NewGameActivity;
-import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
+import at.aau.ase.mlg_party_app.tictactoe.TicTacToeActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +18,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.buttonJoinGame).setOnClickListener((view)->joinGame());
         findViewById(R.id.buttonNewGame).setOnClickListener((view)->createGame());
 
+        //DevHelper for TicTacToe
+        findViewById(R.id.buttonTicTacToeTest).setOnClickListener((view)->createTicTacToe());
+
     }
 
     private void createGame(){
@@ -27,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void joinGame(){
 
+    }
+
+    //DevHelper for TicTacToe
+    private void createTicTacToe(){
+        Intent intent = new Intent(this, TicTacToeActivity.class);
+        startActivity(intent);
     }
 
 }
