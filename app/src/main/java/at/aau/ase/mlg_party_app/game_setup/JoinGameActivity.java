@@ -3,16 +3,14 @@ package at.aau.ase.mlg_party_app.game_setup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.widget.Button;
 import android.widget.EditText;
 
 import at.aau.ase.mlg_party_app.R;
-import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyRequest;
-import at.aau.ase.mlg_party_app.networking.dtos.JoinLobbyRequest;
-import at.aau.ase.mlg_party_app.networking.dtos.JoinLobbyResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.MessageType;
-import at.aau.ase.mlg_party_app.networking.dtos.PlayerJoinedResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyRequest;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
+import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class JoinGameActivity extends AppCompatActivity {
@@ -56,7 +54,7 @@ public class JoinGameActivity extends AppCompatActivity {
         String playername = editTextPlayerName.getText().toString();
 
         JoinLobbyRequest req = new JoinLobbyRequest();
-        req.type = MessageType.JoinLobby.toString();
+        req.type = MessageType.JoinLobby;
         req.lobbyName = lobbyname;
         req.playerName = playername;
         WebSocketClient.getInstance().sendMessage(req);

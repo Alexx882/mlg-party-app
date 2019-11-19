@@ -1,16 +1,16 @@
 package at.aau.ase.mlg_party_app.networking;
 
+import android.os.Message;
+
 import com.google.gson.JsonSyntaxException;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.EOFException;
-
 import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
-import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyRequest;
-import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyRequest;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 
 public class JsonParserTests {
     private JsonParser parser;
@@ -32,11 +32,11 @@ public class JsonParserTests {
     }
 
     @Test
-    public void toJson_CreateLobbyRequest_validJson(){
+    public void toJson_EnumToString_validJson(){
         CreateLobbyRequest req = new CreateLobbyRequest() ;
-        req.type = "test";
+        req.type = MessageType.CreateLobby;
 
-        Assert.assertEquals("{\"type\":\"test\"}", parser.toJson(req));
+        Assert.assertEquals("{\"type\":\"CreateLobby\"}", parser.toJson(req));
     }
 
     @Test
@@ -55,13 +55,11 @@ public class JsonParserTests {
     }
 
     @Test
-    public void fromJson_validJson_BaseRequest(){
-        String json = "{\"type\":\"lol 123\"}";
+    public void fromJson_StringToJson_BaseRequest(){
+        String json = "{\"type\":\"JoinLobby\"}";
         BaseRequest req = parser.fromJson(json, BaseRequest.class);
 
         Assert.assertNotEquals(null, req);
-        Assert.assertEquals("lol 123", req.type);
+        Assert.assertEquals(MessageType.JoinLobby, req.type);
     }
-
-
 }

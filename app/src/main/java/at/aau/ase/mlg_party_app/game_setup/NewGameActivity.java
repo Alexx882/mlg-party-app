@@ -11,10 +11,10 @@ import android.widget.Toast;
 
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
-import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyRequest;
-import at.aau.ase.mlg_party_app.networking.dtos.CreateLobbyResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.PlayerJoinedResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyRequest;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
+import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class NewGameActivity extends AppCompatActivity {
@@ -56,7 +56,7 @@ public class NewGameActivity extends AppCompatActivity {
         WebSocketClient.getInstance().registerCallback(MessageType.PlayerJoined, this::handlePlayerJoined);
 
         CreateLobbyRequest req = new CreateLobbyRequest();
-        req.type = "CreateLobby";
+        req.type = MessageType.CreateLobby;
         req.playerName = playerName;
 
         WebSocketClient.getInstance().sendMessage(req);
