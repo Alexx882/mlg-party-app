@@ -3,9 +3,11 @@
 
 
     <!--TIC TAC TOE STRINGS-->
+    <string name="backtolobby">Return to Lobby!</string>
     <string name="tictactoe_title">Tic Tac Toe Game</string>
     <string name="tictactoe_timertitle">TIMER!</string>
     <string name="tictactoe_starttitle">Start the Game!</string>
     <string name="tictactoe_ongoing">Game in progress!</string>
-    <string name="tictactoe_invalidMove">INVALID MOVE!</string>
+    <string name="tictactoe_invalidmove">INVALID MOVE!</string>
+    <string name="tictactoe_gamewon">WINNER is Player:</string>
 </resources>

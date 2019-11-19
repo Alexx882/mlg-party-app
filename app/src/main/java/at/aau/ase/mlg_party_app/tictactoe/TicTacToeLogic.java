@@ -1,10 +1,10 @@
 package at.aau.ase.mlg_party_app.tictactoe;
 
-public class TicTacToe_Logic {
+public class TicTacToeLogic {
     private int [][] gameBoard;
     final private int boardSize=3; // for easy acces instead of .length
     private int currentPlayer;
-    TicTacToe_Logic() {
+    TicTacToeLogic() {
        resetGameBoard();
         //Player 1 starts first
          this.currentPlayer=1;
@@ -93,9 +93,14 @@ public class TicTacToe_Logic {
         //Must be the correct players turn
         return gameBoard[x][y] == 0 && this.currentPlayer == playerId;
     }
-
+    //GETTER AND SETTERS
     int[][] getGameBoard() {
         return gameBoard;
+    }
+
+    //Mainly for Testing purposes -> to test for different boards.
+    public void setGameBoard(int[][] gameBoard) {
+        this.gameBoard = gameBoard;
     }
 
     void resetGameBoard() {

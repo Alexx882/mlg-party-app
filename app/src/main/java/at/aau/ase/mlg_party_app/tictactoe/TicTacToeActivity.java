@@ -1,16 +1,18 @@
 package at.aau.ase.mlg_party_app.tictactoe;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import at.aau.ase.mlg_party_app.MainActivity;
 import at.aau.ase.mlg_party_app.R;
 
+
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -18,7 +20,7 @@ import android.widget.TextView;
 
 public class TicTacToeActivity extends AppCompatActivity {
     //Variable Setup
-    TicTacToe_Logic gameLogic;
+    TicTacToeLogic gameLogic;
     int playerId; // Should be FINAL -> and handled at serverside
     TextView gameMessage;
     TableLayout gameTable;
@@ -32,7 +34,7 @@ public class TicTacToeActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
-        gameLogic=new TicTacToe_Logic();
+        gameLogic=new TicTacToeLogic();
         playerId=1;
         gameTable=findViewById(R.id.gameTable);
         gameMessage=findViewById(R.id.tVGameMessage);
@@ -56,14 +58,12 @@ public class TicTacToeActivity extends AppCompatActivity {
                 cell.setId(x);
                 cell.setTag(y);
 
-
                 cell.setOnClickListener(v -> cellClickedHandler(v.getId(),(int)v.getTag()));
 
                 row.addView(cell);
             }
             gameTable.addView(row);
         }
-        //constLayout.addView(gameTable);
     }
 
     private void cellClickedHandler(int x , int y){
@@ -78,8 +78,8 @@ public class TicTacToeActivity extends AppCompatActivity {
 
         switch(gameLogic.checkMoveStatus(x,y,pId)){
             case 0:
-                //SHOW ENDGAME DIALOG
-                gameMessage.setText("GAME OVER!");
+                //SHOW ENDGAME DIALOG + Move to Main-Activity
+                showEndOfGameDialog(pId);
                 break;
             case 1:
                 gameMessage.setText(R.string.tictactoe_ongoing);
@@ -95,7 +95,7 @@ public class TicTacToeActivity extends AppCompatActivity {
 
                 break;
             case 2:
-                gameMessage.setText(R.string.tictactoe_invalidMove);
+                gameMessage.setText(R.string.tictactoe_invalidmove);
                 break;
         }
     }
@@ -108,6 +108,19 @@ public class TicTacToeActivity extends AppCompatActivity {
         border.getPaint().setStrokeWidth(10f);
         border.getPaint().setStyle(Paint.Style.STROKE);
         return border;
+    }
+
+    private void showEndOfGameDialog( int pId){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle(getString(R.string.tictactoe_gamewon)+" "+pId);
+        builder.setMessage(R.string.backtolobby);
+        builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        });
+        AlertDialog endGameDialog=builder.create();
+        endGameDialog.show();
     }
 
 
