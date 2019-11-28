@@ -2,6 +2,7 @@ package at.aau.ase.mlg_party_app.clicker;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -46,6 +47,7 @@ public class ClickerGame extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     tvCounter.setText(cookie_counter());
                     textview_setup();
+                    vibrate();
                     image_setup();
                     image_animation();
                     hitmarker(ivClicker.getX() + event.getX() - ivHitmarker.getWidth() / 2, ivClicker.getY() + event.getY() - ivHitmarker.getHeight() / 2);
@@ -64,8 +66,13 @@ public class ClickerGame extends AppCompatActivity {
         if (counter == 69) {
             return "Nice";
         } else
-            return getCounter() + "";
+            return String.valueOf(getCounter());
 
+    }
+
+    public void vibrate() {
+        Vibrator click = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        click.vibrate(500);
     }
 
     public void image_setup() {
@@ -124,6 +131,9 @@ public class ClickerGame extends AppCompatActivity {
 
 
     public int incsize() {
+        if(fontsize>100)
+            return fontsize;
+        else
         return fontsize++;
     }
 
