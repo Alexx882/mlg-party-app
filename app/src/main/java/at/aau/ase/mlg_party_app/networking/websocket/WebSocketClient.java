@@ -45,7 +45,7 @@ public class WebSocketClient extends WebSocketListener {
 
     public void disconnectFromServer() {
         if (webSocket != null)
-            webSocket.close(0, "");
+            webSocket.close(1000, "closing app");
     }
 
     @Override
