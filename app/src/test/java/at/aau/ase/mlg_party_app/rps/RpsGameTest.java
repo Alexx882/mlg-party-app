@@ -1,6 +1,7 @@
-package at.aau.ase.mlg_party_app;
+package at.aau.ase.mlg_party_app.rps;
 
 import org.junit.Test;
+import at.aau.ase.mlg_party_app.rps.RpsGame;
 
 import static org.junit.Assert.*;
 
@@ -9,9 +10,10 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class ExampleUnitTest {
+public class RpsGameTest extends at.aau.ase.mlg_party_app.rps.RpsGame{
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void sameOptionSelected_isTrue() {
+
+        assertEquals(4, 2+2);
     }
 }

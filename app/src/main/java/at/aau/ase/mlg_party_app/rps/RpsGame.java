@@ -19,7 +19,7 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
     ImageButton buttonScissor;
     TextView textOutput;
     TextView textTimer;
-    RpsLogic.result status;
+    RpsLogic.RESULT status;
     RpsLogic logic = new RpsLogic();
     CountDownTimer cTimer = null;
 
@@ -45,22 +45,22 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
         int id = v.getId();
         switch (id) {
             case R.id.imageButton_Rock:
-                status = logic.checkResult(RpsLogic.option.ROCK, RpsLogic.option.PAPER);
-                setUserChoice(RpsLogic.option.ROCK,status);
+                status = logic.checkResult(RpsLogic.OPTION.ROCK, RpsLogic.OPTION.PAPER);
+                setUserChoice(RpsLogic.OPTION.ROCK,status);
                 break;
             case R.id.imageButton_Paper:
-                status = logic.checkResult(RpsLogic.option.PAPER, RpsLogic.option.PAPER);
-                setUserChoice(RpsLogic.option.PAPER,status);
+                status = logic.checkResult(RpsLogic.OPTION.PAPER, RpsLogic.OPTION.PAPER);
+                setUserChoice(RpsLogic.OPTION.PAPER,status);
                 break;
             case R.id.imageButton_Scissor:
-                status = logic.checkResult(RpsLogic.option.SCISSOR, RpsLogic.option.PAPER);
-                setUserChoice(RpsLogic.option.SCISSOR,status);
+                status = logic.checkResult(RpsLogic.OPTION.SCISSOR, RpsLogic.OPTION.PAPER);
+                setUserChoice(RpsLogic.OPTION.SCISSOR,status);
                 break;
             default:
-                status = RpsLogic.result.ERROR;
+                status = RpsLogic.RESULT.ERROR;
         }
     }
-    private void setUserChoice(RpsLogic.option option, RpsLogic.result result) {
+    private void setUserChoice(RpsLogic.OPTION option, RpsLogic.RESULT result) {
         textOutput.setText(""+result);
         switch (option) {
             case ROCK:
