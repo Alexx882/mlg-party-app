@@ -11,6 +11,8 @@ import at.aau.ase.mlg_party_app.networking.NetworkConstants;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -42,26 +44,35 @@ public class WebSocketClient extends WebSocketListener {
     }
 
     public void disconnectFromServer() {
-        webSocket.close(0, null);
+        if (webSocket != null)
+            webSocket.close(1000, "closing app");
     }
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
-
+        handleMessage(text, callbacks);
     }
 
     public void handleMessage(String json, Map<MessageType, Callback> callbacks) {
         BaseResponse base = jsonParser.fromJson(json, BaseResponse.class);
 
-        if (callbacks.containsKey(base.type))
-            callbacks.get(base.type).callback(jsonParser.fromJson(json, CreateLobbyResponse.class));
+        if (callbacks.containsKey(base.type)) {
+            if (base.type == MessageType.CreateLobby)
+                callbacks.get(base.type).callback(jsonParser.fromJson(json, CreateLobbyResponse.class));
+
+            else if (base.type == MessageType.JoinLobby)
+                callbacks.get(base.type).callback(jsonParser.fromJson(json, JoinLobbyResponse.class));
+
+            else if (base.type == MessageType.PlayerJoined)
+                callbacks.get(base.type).callback(jsonParser.fromJson(json, PlayerJoinedResponse.class));
+        }
     }
 
     public void sendMessage(BaseRequest request) {
         webSocket.send(jsonParser.toJson(request));
     }
 
-    public <T> void registerCallback(MessageType messageType, Callback<T> callback) {
+    public <T extends BaseResponse> void registerCallback(MessageType messageType, Callback<T> callback) {
         if (!callbacks.containsKey(messageType)) {
             callbacks.put(messageType, callback);
         }

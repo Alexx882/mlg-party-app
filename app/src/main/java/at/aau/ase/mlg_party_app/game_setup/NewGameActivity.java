@@ -49,6 +49,7 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     private void openLobby() {
+        buttonOpenLobby.setEnabled(false);
         String playerName = editTextPlayerName.getText().toString();
 
         WebSocketClient.getInstance().connectToServer();
@@ -79,7 +80,6 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     private void handlePlayerJoined(PlayerJoinedResponse response) {
-        // String.join("\n", response.playerNames)
         StringBuilder sb = new StringBuilder();
         for(String s : response.playerNames) {
             sb.append(s);
@@ -92,5 +92,11 @@ public class NewGameActivity extends AppCompatActivity {
     private void updateUiForGameStart(String lobbyName) {
         textViewInformation.setText("Lobby name: " + lobbyName);
         buttonStartGame.setEnabled(true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        WebSocketClient.getInstance().disconnectFromServer();
+        super.onDestroy();
     }
 }
