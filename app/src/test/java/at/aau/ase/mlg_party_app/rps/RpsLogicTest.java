@@ -74,4 +74,12 @@ public class RpsLogicTest {
         RpsLogic.RESULT result = logic.checkResult(optionA,optionB);
         assertEquals(RpsLogic.RESULT.WON, result);
     }
+    @Test
+    public void checkResult_Invalid() {
+        RpsLogic logic = new RpsLogic();
+        RpsLogic.OPTION optionA = RpsLogic.OPTION.SCISSOR;
+        RpsLogic.OPTION optionB = null;
+        RpsLogic.RESULT result = logic.checkResult(optionA,optionB);
+        assertEquals(RpsLogic.RESULT.ERROR, result);
+    }
 }
