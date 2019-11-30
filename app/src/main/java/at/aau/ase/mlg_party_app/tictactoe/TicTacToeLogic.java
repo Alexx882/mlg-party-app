@@ -1,6 +1,6 @@
 package at.aau.ase.mlg_party_app.tictactoe;
 
-public class TicTacToeLogic {
+class TicTacToeLogic {
     private int [][] gameBoard;
     final private int boardSize=3; // for easy acces instead of .length
     private int currentPlayer;
@@ -22,7 +22,8 @@ public class TicTacToeLogic {
         1 -> Valid move, added to the game board
         2 -> Invalid move
         Maybe:
-        3 -> Not your turn
+        3 -> DRAW
+        4->  ?? not your turn
 
      */
     int checkMoveStatus(int x, int y, int playerId){
@@ -85,9 +86,20 @@ public class TicTacToeLogic {
         if(count==3){
             return 0;
         }
+
+        //Check if there is still a move possible
+        if(checkDraw()) return 3;
         return 1;
     }
 
+    private boolean checkDraw(){
+        for(int [] i:gameBoard){
+            for(int j:i){
+                if(j==0)return false;
+            }
+        }
+        return true;
+    }
     private boolean validMove(int playerId, int x,int y){
         //Field where player wants to place his move must be empty (0)
         //Must be the correct players turn
@@ -99,7 +111,7 @@ public class TicTacToeLogic {
     }
 
     //Mainly for Testing purposes -> to test for different boards.
-    public void setGameBoard(int[][] gameBoard) {
+    void setGameBoard(int[][] gameBoard) {
         this.gameBoard = gameBoard;
     }
 

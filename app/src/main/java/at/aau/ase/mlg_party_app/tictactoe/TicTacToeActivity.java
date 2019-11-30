@@ -8,14 +8,9 @@ import at.aau.ase.mlg_party_app.tictactoe.Handlers.DrawableHandler;
 
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -27,7 +22,6 @@ public class TicTacToeActivity extends AppCompatActivity {
     TextView gameMessage;
     TableLayout gameTable;
     DrawableHandler imgHandler;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +39,10 @@ public class TicTacToeActivity extends AppCompatActivity {
     }
 
     private void createGameBoard(){
-        gameTable.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        gameTable.setLayoutParams(new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         gameTable.setShrinkAllColumns(true);
         gameTable.setStretchAllColumns(true);
-        gameTable.setBackground(this.getResources().getDrawable(R.drawable.borderdrawable));
+        gameTable.setBackgroundResource(R.drawable.borderdrawable);
         for(int x=0; x<gameLogic.getBoardSize(); x++) {
             TableRow row = new TableRow(this);
             for(int y=0;y<gameLogic.getBoardSize(); y++) {
@@ -72,15 +66,16 @@ public class TicTacToeActivity extends AppCompatActivity {
         switch(gameLogic.checkMoveStatus(x,y,pId)){
             case 0:
                 //SHOW ENDGAME DIALOG + Move to Main-Activity
-                showEndOfGameDialog(pId);
+                cell.setImageBitmap(imgHandler.drawPlayedCell(pId));
+                showEndOfGameDialog(true);
                 break;
             case 1:
                 gameMessage.setText(R.string.tictactoe_ongoing);
                 if(pId==1){
-                    cell.setBackground(imgHandler.drawPlayedCell(0));
+                    cell.setImageBitmap(imgHandler.drawPlayedCell(pId));
                     playerId=2; //For Singleplayer
                 }else {
-                    cell.setBackground(imgHandler.drawPlayedCell(1));
+                    cell.setImageBitmap(imgHandler.drawPlayedCell(pId));
                     playerId=1;//For Singleplayer
                 }
 
@@ -88,15 +83,17 @@ public class TicTacToeActivity extends AppCompatActivity {
             case 2:
                 gameMessage.setText(R.string.tictactoe_invalidmove);
                 break;
+            case 3:
+                cell.setImageBitmap(imgHandler.drawPlayedCell(pId));
+                showEndOfGameDialog(false);
+                break;
         }
     }
 
-    //Create a 150x150 ImageView for the display
     private ImageView createCell(int x, int y){
         ImageView cell = new ImageView(this);
-        cell.getLayoutParams().height=150;
-        cell.getLayoutParams().width=150;
-        cell.setBackground(imgHandler.borderHelper());
+        cell.setScaleType(ImageView.ScaleType.FIT_XY);
+        cell.setImageBitmap(imgHandler.emptyField());
         // Use id and Tag to identify the clicked cell!
         cell.setId(x);
         cell.setTag(y);
@@ -105,10 +102,14 @@ public class TicTacToeActivity extends AppCompatActivity {
     }
 
 
-    private void showEndOfGameDialog( int pId){
+    private void showEndOfGameDialog( boolean winner){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
-        builder.setTitle(getString(R.string.tictactoe_gamewon)+" "+pId);
+        if(winner) {
+            builder.setTitle(getString(R.string.tictactoe_gamewon));
+        }else{
+            builder.setTitle(getString(R.string.tictactoe_gamelost));
+        }
         builder.setMessage(R.string.backtolobby);
         builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
             Intent intent = new Intent(this, MainActivity.class);

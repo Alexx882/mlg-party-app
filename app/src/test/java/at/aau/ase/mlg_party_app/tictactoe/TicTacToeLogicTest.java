@@ -26,7 +26,7 @@ public class TicTacToeLogicTest {
     }
 
     @Test
-    public void simpleInsertion(){
+    public void simpleInsertionTest(){
         int x=0;
         int y=1;
         int playerId=1; // must be 1 (currentPlayer)
@@ -36,12 +36,12 @@ public class TicTacToeLogicTest {
     }
 
     @Test
-    public void simpleInsertionReturn(){
+    public void simpleInsertionReturnTest(){
         Assert.assertEquals(1 , gameLogic.checkMoveStatus(0,2,1));
     }
 
     @Test
-    public void duplicateInsertion(){
+    public void duplicateInsertionTest(){
         testBoard= new int[][]{
                 {0, 0, 1},
                 {0, 0, 0},
@@ -52,12 +52,12 @@ public class TicTacToeLogicTest {
     }
 
     @Test
-    public void notCurrentPlayer(){
+    public void notCurrentPlayerTest(){
         Assert.assertEquals(2,gameLogic.checkMoveStatus(0,0,2));
     }
 
     @Test
-    public void wrongPlayerDuplicateInsert(){
+    public void wrongPlayerDuplicateInsertTest(){
         testBoard= new int[][]{
                 {2, 0, 0},
                 {0, 0, 0},
@@ -66,9 +66,8 @@ public class TicTacToeLogicTest {
         gameLogic.setGameBoard(testBoard);
         Assert.assertEquals(2,gameLogic.checkMoveStatus(0,0,1));
     }
-
     @Test
-    public void winHorizontal(){
+    public void winHorizontalTest(){
         testBoard= new int[][]{
                 {2, 1, 1},
                 {2, 0, 2},
@@ -78,7 +77,7 @@ public class TicTacToeLogicTest {
         Assert.assertEquals(0,gameLogic.checkMoveStatus(2,2,1));
     }
     @Test
-    public void winVertical(){
+    public void winVerticalTest(){
         testBoard= new int[][]{
                 {0, 1, 0},
                 {0, 0, 2},
@@ -90,7 +89,7 @@ public class TicTacToeLogicTest {
         Assert.assertEquals(0,gameLogic.checkMoveStatus(0,2,2));
     }
     @Test
-    public void winDiagonalToprightToBotleft(){
+    public void winDiagonalToprightToBotleftTest(){
         testBoard= new int[][]{
                 {2, 0, 0},
                 {0, 0, 0},
@@ -101,7 +100,7 @@ public class TicTacToeLogicTest {
         Assert.assertEquals(0,gameLogic.checkMoveStatus(1,1,2));
     }
     @Test
-    public void winDiagonalTopleftToBotleft(){
+    public void winDiagonalTopleftToBotleftTest(){
         testBoard= new int[][]{
                 {0, 0, 1},
                 {0, 1, 0},
@@ -109,6 +108,37 @@ public class TicTacToeLogicTest {
         };
         gameLogic.setGameBoard(testBoard);
         Assert.assertEquals(0,gameLogic.checkMoveStatus(2,0,1));
+    }
+    @Test
+    public void drawP1Test(){
+        testBoard= new int[][]{
+                {1, 2, 1},
+                {1, 2, 2},
+                {2, 1, 0}
+        };
+        gameLogic.setGameBoard(testBoard);
+        Assert.assertEquals(3,gameLogic.checkMoveStatus(2,2,1));
+    }
+    @Test
+    public void drawP2Test(){
+        testBoard= new int[][]{
+                {1, 0, 2},
+                {2, 1, 0},
+                {1, 1, 2}
+        };
+        gameLogic.setGameBoard(testBoard);
+        gameLogic.checkMoveStatus(1,2,1);// To give turn to player 2
+        Assert.assertEquals(3,gameLogic.checkMoveStatus(0,1,2));
+    }
+    @Test
+    public void SetAndGetBoardTest(){
+        testBoard= new int[][]{
+                {0, 2, 2},
+                {2, 1, 1},
+                {1, 2, 0}
+        };
+        gameLogic.setGameBoard(testBoard);
+        Assert.assertArrayEquals(testBoard,gameLogic.getGameBoard());
     }
 
 }
