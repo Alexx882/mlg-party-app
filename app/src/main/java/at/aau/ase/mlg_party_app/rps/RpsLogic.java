@@ -1,7 +1,16 @@
 package at.aau.ase.mlg_party_app.rps;
 
+import java.security.SecureRandom;
+import java.util.Random;
+
 class RpsLogic {
-   enum OPTION {ROCK, PAPER, SCISSOR}
+   enum OPTION {ROCK, PAPER, SCISSOR;
+
+       public static OPTION random() {
+           SecureRandom random = new SecureRandom();
+           return values()[random.nextInt(values().length)];
+       }
+   }
    enum RESULT {DRAW, WON, LOST, ERROR}
 
     RESULT checkResult(OPTION userInput, OPTION enemyInput) {

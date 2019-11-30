@@ -10,7 +10,8 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class RpsGameTest extends at.aau.ase.mlg_party_app.rps.RpsGame{
+public class RpsGameTest {
+    RpsGame rps = new RpsGame();
     @Test
     public void sameOptionSelected_isTrue() {
 
