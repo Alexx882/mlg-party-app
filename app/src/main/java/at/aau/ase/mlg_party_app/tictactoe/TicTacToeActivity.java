@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import at.aau.ase.mlg_party_app.MainActivity;
 import at.aau.ase.mlg_party_app.R;
+import at.aau.ase.mlg_party_app.tictactoe.Handlers.DrawableHandler;
 
 
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ public class TicTacToeActivity extends AppCompatActivity {
     int playerId; // Should be FINAL -> and handled at serverside
     TextView gameMessage;
     TableLayout gameTable;
+    DrawableHandler imgHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class TicTacToeActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
+        imgHandler=new DrawableHandler(this);
         gameLogic=new TicTacToeLogic();
         playerId=1;
         gameTable=findViewById(R.id.gameTable);
@@ -44,23 +48,12 @@ public class TicTacToeActivity extends AppCompatActivity {
         gameTable.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         gameTable.setShrinkAllColumns(true);
         gameTable.setStretchAllColumns(true);
+        gameTable.setBackground(this.getResources().getDrawable(R.drawable.borderdrawable));
         for(int x=0; x<gameLogic.getBoardSize(); x++) {
             TableRow row = new TableRow(this);
             for(int y=0;y<gameLogic.getBoardSize(); y++) {
-                TextView cell = new TextView(this);
-                cell.setText(" ");
-                cell.setTextSize(50);
-                cell.setGravity(Gravity.CENTER);
-                cell.setHeight(200);
-                cell.setBackground(borderHelper());
-
-                // Use id and Tag to identify the clicked cell!
-                cell.setId(x);
-                cell.setTag(y);
-
-                cell.setOnClickListener(v -> cellClickedHandler(v.getId(),(int)v.getTag()));
-
-                row.addView(cell);
+                //Create the ImmageView for the cell and place it in the table
+                row.addView(createCell(x,y));
             }
             gameTable.addView(row);
         }
@@ -74,7 +67,7 @@ public class TicTacToeActivity extends AppCompatActivity {
     //should get called after respone from server
      void addMove(int x, int y, int pId){
         TableRow row = (TableRow)gameTable.getChildAt(x);
-        TextView cell= (TextView)row.getChildAt(y);
+        ImageView cell= (ImageView)row.getChildAt(y);
 
         switch(gameLogic.checkMoveStatus(x,y,pId)){
             case 0:
@@ -84,12 +77,10 @@ public class TicTacToeActivity extends AppCompatActivity {
             case 1:
                 gameMessage.setText(R.string.tictactoe_ongoing);
                 if(pId==1){
-                    cell.setText("X");
-                    cell.setBackgroundColor(Color.BLUE);
+                    cell.setBackground(imgHandler.drawPlayedCell(0));
                     playerId=2; //For Singleplayer
                 }else {
-                    cell.setText("O");
-                    cell.setBackgroundColor(Color.RED);
+                    cell.setBackground(imgHandler.drawPlayedCell(1));
                     playerId=1;//For Singleplayer
                 }
 
@@ -100,15 +91,19 @@ public class TicTacToeActivity extends AppCompatActivity {
         }
     }
 
-    //To paint a border around the cells of the game board (gets replaced after a move)
-    ShapeDrawable borderHelper(){
-        ShapeDrawable border = new ShapeDrawable();
-        border.setShape(new RectShape());
-        border.getPaint().setColor(Color.BLACK);
-        border.getPaint().setStrokeWidth(10f);
-        border.getPaint().setStyle(Paint.Style.STROKE);
-        return border;
+    //Create a 150x150 ImageView for the display
+    private ImageView createCell(int x, int y){
+        ImageView cell = new ImageView(this);
+        cell.getLayoutParams().height=150;
+        cell.getLayoutParams().width=150;
+        cell.setBackground(imgHandler.borderHelper());
+        // Use id and Tag to identify the clicked cell!
+        cell.setId(x);
+        cell.setTag(y);
+        cell.setOnClickListener(v -> cellClickedHandler(v.getId(),(int)v.getTag()));
+        return cell;
     }
+
 
     private void showEndOfGameDialog( int pId){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
