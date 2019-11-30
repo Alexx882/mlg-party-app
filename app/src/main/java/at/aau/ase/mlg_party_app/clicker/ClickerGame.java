@@ -72,7 +72,7 @@ public class ClickerGame extends AppCompatActivity {
 
     public void vibrate() {
         Vibrator click = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        click.vibrate(500);
+        click.vibrate(50);
     }
 
     public void image_setup() {
