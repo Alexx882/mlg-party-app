@@ -4,7 +4,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import at.aau.ase.mlg_party_app.MainActivity;
 import at.aau.ase.mlg_party_app.R;
-import at.aau.ase.mlg_party_app.tictactoe.Handlers.DrawableHandler;
 
 
 import android.content.Intent;
@@ -21,7 +20,6 @@ public class TicTacToeActivity extends AppCompatActivity {
     int playerId; // Should be FINAL -> and handled at serverside
     TextView gameMessage;
     TableLayout gameTable;
-    DrawableHandler imgHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +29,7 @@ public class TicTacToeActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
-        imgHandler=new DrawableHandler(this);
+
         gameLogic=new TicTacToeLogic();
         playerId=1;
         gameTable=findViewById(R.id.gameTable);
@@ -66,35 +64,44 @@ public class TicTacToeActivity extends AppCompatActivity {
         switch(gameLogic.checkMoveStatus(x,y,pId)){
             case 0:
                 //SHOW ENDGAME DIALOG + Move to Main-Activity
-                cell.setImageBitmap(imgHandler.drawPlayedCell(pId));
+                setGameField(cell,pId);
                 showEndOfGameDialog(true);
                 break;
             case 1:
                 gameMessage.setText(R.string.tictactoe_ongoing);
-                if(pId==1){
-                    cell.setImageBitmap(imgHandler.drawPlayedCell(pId));
-                    playerId=2; //For Singleplayer
-                }else {
-                    cell.setImageBitmap(imgHandler.drawPlayedCell(pId));
-                    playerId=1;//For Singleplayer
-                }
-
+                setGameField(cell,pId);
                 break;
             case 2:
                 gameMessage.setText(R.string.tictactoe_invalidmove);
                 break;
             case 3:
-                cell.setImageBitmap(imgHandler.drawPlayedCell(pId));
+                setGameField(cell,pId);
                 showEndOfGameDialog(false);
                 break;
         }
     }
 
+    private void setGameField(ImageView gameCell, int pId){
+        if(pId==1){
+            gameCell.setImageResource(R.drawable.tictactoe_mlg);
+            playerId=2; //For Singleplayer
+        }else {
+            gameCell.setImageResource(R.drawable.tictactoe_doritos);
+            playerId=1;//For Singleplayer
+        }
+    }
+
     private ImageView createCell(int x, int y){
         ImageView cell = new ImageView(this);
-        cell.setScaleType(ImageView.ScaleType.FIT_XY);
-        cell.setImageBitmap(imgHandler.emptyField());
+        cell.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        //cell.setImageBitmap(imgHandler.emptyField());
         // Use id and Tag to identify the clicked cell!
+       cell.setPadding(0,0,0,0);
+        cell.setX(5);
+        cell.setY(5);
+        cell.setImageResource(R.drawable.tictactoe_emptyfield);
+
+
         cell.setId(x);
         cell.setTag(y);
         cell.setOnClickListener(v -> cellClickedHandler(v.getId(),(int)v.getTag()));
