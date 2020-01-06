@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.buttonJoinGame).setOnClickListener((view)->joinGame());
         findViewById(R.id.buttonNewGame).setOnClickListener((view)->createGame());
-
     }
 
     private void createGame(){
