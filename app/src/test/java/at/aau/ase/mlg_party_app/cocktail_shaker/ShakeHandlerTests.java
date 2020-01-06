@@ -16,11 +16,11 @@ public class ShakeHandlerTests {
 
     @Test
     public void receiveShakeValue_floatCallback_float() {
-        Float f = 10f;
+        float f = 10f;
         AtomicBoolean handled = new AtomicBoolean(false);
 
-        h.registerFloatCallback((val) -> {
-            Assert.assertEquals(f, val);
+        h.registerCallback((val) -> {
+            Assert.assertEquals(f, val.value, 0.001);
             handled.set(true);
         });
 

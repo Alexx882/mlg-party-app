@@ -17,7 +17,7 @@ import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
 
 @RunWith(Parameterized.class)
 public class ShakeHandlerTestsParameterized {
-    ShakeHandler h;
+    private ShakeHandler h;
     private float pvalue;
     private String pres;
 
@@ -26,8 +26,15 @@ public class ShakeHandlerTestsParameterized {
 
         Collection<Object[]> params = new LinkedList<>();
 
-        params.add(new Object[]{1.5f, "Noob"});
-        params.add(new Object[]{3.5f, "Meh..."});
+        params.add(new Object[]{1.9f, "Noob"});
+
+        params.add(new Object[]{2f, "Meh..."});
+        params.add(new Object[]{2.1f, "Meh..."});
+        params.add(new Object[]{3.9f, "Meh..."});
+
+        params.add(new Object[]{4f, "Edging master"});
+        params.add(new Object[]{4.1f, "Edging master"});
+        params.add(new Object[]{5.9f, "Edging master"});
 
         return params;
     }
@@ -46,8 +53,8 @@ public class ShakeHandlerTestsParameterized {
     public void receiveShakeValue_stringCallback_meh() {
         AtomicBoolean handled = new AtomicBoolean(false);
 
-        h.registerStringCallback((val) -> {
-            Assert.assertEquals(pres, val);
+        h.registerCallback((val) -> {
+            Assert.assertEquals(pres, val.message);
             handled.set(true);
         });
 

@@ -13,17 +13,12 @@ public class ShakeHandler implements SensorEventListener {
     private float max = 0;
     private float avg = 0;
     private float cnt = 0;
+    private boolean running = true;
 
-    private Callback<Float> floatCallback;
+    private Callback<ShakingArgs> callback;
 
-    public void registerFloatCallback(Callback<Float> callback) {
-        this.floatCallback = callback;
-    }
-
-    private Callback<String> stringCallback;
-
-    public void registerStringCallback(Callback<String> callback) {
-        this.stringCallback = callback;
+    public void registerCallback(Callback<ShakingArgs> callback) {
+        this.callback = callback;
     }
 
     public void receiveShakeValue(float gForce) {
@@ -33,33 +28,45 @@ public class ShakeHandler implements SensorEventListener {
         cnt++;
         avg = (avg * (cnt - 1) + gForce) / cnt;
 
-        if (floatCallback != null)
-            floatCallback.callback(gForce);
-
         convertShakeValueToText(gForce);
     }
 
     private void convertShakeValueToText(float gForce) {
         String res = "Noob";
 
-        if (gForce > 12)
+        if (gForce >= 12)
             res = "Are you okay?";
-        if (gForce > 8)
+        if (gForce >= 8)
             res = "Fastest fap in the west.";
-        else if (gForce > 6)
+        else if (gForce >= 6)
             res = "Pretty Deacent.";
-        else if (gForce > 4)
+        else if (gForce >= 4)
             res = "Edging master";
-        else if (gForce > 2)
+        else if (gForce >= 2)
             res = "Meh...";
 
-        if (stringCallback != null) {
-            stringCallback.callback(res);
+        if (callback != null) {
+            ShakingArgs a = new ShakingArgs();
+            a.value = gForce;
+            a.message = res;
+
+            callback.callback(a);
         }
+    }
+
+    public void stop() {
+        running = false;
+    }
+
+    public ShakeResult getResults() {
+        return new ShakeResult(max, avg);
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (!running)
+            return;
+
         float x = event.values[0];
         float y = event.values[1];
         float z = event.values[2];
