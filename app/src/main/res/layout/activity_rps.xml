@@ -6,11 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".rps.RpsGame">
 
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imageViewGif"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/stars" />
+
     <TextView
         android:id="@+id/textView"
-        android:layout_width="309dp"
-        android:layout_height="41dp"
-        android:text="Rock, Paper, Scissor."
+        android:layout_width="296dp"
+        android:layout_height="45dp"
+        android:text="Rock - Paper - Scissor"
+        android:textColor="@android:color/background_light"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -26,14 +38,15 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:contentDescription="Image of enemy's choice"
         android:rotation="180"
         app:layout_constraintBottom_toTopOf="@+id/imageView_Own"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/paper"
-        tools:srcCompat="@drawable/paper" />
+        app:srcCompat="@android:drawable/presence_invisible"
+        tools:srcCompat="@android:drawable/presence_invisible" />
 
     <ImageView
         android:id="@+id/imageView_Own"
@@ -42,6 +55,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="328dp"
+        android:contentDescription="Image of User's choice"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -56,6 +70,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginBottom="100dp"
         android:adjustViewBounds="false"
+        android:contentDescription="Image Button Rock"
         android:cropToPadding="false"
         android:scaleType="centerCrop"
         android:src="@drawable/rock"
@@ -70,6 +85,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="100dp"
+        android:contentDescription="Image Button Scissor"
         android:scaleType="fitCenter"
         android:src="@drawable/scissor"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -85,6 +101,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginBottom="100dp"
         android:adjustViewBounds="false"
+        android:contentDescription="Image Button Paper"
         android:scaleType="fitCenter"
         android:src="@drawable/paper"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -100,6 +117,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Result:"
+        android:textColor="@android:color/background_light"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/imageButton_Paper"
         app:layout_constraintEnd_toEndOf="parent"
@@ -113,6 +131,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="32dp"
         android:text="Rock"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton_Rock" />
 
@@ -123,6 +142,7 @@
         android:layout_marginStart="92dp"
         android:layout_marginTop="32dp"
         android:text="Paper"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toEndOf="@+id/textView_Rock"
         app:layout_constraintTop_toBottomOf="@+id/imageButton_Paper" />
 
@@ -133,6 +153,7 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="32dp"
         android:text="Scissor"
+        android:textColor="@android:color/background_light"
         app:layout_constraintStart_toEndOf="@+id/textView_Paper"
         app:layout_constraintTop_toBottomOf="@+id/imageButton_Scissor" />
 
@@ -143,6 +164,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
         android:text="Time left:"
+        android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -152,6 +174,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="16dp"
+        android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView_Timer" />
 

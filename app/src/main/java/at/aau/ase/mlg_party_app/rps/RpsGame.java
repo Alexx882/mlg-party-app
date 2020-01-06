@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import at.aau.ase.mlg_party_app.R;
+import pl.droidsonroids.gif.GifImageView;
 
 public class RpsGame extends AppCompatActivity implements View.OnClickListener{
     ImageView enemyView;
@@ -19,9 +20,9 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
     ImageButton buttonScissor;
     TextView textOutput;
     TextView textTimer;
-    RpsLogic.RESULT status;
+    RpsLogic.Result status;
     RpsLogic logic = new RpsLogic();
-    RpsLogic.OPTION playerOption;
+    RpsLogic.Option playerOption;
     CountDownTimer cTimer = null;
 
     @Override
@@ -48,28 +49,28 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
         int id = v.getId();
         switch (id) {
             case R.id.imageButton_Rock:
-                playerOption = RpsLogic.OPTION.ROCK;
+                playerOption = RpsLogic.Option.ROCK;
                 updateViewBasedOnOption(playerOption, playerView);
                 break;
             case R.id.imageButton_Paper:
-                playerOption = RpsLogic.OPTION.PAPER;
+                playerOption = RpsLogic.Option.PAPER;
                 updateViewBasedOnOption(playerOption, playerView);
                 break;
             case R.id.imageButton_Scissor:
-                playerOption = RpsLogic.OPTION.SCISSOR;
+                playerOption = RpsLogic.Option.SCISSOR;
                 updateViewBasedOnOption(playerOption, playerView);
                 break;
             default:
-                status = RpsLogic.RESULT.ERROR;
+                status = RpsLogic.Result.ERROR;
         }
     }
-    private void setUserChoice(RpsLogic.OPTION option, RpsLogic.OPTION enemyOption, RpsLogic.RESULT result) {
-        textOutput.setText(String.valueOf(result));
+    private void setUserChoice(RpsLogic.Option option, RpsLogic.Option enemyOption, RpsLogic.Result result) {
+        textOutput.append(String.valueOf(result));
         updateViewBasedOnOption(option, playerView);
         updateViewBasedOnOption(enemyOption, enemyView);
     }
 
-    private void updateViewBasedOnOption(RpsLogic.OPTION option, ImageView playerView) {
+    private void updateViewBasedOnOption(RpsLogic.Option option, ImageView playerView) {
         switch (option) {
             case ROCK:
                 playerView.setImageResource(R.drawable.rock);
@@ -98,7 +99,10 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
 
                 // Singleplayer: Enemy Option is random
                 disableImageButton();
-                RpsLogic.OPTION enemyOption = RpsLogic.OPTION.random();
+                RpsLogic.Option enemyOption = RpsLogic.Option.random();
+                if (playerOption == null) {
+                    playerOption = RpsLogic.Option.random();
+                }
                 status = logic.checkResult(playerOption, enemyOption);
                 setUserChoice(playerOption, enemyOption, status);
             }

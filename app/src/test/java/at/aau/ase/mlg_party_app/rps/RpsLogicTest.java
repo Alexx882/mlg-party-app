@@ -8,78 +8,78 @@ public class RpsLogicTest {
     @Test
     public void checkResult_Draw_Rock() {
         RpsLogic logic = new RpsLogic();
-        RpsLogic.OPTION optionA = RpsLogic.OPTION.ROCK;
-        RpsLogic.RESULT result = logic.checkResult(optionA,optionA);
-        assertEquals(RpsLogic.RESULT.DRAW, result);
+        RpsLogic.Option optionA = RpsLogic.Option.ROCK;
+        RpsLogic.Result result = logic.checkResult(optionA,optionA);
+        assertEquals(RpsLogic.Result.DRAW, result);
     }
     @Test
     public void checkResult_Draw_Paper() {
         RpsLogic logic = new RpsLogic();
-        RpsLogic.OPTION optionA = RpsLogic.OPTION.PAPER;
-        RpsLogic.RESULT result = logic.checkResult(optionA,optionA);
-        assertEquals(RpsLogic.RESULT.DRAW, result);
+        RpsLogic.Option optionA = RpsLogic.Option.PAPER;
+        RpsLogic.Result result = logic.checkResult(optionA,optionA);
+        assertEquals(RpsLogic.Result.DRAW, result);
     }
     @Test
     public void checkResult_Draw_Scissor() {
         RpsLogic logic = new RpsLogic();
-        RpsLogic.OPTION optionA = RpsLogic.OPTION.SCISSOR;
-        RpsLogic.RESULT result = logic.checkResult(optionA,optionA);
-        assertEquals(RpsLogic.RESULT.DRAW, result);
+        RpsLogic.Option optionA = RpsLogic.Option.SCISSOR;
+        RpsLogic.Result result = logic.checkResult(optionA,optionA);
+        assertEquals(RpsLogic.Result.DRAW, result);
     }
     @Test
     public void checkResult_Rock_Paper() {
         RpsLogic logic = new RpsLogic();
-        RpsLogic.OPTION optionA = RpsLogic.OPTION.ROCK;
-        RpsLogic.OPTION optionB = RpsLogic.OPTION.PAPER;
-        RpsLogic.RESULT result = logic.checkResult(optionA,optionB);
-        assertEquals(RpsLogic.RESULT.LOST, result);
+        RpsLogic.Option optionA = RpsLogic.Option.ROCK;
+        RpsLogic.Option optionB = RpsLogic.Option.PAPER;
+        RpsLogic.Result result = logic.checkResult(optionA,optionB);
+        assertEquals(RpsLogic.Result.LOST, result);
     }
     @Test
     public void checkResult_Rock_Scissor() {
         RpsLogic logic = new RpsLogic();
-        RpsLogic.OPTION optionA = RpsLogic.OPTION.ROCK;
-        RpsLogic.OPTION optionB = RpsLogic.OPTION.SCISSOR;
-        RpsLogic.RESULT result = logic.checkResult(optionA,optionB);
-        assertEquals(RpsLogic.RESULT.WON, result);
+        RpsLogic.Option optionA = RpsLogic.Option.ROCK;
+        RpsLogic.Option optionB = RpsLogic.Option.SCISSOR;
+        RpsLogic.Result result = logic.checkResult(optionA,optionB);
+        assertEquals(RpsLogic.Result.WON, result);
     }
     @Test
     public void checkResult_Paper_Rock() {
         RpsLogic logic = new RpsLogic();
-        RpsLogic.OPTION optionA = RpsLogic.OPTION.PAPER;
-        RpsLogic.OPTION optionB = RpsLogic.OPTION.ROCK;
-        RpsLogic.RESULT result = logic.checkResult(optionA,optionB);
-        assertEquals(RpsLogic.RESULT.WON, result);
+        RpsLogic.Option optionA = RpsLogic.Option.PAPER;
+        RpsLogic.Option optionB = RpsLogic.Option.ROCK;
+        RpsLogic.Result result = logic.checkResult(optionA,optionB);
+        assertEquals(RpsLogic.Result.WON, result);
     }
     @Test
     public void checkResult_Paper_Scissor() {
         RpsLogic logic = new RpsLogic();
-        RpsLogic.OPTION optionA = RpsLogic.OPTION.PAPER;
-        RpsLogic.OPTION optionB = RpsLogic.OPTION.SCISSOR;
-        RpsLogic.RESULT result = logic.checkResult(optionA,optionB);
-        assertEquals(RpsLogic.RESULT.LOST, result);
+        RpsLogic.Option optionA = RpsLogic.Option.PAPER;
+        RpsLogic.Option optionB = RpsLogic.Option.SCISSOR;
+        RpsLogic.Result result = logic.checkResult(optionA,optionB);
+        assertEquals(RpsLogic.Result.LOST, result);
     }
     @Test
     public void checkResult_Scissor_Rock() {
         RpsLogic logic = new RpsLogic();
-        RpsLogic.OPTION optionA = RpsLogic.OPTION.SCISSOR;
-        RpsLogic.OPTION optionB = RpsLogic.OPTION.ROCK;
-        RpsLogic.RESULT result = logic.checkResult(optionA,optionB);
-        assertEquals(RpsLogic.RESULT.LOST, result);
+        RpsLogic.Option optionA = RpsLogic.Option.SCISSOR;
+        RpsLogic.Option optionB = RpsLogic.Option.ROCK;
+        RpsLogic.Result result = logic.checkResult(optionA,optionB);
+        assertEquals(RpsLogic.Result.LOST, result);
     }
     @Test
     public void checkResult_Scissor_Paper() {
         RpsLogic logic = new RpsLogic();
-        RpsLogic.OPTION optionA = RpsLogic.OPTION.SCISSOR;
-        RpsLogic.OPTION optionB = RpsLogic.OPTION.PAPER;
-        RpsLogic.RESULT result = logic.checkResult(optionA,optionB);
-        assertEquals(RpsLogic.RESULT.WON, result);
+        RpsLogic.Option optionA = RpsLogic.Option.SCISSOR;
+        RpsLogic.Option optionB = RpsLogic.Option.PAPER;
+        RpsLogic.Result result = logic.checkResult(optionA,optionB);
+        assertEquals(RpsLogic.Result.WON, result);
     }
     @Test
     public void checkResult_Invalid() {
         RpsLogic logic = new RpsLogic();
-        RpsLogic.OPTION optionA = RpsLogic.OPTION.SCISSOR;
-        RpsLogic.OPTION optionB = null;
-        RpsLogic.RESULT result = logic.checkResult(optionA,optionB);
-        assertEquals(RpsLogic.RESULT.ERROR, result);
+        RpsLogic.Option optionA = RpsLogic.Option.SCISSOR;
+        RpsLogic.Option optionB = null;
+        RpsLogic.Result result = logic.checkResult(optionA,optionB);
+        assertEquals(RpsLogic.Result.ERROR, result);
     }
 }

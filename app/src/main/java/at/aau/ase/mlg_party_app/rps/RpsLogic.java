@@ -1,41 +1,40 @@
 package at.aau.ase.mlg_party_app.rps;
 
 import java.security.SecureRandom;
-import java.util.Random;
 
 class RpsLogic {
-   enum OPTION {ROCK, PAPER, SCISSOR;
+   enum Option {ROCK, PAPER, SCISSOR;
 
-       public static OPTION random() {
+       public static Option random() {
            SecureRandom random = new SecureRandom();
            return values()[random.nextInt(values().length)];
        }
    }
-   enum RESULT {DRAW, WON, LOST, ERROR}
+   enum Result {DRAW, WON, LOST, ERROR}
 
-    RESULT checkResult(OPTION userInput, OPTION enemyInput) {
+    Result checkResult(Option userInput, Option enemyInput) {
         if (userInput == enemyInput) {
             // Draw
-            return RESULT.DRAW;
-        } else if (userInput == OPTION.ROCK && enemyInput == OPTION.PAPER){
+            return Result.DRAW;
+        } else if (userInput == Option.ROCK && enemyInput == Option.PAPER){
             // Lost
-            return RESULT.LOST;
-        } else if (userInput == OPTION.ROCK && enemyInput == OPTION.SCISSOR) {
+            return Result.LOST;
+        } else if (userInput == Option.ROCK && enemyInput == Option.SCISSOR) {
             // Won
-            return RESULT.WON;
-        } else if (userInput == OPTION.PAPER && enemyInput == OPTION.SCISSOR) {
+            return Result.WON;
+        } else if (userInput == Option.PAPER && enemyInput == Option.SCISSOR) {
             // Lost
-            return RESULT.LOST;
-        } else if (userInput == OPTION.PAPER && enemyInput == OPTION.ROCK) {
+            return Result.LOST;
+        } else if (userInput == Option.PAPER && enemyInput == Option.ROCK) {
             // Won
-            return RESULT.WON;
-        } else if (userInput == OPTION.SCISSOR && enemyInput == OPTION.ROCK) {
+            return Result.WON;
+        } else if (userInput == Option.SCISSOR && enemyInput == Option.ROCK) {
             // Lost
-            return RESULT.LOST;
-        } else if (userInput == OPTION.SCISSOR && enemyInput == OPTION.PAPER) {
+            return Result.LOST;
+        } else if (userInput == Option.SCISSOR && enemyInput == Option.PAPER) {
             // Won
-            return RESULT.WON;
+            return Result.WON;
         }
-        return RESULT.ERROR;
+        return Result.ERROR;
     }
 }
