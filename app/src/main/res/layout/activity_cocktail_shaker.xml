@@ -7,19 +7,26 @@
     tools:context=".cocktail_shaker.CocktailShakerActivity">
 
     <TextView
-        android:id="@+id/textViewShakeInfo"
+        android:id="@+id/textViewTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="28dp"
+        android:text="TextViewTime"
+        android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewTimer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextViewTime"
-        app:layout_constraintTop_toBottomOf="@+id/textViewShakeInfo"
-        tools:layout_editor_absoluteX="171dp" />
+    <ImageView
+        android:id="@+id/imageViewSonic"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTimer"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@mipmap/sonic" />
 </androidx.constraintlayout.widget.ConstraintLayout>

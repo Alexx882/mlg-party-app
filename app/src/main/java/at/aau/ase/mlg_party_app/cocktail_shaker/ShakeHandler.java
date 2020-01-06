@@ -28,27 +28,10 @@ public class ShakeHandler implements SensorEventListener {
         cnt++;
         avg = (avg * (cnt - 1) + gForce) / cnt;
 
-        convertShakeValueToText(gForce);
-    }
-
-    private void convertShakeValueToText(float gForce) {
-        String res = "Noob";
-
-        if (gForce >= 12)
-            res = "Are you okay?";
-        if (gForce >= 8)
-            res = "Fastest fap in the west.";
-        else if (gForce >= 6)
-            res = "Pretty Deacent.";
-        else if (gForce >= 4)
-            res = "Edging master";
-        else if (gForce >= 2)
-            res = "Meh...";
-
         if (callback != null) {
             ShakingArgs a = new ShakingArgs();
             a.value = gForce;
-            a.message = res;
+            a.message = ShakeIntensity.convertFromFloat(gForce);
 
             callback.callback(a);
         }
