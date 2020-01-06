@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import at.aau.ase.mlg_party_app.R;
-import pl.droidsonroids.gif.GifImageView;
 
 public class RpsGame extends AppCompatActivity implements View.OnClickListener{
     ImageView enemyView;
