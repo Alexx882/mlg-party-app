@@ -3,6 +3,7 @@ package at.aau.ase.mlg_party_app.game_setup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
