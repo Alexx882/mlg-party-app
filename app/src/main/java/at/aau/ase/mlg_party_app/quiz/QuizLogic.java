@@ -12,6 +12,7 @@ class QuizLogic {
     boolean checkAnswer(int ans) {
         switch (question) {
             case 1:
+                //Defines the correct answer for each question
                 if (ans == 1) return true;
                 return false;
             case 2:
@@ -50,26 +51,30 @@ class QuizLogic {
                 b2.setText("Placeholder 2");
                 b3.setText("Placeholder 3");
                 b4.setText("Placeholder 4");
+                break;
             case 2:
-                b1.setText("Placeholder 1");
-                b2.setText("Placeholder 2");
-                b3.setText("Placeholder 3");
-                b4.setText("Placeholder 4");
+                b1.setText("Placeholder 5");
+                b2.setText("Placeholder 6");
+                b3.setText("Placeholder 7");
+                b4.setText("Placeholder 8");
+                break;
             case 3:
-                b1.setText("Placeholder 1");
-                b2.setText("Placeholder 2");
-                b3.setText("Placeholder 3");
-                b4.setText("Placeholder 4");
+                b1.setText("Placeholder 9");
+                b2.setText("Placeholder 10");
+                b3.setText("Placeholder 11");
+                b4.setText("Placeholder 12");
+                break;
             case 4:
-                b1.setText("Placeholder 1");
-                b2.setText("Placeholder 2");
-                b3.setText("Placeholder 3");
-                b4.setText("Placeholder 4");
+                b1.setText("Placeholder 13");
+                b2.setText("Placeholder 14");
+                b3.setText("Placeholder 15");
+                b4.setText("Placeholder 16");
+                break;
             default:
-                b1.setText("Placeholder 1");
-                b2.setText("Placeholder 2");
-                b3.setText("Placeholder 3");
-                b4.setText("Placeholder 4");
+                b1.setText("Placeholder 17");
+                b2.setText("Placeholder 18");
+                b3.setText("Placeholder 19");
+                b4.setText("Placeholder 20");
         }
     }
 }
