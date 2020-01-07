@@ -24,9 +24,17 @@ public class QuizGame extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.activity_quiz);
         questionText = findViewById(R.id.textViewQuestion);
         buttonAnswer1 = findViewById(R.id.buttonAnswer1);
+        buttonAnswer1.setOnClickListener(this);
+
         buttonAnswer2 = findViewById(R.id.buttonAnswer2);
+        buttonAnswer2.setOnClickListener(this);
+
         buttonAnswer3 = findViewById(R.id.buttonAnswer3);
+        buttonAnswer3.setOnClickListener(this);
+
         buttonAnswer4 = findViewById(R.id.buttonAnswer4);
+        buttonAnswer4.setOnClickListener(this);
+
         questionText.setText(qlogic.setQuestion());
     }
 
@@ -35,16 +43,16 @@ public class QuizGame extends AppCompatActivity implements View.OnClickListener{
         int id = v.getId();
         switch (id) {
             case R.id.buttonAnswer1:
-            questionText.append(""+qlogic.checkAnswer(1));
+                questionText.append("" + qlogic.checkAnswer(1));
                 break;
             case R.id.buttonAnswer2:
-                questionText.append(""+qlogic.checkAnswer(2));
+                questionText.append("" + qlogic.checkAnswer(2));
                 break;
             case R.id.buttonAnswer3:
-                questionText.append(""+qlogic.checkAnswer(3));
+                questionText.append("" + qlogic.checkAnswer(3));
                 break;
             case R.id.buttonAnswer4:
-                questionText.append(""+qlogic.checkAnswer(4));
+                questionText.append("" + qlogic.checkAnswer(4));
                 break;
             default:
 
