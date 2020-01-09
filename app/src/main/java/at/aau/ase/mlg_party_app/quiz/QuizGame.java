@@ -67,6 +67,7 @@ public class QuizGame extends AppCompatActivity implements View.OnClickListener{
             default:
 
         }
+        // Disable all buttons so no option can be chosen anymore
         disableButtons();
     }
     private void disableButtons() {

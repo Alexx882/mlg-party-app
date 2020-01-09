@@ -22,6 +22,7 @@ class QuizLogic {
         questions[3] = q4;
     }
    boolean checkAnswer(int ans) {
+       //Checking answers
         if(questions[currentQuestion].getCorrectAnswer() == ans ) return true;
         return false;
     }

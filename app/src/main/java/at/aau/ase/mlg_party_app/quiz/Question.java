@@ -1,5 +1,5 @@
 package at.aau.ase.mlg_party_app.quiz;
-
+// Creating a question with necessary information
 class Question {
     private String questionText;
     private String answer1;
