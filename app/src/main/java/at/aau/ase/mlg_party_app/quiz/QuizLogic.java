@@ -2,79 +2,36 @@ package at.aau.ase.mlg_party_app.quiz;
 
 
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.security.SecureRandom;
 
 class QuizLogic {
         private SecureRandom random = new SecureRandom();
-        private int question = random.nextInt(4)+1;
+        private int currentQuestion = random.nextInt(4);
+        private Question[] questions = new Question[4];
 
-    boolean checkAnswer(int ans) {
-        switch (question) {
-            case 1:
-                //Defines the correct answer for each question
-                if (ans == 1) return true;
-                return false;
-            case 2:
-                if (ans == 2) return true;
-                return false;
-            case 3:
-                if (ans == 3) return true;
-                return false;
-            case 4:
-                if (ans == 4) return true;
-                return false;
-            default:
-                return false;
+   void createQuestions() {
+        Question q1 = new Question("What is the name of the network of computers from which the Internet has emerged?", "Arpanet", "Google", "Cyclades", "Milnet", 1);
+        questions[0] = q1;
+        Question q2 = new Question("In what year was Google founded?", "1996", "1998", "1999", "2000", 2);
+        questions[1] = q2;
+        Question q3 = new Question("What is the county top-level domain of Belgium?", ".bl", "bg", "be", "bu", 3);
+        questions[2] = q3;
+        Question q4 = new Question("What colour is cobalt?", "Red", "Yellow", "Green", "Blue", 4);
+        questions[3] = q4;
     }
+   boolean checkAnswer(int ans) {
+        if(questions[currentQuestion].getCorrectAnswer() == ans ) return true;
+        return false;
     }
-    String setQuestion() {
-        switch (question) {
-
-            case 1:
-                return "Question number 1:\nPlease answer with the first answer!";
-            case 2:
-                return "Question number 2:\nPlease answer with the second answer!";
-            case 3:
-                return "Question number 3:\nPlease answer with the third answer!";
-            case 4:
-                return "Question number 4:\nPlease answer with the fourth answer!";
-            default:
-                return "Error";
-
-        }
+    void setQuestion(TextView textViewQuestion) {
+       textViewQuestion.setText(questions[currentQuestion].getQuestionText());
     }
-    void setAnswers(Button b1, Button b2, Button b3, Button b4) {
-        switch (question) {
-            case 1:
-                b1.setText("Placeholder 1");
-                b2.setText("Placeholder 2");
-                b3.setText("Placeholder 3");
-                b4.setText("Placeholder 4");
-                break;
-            case 2:
-                b1.setText("Placeholder 5");
-                b2.setText("Placeholder 6");
-                b3.setText("Placeholder 7");
-                b4.setText("Placeholder 8");
-                break;
-            case 3:
-                b1.setText("Placeholder 9");
-                b2.setText("Placeholder 10");
-                b3.setText("Placeholder 11");
-                b4.setText("Placeholder 12");
-                break;
-            case 4:
-                b1.setText("Placeholder 13");
-                b2.setText("Placeholder 14");
-                b3.setText("Placeholder 15");
-                b4.setText("Placeholder 16");
-                break;
-            default:
-                b1.setText("Placeholder 17");
-                b2.setText("Placeholder 18");
-                b3.setText("Placeholder 19");
-                b4.setText("Placeholder 20");
-        }
+    void setAnswers(Button[] allButtons) {
+        allButtons[0].setText(questions[currentQuestion].getAnswer1());
+        allButtons[1].setText(questions[currentQuestion].getAnswer2());
+        allButtons[2].setText(questions[currentQuestion].getAnswer3());
+        allButtons[3].setText(questions[currentQuestion].getAnswer4());
     }
 }

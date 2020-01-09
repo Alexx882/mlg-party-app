@@ -12,17 +12,22 @@ import at.aau.ase.mlg_party_app.R;
 public class QuizGame extends AppCompatActivity implements View.OnClickListener{
 
     TextView questionText;
+    TextView questionResult;
     Button buttonAnswer1;
     Button buttonAnswer2;
     Button buttonAnswer3;
     Button buttonAnswer4;
-    QuizLogic qlogic = new QuizLogic();
+    Button[] allButtons = new Button[4];
+    QuizLogic qLogic = new QuizLogic();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        qLogic.createQuestions();
         setContentView(R.layout.activity_quiz);
         questionText = findViewById(R.id.textViewQuestion);
+        questionResult = findViewById(R.id.textViewResult);
+
         buttonAnswer1 = findViewById(R.id.buttonAnswer1);
         buttonAnswer1.setOnClickListener(this);
 
@@ -35,7 +40,12 @@ public class QuizGame extends AppCompatActivity implements View.OnClickListener{
         buttonAnswer4 = findViewById(R.id.buttonAnswer4);
         buttonAnswer4.setOnClickListener(this);
 
-        questionText.setText(qlogic.setQuestion());
+        qLogic.setQuestion(questionText);
+        allButtons[0] = buttonAnswer1;
+        allButtons[1] = buttonAnswer2;
+        allButtons[2] = buttonAnswer3;
+        allButtons[3] = buttonAnswer4;
+        qLogic.setAnswers(allButtons);
     }
 
     @Override
@@ -43,19 +53,25 @@ public class QuizGame extends AppCompatActivity implements View.OnClickListener{
         int id = v.getId();
         switch (id) {
             case R.id.buttonAnswer1:
-                questionText.append("" + qlogic.checkAnswer(1));
+                questionResult.setText(String.valueOf(qLogic.checkAnswer(1)));
                 break;
             case R.id.buttonAnswer2:
-                questionText.append("" + qlogic.checkAnswer(2));
+                questionResult.setText(String.valueOf(qLogic.checkAnswer(2)));
                 break;
             case R.id.buttonAnswer3:
-                questionText.append("" + qlogic.checkAnswer(3));
+                questionResult.setText(String.valueOf(qLogic.checkAnswer(3)));
                 break;
             case R.id.buttonAnswer4:
-                questionText.append("" + qlogic.checkAnswer(4));
+                questionResult.setText(String.valueOf(qLogic.checkAnswer(4)));
                 break;
             default:
 
+        }
+        disableButtons();
+    }
+    private void disableButtons() {
+        for (int i=0; i<=3; i++) {
+            allButtons[i].setEnabled(false);
         }
     }
 }
