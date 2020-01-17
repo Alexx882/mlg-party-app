@@ -28,7 +28,7 @@ import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
 
 /**
- * This class checks if the client can handle all MessageTypes.
+ * This class checks if the client can handle the MessageTypes.
  */
 @RunWith(Parameterized.class)
 public class WebSocketClientTestsParameterized {
