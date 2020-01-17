@@ -6,13 +6,13 @@ import java.util.Map;
 
 import at.aau.ase.mlg_party_app.Callback;
 import at.aau.ase.mlg_party_app.networking.JsonParser;
+import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.NetworkConstants;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
-import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

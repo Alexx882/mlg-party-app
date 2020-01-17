@@ -1,7 +1,5 @@
 package at.aau.ase.mlg_party_app.networking;
 
-import android.os.Message;
-
 import com.google.gson.JsonSyntaxException;
 
 import org.junit.Assert;
