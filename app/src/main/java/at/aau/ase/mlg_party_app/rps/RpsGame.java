@@ -96,9 +96,11 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
 
                 // Multiplayer: Enemy option has to be used to check the result
 
-                // Singleplayer: Enemy Option is random
+
                 disableImageButton();
+                // Singleplayer: Enemy Option is random
                 RpsLogic.Option enemyOption = RpsLogic.Option.random();
+                // Choose a random option, if the player did not choose one
                 if (playerOption == null) {
                     playerOption = RpsLogic.Option.random();
                 }
