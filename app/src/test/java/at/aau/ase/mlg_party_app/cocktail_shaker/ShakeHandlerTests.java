@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeHandler;
+
 public class ShakeHandlerTests {
     ShakeHandler h;
 

@@ -4,29 +4,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Matrix;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.Random;
 
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.cocktail_shaker.networking.CocktailShakerResult;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeHandler;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeResult;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakingArgs;
 import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class CocktailShakerActivity extends AppCompatActivity {
     /**
      * Game duration in seconds
      */
-    private int gameDuration = 10;
+    private static final int gameDuration = 10;
+    private static final int HALF_IMG_SIZE = 600;
 
     private ImageView imageViewSonic;
     private TextView textViewTimer;
@@ -40,7 +40,12 @@ public class CocktailShakerActivity extends AppCompatActivity {
         imageViewSonic = findViewById(R.id.imageViewSonic);
         textViewTimer = findViewById(R.id.textViewTimer);
 
+        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
         initShakeDetection();
+    }
+
+    private void handleGameFinished(GameFinishedResponse r) {
+        // todo
     }
 
     private void initShakeDetection() {
@@ -52,6 +57,7 @@ public class CocktailShakerActivity extends AppCompatActivity {
                 sensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_GAME);
 
+        shakeHandler.start();
         startTimer(gameDuration);
     }
 
@@ -72,17 +78,14 @@ public class CocktailShakerActivity extends AppCompatActivity {
     }
 
     private void timeUp() {
-        return;
-//
-//        shakeHandler.stop();
-//
-//        ShakeResult r = shakeHandler.getResults();
-//        sendResultToServer(r);
+        shakeHandler.stop();
+
+        ShakeResult r = shakeHandler.getResults();
+        sendResultToServer(r);
     }
 
     private void sendResultToServer(ShakeResult result) {
         CocktailShakerResult csr = new CocktailShakerResult();
-        csr.type = MessageType.CocktailShakerResult;
         csr.playerId = Game.getInstance().getPlayerId();
         csr.avg = result.avg;
         csr.max = result.max;
@@ -91,21 +94,17 @@ public class CocktailShakerActivity extends AppCompatActivity {
     }
 
     private void handleShake(ShakingArgs shakeResult) {
-        Log.d("mlg-party", "" + shakeResult.value + " " + shakeResult.message);
-
-        float factor = (shakeResult.value - 1) / 10;
+        // factor = how hard it was shaken
+        float factor = (shakeResult.value - 1) / 5;
         factor = Math.abs(factor) < .1 ? 0 : Math.abs(factor);
-
-        float deg = 360f;
-
-        Log.d("mlg-party", String.valueOf(factor));
 
         Matrix matrix = new Matrix();
         imageViewSonic.setScaleType(ImageView.ScaleType.MATRIX);
-//        matrix.postRotate((float) (1.5 - .5) * factor * deg);
-//        matrix.postScale((float) (.5 * factor) + .5f, (float) (.5 * factor) + .5f);
 
+        float rotDegrees = 90 * factor * (Math.round(Math.random()) == 0 ? 1 : -1);
+        matrix.postRotate(rotDegrees, HALF_IMG_SIZE, HALF_IMG_SIZE);
+        matrix.postScale(1 + factor, 1 + factor, HALF_IMG_SIZE, HALF_IMG_SIZE);
 
-//        runOnUiThread(() -> imageViewSonic.setImageMatrix(matrix));
+        runOnUiThread(() -> imageViewSonic.setImageMatrix(matrix));
     }
 }
