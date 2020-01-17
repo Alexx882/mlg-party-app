@@ -26,7 +26,8 @@ public class CocktailShakerActivity extends AppCompatActivity {
     /**
      * Game duration in seconds
      */
-    private int gameDuration = 10;
+    private static final int gameDuration = 10;
+    private static final int HALF_IMG_SIZE = 600;
 
     private ImageView imageViewSonic;
     private TextView textViewTimer;
@@ -91,21 +92,17 @@ public class CocktailShakerActivity extends AppCompatActivity {
     }
 
     private void handleShake(ShakingArgs shakeResult) {
-        Log.d("mlg-party", "" + shakeResult.value + " " + shakeResult.message);
-
-        float factor = (shakeResult.value - 1) / 10;
+        // factor = how hard it was shaken
+        float factor = (shakeResult.value - 1) / 5;
         factor = Math.abs(factor) < .1 ? 0 : Math.abs(factor);
-
-        float deg = 360f;
-
-        Log.d("mlg-party", String.valueOf(factor));
 
         Matrix matrix = new Matrix();
         imageViewSonic.setScaleType(ImageView.ScaleType.MATRIX);
-//        matrix.postRotate((float) (1.5 - .5) * factor * deg);
-//        matrix.postScale((float) (.5 * factor) + .5f, (float) (.5 * factor) + .5f);
 
+        float rotDegrees = 90 * factor * (Math.round(Math.random()) == 0 ? 1 : -1);
+        matrix.postRotate(rotDegrees, HALF_IMG_SIZE, HALF_IMG_SIZE);
+        matrix.postScale(1 + factor, 1 + factor, HALF_IMG_SIZE, HALF_IMG_SIZE);
 
-//        runOnUiThread(() -> imageViewSonic.setImageMatrix(matrix));
+        runOnUiThread(() -> imageViewSonic.setImageMatrix(matrix));
     }
 }
