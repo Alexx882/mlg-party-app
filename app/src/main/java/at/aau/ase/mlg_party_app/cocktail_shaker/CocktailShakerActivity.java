@@ -2,11 +2,13 @@ package at.aau.ase.mlg_party_app.cocktail_shaker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Matrix;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import at.aau.ase.mlg_party_app.cocktail_shaker.networking.CocktailShakerResult;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeHandler;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeResult;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakingArgs;
+import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
 import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
@@ -40,12 +43,20 @@ public class CocktailShakerActivity extends AppCompatActivity {
         imageViewSonic = findViewById(R.id.imageViewSonic);
         textViewTimer = findViewById(R.id.textViewTimer);
 
+        Intent intent = getIntent();
+        String wsEndpoint = intent.getStringExtra("WS");
+        WebSocketClient.getInstance().connectToServer(wsEndpoint);
+        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
+        WebSocketClient.getInstance().sendMessage(helloReq);
+
         WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
         initShakeDetection();
     }
 
     private void handleGameFinished(GameFinishedResponse r) {
-        // todo
+        Log.e("mlg", "finished with " + r.winnerId);
+
+        finish();
     }
 
     private void initShakeDetection() {

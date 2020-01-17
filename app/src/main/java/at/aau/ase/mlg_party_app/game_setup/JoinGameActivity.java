@@ -14,6 +14,7 @@ import at.aau.ase.mlg_party_app.Game;
 import androidx.appcompat.app.AppCompatActivity;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.NetworkConstants;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
@@ -32,12 +33,13 @@ public class JoinGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_game);
 
+        Game.getInstance().setLobbyOwner(false);
         initUi();
         initMessaging();
     }
 
     private void initMessaging() {
-        WebSocketClient.getInstance().connectToServer();
+        WebSocketClient.getInstance().connectToServer(NetworkConstants.ENDPOINT_LOBBY);
         WebSocketClient.getInstance().registerCallback(MessageType.JoinLobby, this::handleJoinLobby);
         WebSocketClient.getInstance().registerCallback(MessageType.PlayerJoined, this::handlePlayerJoined);
     }

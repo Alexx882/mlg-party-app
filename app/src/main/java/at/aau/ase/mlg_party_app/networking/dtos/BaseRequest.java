@@ -6,4 +6,11 @@ public class BaseRequest {
 
     public MessageType type;
 
+    public BaseRequest() {
+    }
+
+    public BaseRequest(MessageType type) {
+        super();
+        this.type = type;
+    }
 }

@@ -11,6 +11,7 @@ import at.aau.ase.mlg_party_app.networking.NetworkConstants;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.game.StartGameResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
@@ -21,7 +22,7 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 public class WebSocketClient extends WebSocketListener {
-    private OkHttpClient client;
+    private OkHttpClient client = new OkHttpClient();
     private WebSocket webSocket;
     private JsonParser jsonParser = new JsonParser();
 
@@ -38,15 +39,16 @@ public class WebSocketClient extends WebSocketListener {
         return instance;
     }
 
-    public void connectToServer() {
-        client = new OkHttpClient();
-        Request request = new Request.Builder().url(NetworkConstants.LobbyEndpoint).build();
+    public void connectToServer(String endpoint) {
+        Request request = new Request.Builder().url(NetworkConstants.ENDPOINT_PREFIX + endpoint).build();
         webSocket = client.newWebSocket(request, this);
     }
 
     public void disconnectFromServer() {
-        if (webSocket != null)
+        if (webSocket != null) {
             webSocket.close(1000, "closing app");
+            webSocket = null;
+        }
     }
 
     @Override
@@ -57,23 +59,35 @@ public class WebSocketClient extends WebSocketListener {
     public void handleMessage(String json, Map<MessageType, Callback> callbacks) {
         BaseResponse base = jsonParser.fromJson(json, BaseResponse.class);
 
-        Callback cb = callbacks.get(base.type);
-        if (cb == null)
+        if (!callbacks.containsKey(base.type))
             return;
 
-        if (callbacks.containsKey(base.type)) {
-            if (base.type == MessageType.CreateLobby)
-                cb.callback(jsonParser.fromJson(json, CreateLobbyResponse.class));
+        Callback cb = callbacks.get(base.type);
+        Class c = null;
+        switch (base.type) {
+            case CreateLobby:
+                c = CreateLobbyResponse.class;
+                break;
 
-            else if (base.type == MessageType.JoinLobby)
-                cb.callback(jsonParser.fromJson(json, JoinLobbyResponse.class));
+            case JoinLobby:
+                c = JoinLobbyResponse.class;
+                break;
 
-            else if (base.type == MessageType.PlayerJoined)
-                cb.callback(jsonParser.fromJson(json, PlayerJoinedResponse.class));
+            case PlayerJoined:
+                c = PlayerJoinedResponse.class;
+                break;
 
-            else if (base.type == MessageType.GameFinished)
-                cb.callback(jsonParser.fromJson(json, GameFinishedResponse.class));
+            case GameFinished:
+                c = GameFinishedResponse.class;
+                break;
+
+            case StartGame:
+                c = StartGameResponse.class;
+                break;
         }
+
+        if (c != null)
+            cb.callback(jsonParser.fromJson(json, c));
     }
 
     public void sendMessage(BaseRequest request) {

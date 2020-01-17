@@ -11,6 +11,7 @@ public enum MessageType {
 
     // generic game
     , GameFinished
+    , HelloGame
 
     // cocktail shaker
     , CocktailShakerResult
