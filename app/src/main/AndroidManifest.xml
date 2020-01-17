@@ -13,8 +13,12 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".quiz.QuizGame">
             <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".rps.RpsGame">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
