@@ -1,4 +1,8 @@
 package at.aau.ase.mlg_party_app.tictactoe;
+/*
+    TODO:   MOVE TO SERVERSIDE
+            ADJUST RETURN PARAMETERS
+ */
 
 class TicTacToeLogic {
     private int [][] gameBoard;
