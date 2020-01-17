@@ -37,7 +37,7 @@ public class ClickerGame extends AppCompatActivity {
         ivClicker.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 tvCounter.setText(logic.cookiecounter());
-                textview_setup();
+                textviewsetup();
                 if (logic.imagesetup() != 0)
                     ivClicker.setImageResource(logic.imagesetup());
 
@@ -46,7 +46,7 @@ public class ClickerGame extends AppCompatActivity {
                     gifBackground.setImageResource(logic.gifsetup());
 
                 logic.vibrate(this);
-                image_animation();
+                imageanimation();
                 hitmarker(ivClicker.getX() + event.getX() - ivHitmarker.getWidth() / 2, ivClicker.getY() + event.getY() - ivHitmarker.getHeight() / 2);
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -57,13 +57,13 @@ public class ClickerGame extends AppCompatActivity {
     }
 
 
-    public void image_animation() {
+    public void imageanimation() {
         ScaleAnimation animationBig = new ScaleAnimation(1f, 0.8f, 1f, 0.8f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animationBig.setDuration(100);
         ivClicker.setAnimation(animationBig);
     }
 
-    public void textview_setup() {
+    public void textviewsetup() {
         tvCounter.setRotation(logic.rand(50, 25));
         ScaleAnimation animation = new ScaleAnimation(1f, 1.2f, 1f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setDuration(200);

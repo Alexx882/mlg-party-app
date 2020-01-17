@@ -4,11 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-
 import java.security.SecureRandom;
 import at.aau.ase.mlg_party_app.R;
 
-public class Enemy {
+public class Enemy extends Logic {
     private Bitmap bitmap;
     private int x;
     private int y;

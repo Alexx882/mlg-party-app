@@ -48,8 +48,7 @@ public class Star {
         //it will give a real look
         float minX = 1.0f;
         float maxX = 4.0f;
-        float finalX = generator.nextFloat() * (maxX - minX) + minX;
-        return finalX;
+        return generator.nextFloat() * (maxX - minX) + minX;
     }
 
     public int getX() {

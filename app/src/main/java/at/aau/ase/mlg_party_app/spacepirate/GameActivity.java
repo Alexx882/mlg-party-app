@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
-
 import androidx.appcompat.app.AppCompatActivity;
+
 
 public class GameActivity extends AppCompatActivity {
 
