@@ -19,7 +19,6 @@ public class ClickerGame extends AppCompatActivity {
     private ImageView ivClicker;
     private TextView tvCounter;
     private ImageView ivHitmarker;
-    private GifImageView gifBackground;
     private Logic logic;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -31,21 +30,20 @@ public class ClickerGame extends AppCompatActivity {
         ivClicker = findViewById(R.id.iv_clicker);
         tvCounter = findViewById(R.id.tv_clicker);
         ivHitmarker = findViewById(R.id.iv_hitmarker);
-        gifBackground = findViewById(R.id.gifBackground);
+        GifImageView gifBackground = findViewById(R.id.gifBackground);
         logic = new Logic();
 
 
         ivClicker.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                tvCounter.setText(logic.cookie_counter());
+                tvCounter.setText(logic.cookiecounter());
                 textview_setup();
-               int imageNumber = logic.image_setup();
-               if(imageNumber!=0)
-                   ivClicker.setImageResource(imageNumber);
+                if (logic.imagesetup() != 0)
+                    ivClicker.setImageResource(logic.imagesetup());
 
-                int gifNumber = logic.gif_setup();
-                if(gifNumber!=0)
-                    gifBackground.setImageResource(gifNumber);
+
+                if (logic.gifsetup() != 0)
+                    gifBackground.setImageResource(logic.gifsetup());
 
                 logic.vibrate(this);
                 image_animation();

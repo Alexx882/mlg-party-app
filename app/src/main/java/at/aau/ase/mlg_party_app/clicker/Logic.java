@@ -13,7 +13,7 @@ public class Logic {
     private int fontsize=20;
 
 
-    public String cookie_counter() {
+    public String cookiecounter() {
         setCounter(getCounter()+1);
         if (counter == 69) {
             return "Nice";
@@ -23,7 +23,7 @@ public class Logic {
     }
 
 
-    public int image_setup() {
+    public int imagesetup() {
         int imageid=0;
         if (counter == 15) {
             imageid=R.drawable.lvl15;
@@ -43,7 +43,8 @@ public class Logic {
         return imageid;
 
     }
-    public int gif_setup() {
+
+    public int gifsetup() {
         int gifid=0;
         if (counter == 75)
             gifid=R.drawable.asci;
@@ -54,9 +55,8 @@ public class Logic {
 
 
     public int rand (int x, int y){
-        int dg = new SecureRandom().nextInt(x) - y;
 
-        return dg;
+        return new SecureRandom().nextInt(x) - y;
     }
 
     public int getCounter() {

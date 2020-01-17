@@ -24,14 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".snake.SnakeGame">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".snake.Snake">
+        <activity android:name=".spacepirate.GameActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
