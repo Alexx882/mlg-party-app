@@ -5,7 +5,7 @@
     <!--TIC TAC TOE STRINGS-->
     <string name="backtolobby">Press OK to return to Lobby</string>
     <string name="tictactoe_title">Tic Tac Toe Game</string>
-    <string name="tictactoe_timertitle">Timer!</string>
+    <string name="tictactoe_timerover">TOO SLOW!</string>
     <string name="tictactoe_timertext">Time remaining: </string>
     <string name="tictactoe_starttitle">Start the Game!</string>
     <string name="tictactoe_ongoing">Game is in progress!</string>

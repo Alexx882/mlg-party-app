@@ -14,6 +14,7 @@ import at.aau.ase.mlg_party_app.networking.websocket.TicTacToeSocketClient;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -24,8 +25,10 @@ import android.widget.TextView;
 public class TicTacToeActivity extends AppCompatActivity {
     //Variable Setup
     TicTacToeLogic gameLogic;
+    CountDownTimer timer;
     String playerId; //TODO: Get this from server
-    TextView gameMessage;
+    TextView gameMessageTV;
+    TextView timerTV;
     TableLayout gameTable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,8 @@ public class TicTacToeActivity extends AppCompatActivity {
 
         gameLogic=new TicTacToeLogic();
         gameTable=findViewById(R.id.gameTable);
-        gameMessage=findViewById(R.id.tVGameMessage);
+        gameMessageTV=findViewById(R.id.tVGameMessage);
+        timerTV=findViewById(R.id.tVTimer);
     }
 
     /*
@@ -76,20 +80,22 @@ public class TicTacToeActivity extends AppCompatActivity {
         If a Cell is clicked send a move request to the server
      */
     private void cellClickedHandler(int x , int y){
-        gameMessage.setText(""); //New attempt = no current messages to display
-        //Replace with CheckMove + Send move to Server
-       // addMove(x,y,playerId);
-        //TODO: ?CheckMove (is it free?)
-        TicTacToeMoveRequest req= new TicTacToeMoveRequest(playerId,x,y);
-        req.type="TicTacToeMove";
-        TicTacToeSocketClient.getInstance().sendMessage(req);
+        gameMessageTV.setText(""); //New attempt = no current messages to display
+        if(gameLogic.validMove(x,y, playerId)) {
+            TicTacToeMoveRequest req = new TicTacToeMoveRequest(playerId, x, y);
+            req.type = "TicTacToeMove";
+            TicTacToeSocketClient.getInstance().sendMessage(req);
+            timer.cancel();
+        }else{
+            gameMessageTV.setText(R.string.tictactoe_invalidmove);
+        }
     }
 
     /*
         Display the game related error-messages
      */
     private void displayErrorMessage(TicTacToeErrorResponse response){
-        gameMessage.setText(response.errorMessage);
+        gameMessageTV.setText(response.errorMessage);
     }
     /*
         Add a move to the gameboard
@@ -99,9 +105,25 @@ public class TicTacToeActivity extends AppCompatActivity {
         TableRow row= (TableRow)gameTable.getChildAt(response.x);
         ImageView cell =(ImageView)row.getChildAt(response.y);
         setGameCell(cell,response.playerId);
+        gameLogic.setMove(response.x,response.y,response.playerId);
+        //Start the timer if its your turn
+        if(response.playerId.equals(playerId))startCountdown();
+
     }
 
+    void startCountdown(){
+        timer=new CountDownTimer(5000, 100) {
 
+            public void onTick(long millisUntilFinished) {
+               timerTV.setText(getString(R.string.tictactoe_timertext) + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                timerTV.setText(getString(R.string.tictactoe_timerover));
+
+            }
+        }.start();
+    }
 
     /*
         Update the cell to show the proper image for the player
