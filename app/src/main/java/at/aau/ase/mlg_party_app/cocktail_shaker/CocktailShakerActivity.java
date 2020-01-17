@@ -17,6 +17,8 @@ import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeHandler;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeResult;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakingArgs;
 import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class CocktailShakerActivity extends AppCompatActivity {
@@ -38,7 +40,12 @@ public class CocktailShakerActivity extends AppCompatActivity {
         imageViewSonic = findViewById(R.id.imageViewSonic);
         textViewTimer = findViewById(R.id.textViewTimer);
 
+        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
         initShakeDetection();
+    }
+
+    private void handleGameFinished(GameFinishedResponse r) {
+        // todo
     }
 
     private void initShakeDetection() {

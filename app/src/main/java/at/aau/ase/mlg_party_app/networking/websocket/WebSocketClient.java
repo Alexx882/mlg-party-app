@@ -9,6 +9,7 @@ import at.aau.ase.mlg_party_app.networking.JsonParser;
 import at.aau.ase.mlg_party_app.networking.NetworkConstants;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.MessageType;
@@ -56,15 +57,22 @@ public class WebSocketClient extends WebSocketListener {
     public void handleMessage(String json, Map<MessageType, Callback> callbacks) {
         BaseResponse base = jsonParser.fromJson(json, BaseResponse.class);
 
+        Callback cb = callbacks.get(base.type);
+        if (cb == null)
+            return;
+
         if (callbacks.containsKey(base.type)) {
             if (base.type == MessageType.CreateLobby)
-                callbacks.get(base.type).callback(jsonParser.fromJson(json, CreateLobbyResponse.class));
+                cb.callback(jsonParser.fromJson(json, CreateLobbyResponse.class));
 
             else if (base.type == MessageType.JoinLobby)
-                callbacks.get(base.type).callback(jsonParser.fromJson(json, JoinLobbyResponse.class));
+                cb.callback(jsonParser.fromJson(json, JoinLobbyResponse.class));
 
             else if (base.type == MessageType.PlayerJoined)
-                callbacks.get(base.type).callback(jsonParser.fromJson(json, PlayerJoinedResponse.class));
+                cb.callback(jsonParser.fromJson(json, PlayerJoinedResponse.class));
+
+            else if (base.type == MessageType.GameFinished)
+                cb.callback(jsonParser.fromJson(json, GameFinishedResponse.class));
         }
     }
 
