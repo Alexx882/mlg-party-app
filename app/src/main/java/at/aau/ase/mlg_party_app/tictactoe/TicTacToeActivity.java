@@ -20,6 +20,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+
+//TODO: USE TICTACTOESOCKET
 public class TicTacToeActivity extends AppCompatActivity {
     //Variable Setup
     TicTacToeLogic gameLogic;
@@ -35,17 +37,6 @@ public class TicTacToeActivity extends AppCompatActivity {
         registerTicTacToeCallbacks();
     }
 
-    /*
-        Clear up Callbacks
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        WebSocketClient.getInstance().removeCallback(MessageType.TicTacToe_EndGame);
-        WebSocketClient.getInstance().removeCallback(MessageType.TicTacToe_Error);
-        WebSocketClient.getInstance().removeCallback(MessageType.TicTacToe_Move);
-
-    }
 
     /*
             initialize all required parts of the game

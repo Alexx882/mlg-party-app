@@ -64,9 +64,6 @@ public class WebSocketClient extends WebSocketListener {
         webSocket.send(jsonParser.toJson(request));
     }
 
-    public <t> void removeCallback(MessageType messageType){
-        callbacks.remove(messageType);
-    }
     public <T> void registerCallback(MessageType messageType, Callback<T> callback) {
         if (!callbacks.containsKey(messageType)) {
             callbacks.put(messageType, callback);
