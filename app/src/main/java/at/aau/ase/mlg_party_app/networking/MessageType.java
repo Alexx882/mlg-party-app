@@ -7,6 +7,7 @@ public enum MessageType {
     CreateLobby
     , JoinLobby
     , PlayerJoined
+    , StartGame
 
     // cocktail shaker
     , CocktailShakerResult

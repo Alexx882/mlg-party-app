@@ -2,6 +2,7 @@ package at.aau.ase.mlg_party_app.cocktail_shaker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Matrix;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -10,7 +11,10 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Random;
 
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
@@ -24,7 +28,7 @@ public class CocktailShakerActivity extends AppCompatActivity {
      */
     private int gameDuration = 10;
 
-    private TextView textViewShakeInfo;
+    private ImageView imageViewSonic;
     private TextView textViewTimer;
     private ShakeHandler shakeHandler;
 
@@ -33,7 +37,7 @@ public class CocktailShakerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cocktail_shaker);
 
-        textViewShakeInfo = findViewById(R.id.textViewShakeInfo);
+        imageViewSonic = findViewById(R.id.imageViewSonic);
         textViewTimer = findViewById(R.id.textViewTimer);
 
         initShakeDetection();
@@ -68,10 +72,12 @@ public class CocktailShakerActivity extends AppCompatActivity {
     }
 
     private void timeUp() {
-        shakeHandler.stop();
-
-        ShakeResult r = shakeHandler.getResults();
-        sendResultToServer(r);
+        return;
+//
+//        shakeHandler.stop();
+//
+//        ShakeResult r = shakeHandler.getResults();
+//        sendResultToServer(r);
     }
 
     private void sendResultToServer(ShakeResult result) {
@@ -85,6 +91,21 @@ public class CocktailShakerActivity extends AppCompatActivity {
     }
 
     private void handleShake(ShakingArgs shakeResult) {
-        runOnUiThread(() -> textViewShakeInfo.setText(shakeResult.message));
+        Log.d("mlg-party", "" + shakeResult.value + " " + shakeResult.message);
+
+        float factor = (shakeResult.value - 1) / 10;
+        factor = Math.abs(factor) < .1 ? 0 : Math.abs(factor);
+
+        float deg = 360f;
+
+        Log.d("mlg-party", String.valueOf(factor));
+
+        Matrix matrix = new Matrix();
+        imageViewSonic.setScaleType(ImageView.ScaleType.MATRIX);
+//        matrix.postRotate((float) (1.5 - .5) * factor * deg);
+//        matrix.postScale((float) (.5 * factor) + .5f, (float) (.5 * factor) + .5f);
+
+
+//        runOnUiThread(() -> imageViewSonic.setImageMatrix(matrix));
     }
 }
