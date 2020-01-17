@@ -1,9 +1,8 @@
 package at.aau.ase.mlg_party_app.rps;
 
 import org.junit.Test;
-import at.aau.ase.mlg_party_app.rps.RpsGame;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

@@ -10,11 +10,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import at.aau.ase.mlg_party_app.networking.MessageType;
-import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
-
 @RunWith(Parameterized.class)
 public class ShakeHandlerTestsParameterized {
     private ShakeHandler h;

@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 import at.aau.ase.mlg_party_app.R;
 
@@ -21,6 +21,7 @@ public class Friend {
 
     private int maxY;
     private int minY;
+    private SecureRandom generator;
 
     //creating a rect object for a friendly ship
     private Rect detectCollision;
@@ -32,7 +33,7 @@ public class Friend {
         maxY = screenY;
         minX = 0;
         minY = 0;
-        Random generator = new Random();
+        generator = new SecureRandom();
         speed = generator.nextInt(6) + 10;
         x = screenX;
         y = generator.nextInt(maxY) - bitmap.getHeight();
@@ -45,7 +46,6 @@ public class Friend {
         x -= playerSpeed;
         x -= speed;
         if (x < minX - bitmap.getWidth()) {
-            Random generator = new Random();
             speed = generator.nextInt(10) + 10;
             x = maxX;
             y = generator.nextInt(maxY) - bitmap.getHeight();

@@ -1,20 +1,15 @@
 package at.aau.ase.mlg_party_app.cocktail_shaker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Matrix;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Random;
+import androidx.appcompat.app.AppCompatActivity;
 
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;

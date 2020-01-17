@@ -1,6 +1,6 @@
 package at.aau.ase.mlg_party_app.spacepirate;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class Star {
     private int x;
@@ -11,6 +11,7 @@ public class Star {
     private int maxY;
     private int minX;
     private int minY;
+    private SecureRandom generator;
 
 
     public Star(int screenX, int screenY) {
@@ -18,7 +19,7 @@ public class Star {
         maxY = screenY;
         minX = 0;
         minY = 0;
-        Random generator = new Random();
+        generator = new SecureRandom();
         speed = generator.nextInt(10);
 
         //generating a random coordinate
@@ -37,7 +38,6 @@ public class Star {
             //again starting the star from right edge
             //this will give a infinite scrolling background effect
             x = maxX;
-            Random generator = new Random();
             y = generator.nextInt(maxY);
             speed = generator.nextInt(15);
         }
@@ -48,8 +48,7 @@ public class Star {
         //it will give a real look
         float minX = 1.0f;
         float maxX = 4.0f;
-        Random rand = new Random();
-        float finalX = rand.nextFloat() * (maxX - minX) + minX;
+        float finalX = generator.nextFloat() * (maxX - minX) + minX;
         return finalX;
     }
 

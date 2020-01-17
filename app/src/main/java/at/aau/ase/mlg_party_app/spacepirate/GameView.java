@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -14,6 +15,8 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 
 import at.aau.ase.mlg_party_app.R;
+
+import static android.content.ContentValues.TAG;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -25,7 +28,7 @@ public class GameView extends SurfaceView implements Runnable {
     int screenX;
 
 
-    //context to be used in onTouchEvent to cause the activity transition from GameAvtivity to MainActivity.
+    //context to be used in onTouchEvent to cause the activity tsition from GameAvtivity to MainActivity.
     Context context;
 
     //the score holder
@@ -326,7 +329,9 @@ public class GameView extends SurfaceView implements Runnable {
         try {
             Thread.sleep(17);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.e(TAG, "control: " + e + "");
+            control();
+
         }
     }
 
@@ -335,6 +340,8 @@ public class GameView extends SurfaceView implements Runnable {
         try {
             gameThread.join();
         } catch (InterruptedException e) {
+            Log.e(TAG, "control: " + e + "");
+            gameThread.getUncaughtExceptionHandler();
         }
     }
 

@@ -1,18 +1,12 @@
 package at.aau.ase.mlg_party_app.networking.websocket;
 
 
-import android.graphics.Paint;
-import android.os.Message;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.lang.reflect.Field;
-import java.net.ResponseCache;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,7 +16,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import at.aau.ase.mlg_party_app.Callback;
 import at.aau.ase.mlg_party_app.SingletonTestsHelper;
 import at.aau.ase.mlg_party_app.networking.MessageType;
-import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;

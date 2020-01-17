@@ -1,17 +1,16 @@
 package at.aau.ase.mlg_party_app.game_setup;
 
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Message;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import at.aau.ase.mlg_party_app.Game;
 import androidx.appcompat.app.AppCompatActivity;
+
+import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyRequest;

@@ -1,14 +1,11 @@
 package at.aau.ase.mlg_party_app.spacepirate;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.widget.Toast;
 
-import java.util.Random;
-
+import java.security.SecureRandom;
 import at.aau.ase.mlg_party_app.R;
 
 public class Enemy {
@@ -22,6 +19,7 @@ public class Enemy {
 
     private int maxY;
     private int minY;
+    private SecureRandom generator;
 
     Context context;
     Activity activity;
@@ -39,7 +37,7 @@ public class Enemy {
         this.context = context;
 
         activity = (Activity) context;
-        Random generator = new Random();
+        generator = new SecureRandom();
         speed = generator.nextInt(6) + 10;
         x = screenX;
         y = generator.nextInt(maxY) - bitmap.getHeight();
@@ -52,7 +50,6 @@ public class Enemy {
         x -= playerSpeed;
         x -= speed;
         if (x < minX - bitmap.getWidth()) {
-            Random generator = new Random();
             speed = generator.nextInt(10) + 10;
             x = maxX;
             y = generator.nextInt(maxY) - bitmap.getHeight();
