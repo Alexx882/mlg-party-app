@@ -17,7 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".cocktail_shaker.CocktailShakerActivity" />
         <activity android:name=".quiz.QuizGame" />
         <activity android:name=".rps.RpsGame" />
         <activity android:name=".game_setup.JoinGameActivity" />
