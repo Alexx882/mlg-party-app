@@ -39,41 +39,41 @@ public class ClickerGameTest {
     @Test
     public void cookie_counter(){
         logic.setCounter(0);
-        Assert.assertEquals(1+"",logic.cookie_counter());
+        Assert.assertEquals(1 + "", logic.cookiecounter());
 
         logic.setCounter(68);
-        Assert.assertEquals("Nice",logic.cookie_counter());
+        Assert.assertEquals("Nice", logic.cookiecounter());
 
     }
 
     @Test
     public void image_setup() {
         logic.setCounter(0);
-        Assert.assertEquals(0, logic.image_setup());
+        Assert.assertEquals(0, logic.imagesetup());
         logic.setCounter(15);
-        Assert.assertEquals(R.drawable.lvl15, logic.image_setup());
+        Assert.assertEquals(R.drawable.lvl15, logic.imagesetup());
         logic.setCounter(30);
-        Assert.assertEquals(R.drawable.lvl30, logic.image_setup());
+        Assert.assertEquals(R.drawable.lvl30, logic.imagesetup());
         logic.setCounter(45);
-        Assert.assertEquals(R.drawable.lvl45, logic.image_setup());
+        Assert.assertEquals(R.drawable.lvl45, logic.imagesetup());
         logic.setCounter(60);
-        Assert.assertEquals(R.drawable.lvl60, logic.image_setup());
+        Assert.assertEquals(R.drawable.lvl60, logic.imagesetup());
         logic.setCounter(69);
-        Assert.assertEquals(R.drawable.lvl69, logic.image_setup());
+        Assert.assertEquals(R.drawable.lvl69, logic.imagesetup());
         logic.setCounter(70);
-        Assert.assertEquals(R.drawable.lvl60, logic.image_setup());
+        Assert.assertEquals(R.drawable.lvl60, logic.imagesetup());
         logic.setCounter(75);
-        Assert.assertEquals(R.drawable.endboss, logic.image_setup());
+        Assert.assertEquals(R.drawable.endboss, logic.imagesetup());
 
     }
 
     @Test
     public void gif_setup(){
         logic.setCounter(0);
-        Assert.assertEquals(0,logic.gif_setup());
+        Assert.assertEquals(0, logic.gifsetup());
 
         logic.setCounter(75);
-        Assert.assertEquals(R.drawable.asci,logic.gif_setup());
+        Assert.assertEquals(R.drawable.asci, logic.gifsetup());
 
     }
 
