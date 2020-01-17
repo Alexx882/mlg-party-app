@@ -6,6 +6,7 @@ public class TicTacToeMoveRequest extends BaseRequest {
     int x,y;
 
     public TicTacToeMoveRequest(String playerId, int x, int y) {
+        super();
         this.playerId = playerId;
         this.x = x;
         this.y = y;

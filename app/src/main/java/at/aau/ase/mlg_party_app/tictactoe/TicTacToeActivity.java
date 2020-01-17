@@ -36,13 +36,13 @@ public class TicTacToeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tic_tac_toe);
         initComponents();
         createGameBoard();
-        registerTicTacToeCallbacks();
+        socketHandling();
     }
 
 
     /*
             initialize all required parts of the game
-         */
+        */
     private void initComponents() {
 
         gameLogic=new TicTacToeLogic();
@@ -54,7 +54,8 @@ public class TicTacToeActivity extends AppCompatActivity {
     /*
           Register the callbacks for this game
      */
-    private void registerTicTacToeCallbacks(){
+    private void socketHandling(){
+        TicTacToeSocketClient.getInstance().connectToServer();
         TicTacToeSocketClient.getInstance().registerCallback(MessageType.TicTacToe_EndGame,this::showEndOfGameDialog);
         TicTacToeSocketClient.getInstance().registerCallback(MessageType.TicTacToe_Move,this::addMove);
         TicTacToeSocketClient.getInstance().registerCallback(MessageType.TicTacToe_Error,this::displayErrorMessage);
@@ -85,7 +86,6 @@ public class TicTacToeActivity extends AppCompatActivity {
             TicTacToeMoveRequest req = new TicTacToeMoveRequest(playerId, x, y);
             req.type = "TicTacToeMove";
             TicTacToeSocketClient.getInstance().sendMessage(req);
-            timer.cancel();
         }else{
             gameMessageTV.setText(R.string.tictactoe_invalidmove);
         }
@@ -107,10 +107,20 @@ public class TicTacToeActivity extends AppCompatActivity {
         setGameCell(cell,response.playerId);
         gameLogic.setMove(response.x,response.y,response.playerId);
         //Start the timer if its your turn
-        if(response.playerId.equals(playerId))startCountdown();
+        if(!response.playerId.equals(playerId)){
+            if(timer!=null)timer.cancel();
+            timerTV.setText(R.string.tictactoe_notyourturn);
+        }else{
+            startCountdown();
+        }
 
     }
 
+
+    /*
+    Start a Timer to show how much time remains
+    This is visual only (cut-off+ random move happens @server)
+     */
     void startCountdown(){
         timer=new CountDownTimer(5000, 100) {
 

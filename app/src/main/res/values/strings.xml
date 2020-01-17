@@ -7,10 +7,13 @@
     <string name="tictactoe_title">Tic Tac Toe Game</string>
     <string name="tictactoe_timerover">TOO SLOW!</string>
     <string name="tictactoe_timertext">Time remaining: </string>
+    <string name="tictactoe_timertitle">Timer! </string>
+    <string name="tictactoe_notyourturn">Not your turn!</string>
     <string name="tictactoe_starttitle">Start the Game!</string>
     <string name="tictactoe_ongoing">Game is in progress!</string>
     <string name="tictactoe_invalidmove">INVALID MOVE!</string>
     <string name="tictactoe_gamewon">EZ4YOU! </string>
     <string name="tictactoe_gamelost">L2P!NOOB!</string>
     <string name="tictactoe_gametied">Try harder plz!</string>
+    tictactoe_notyourturn
 </resources>
