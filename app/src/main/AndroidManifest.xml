@@ -14,10 +14,11 @@
         <activity android:name=".cocktail_shaker.CocktailShakerActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".quiz.QuizGame" />
+        <activity android:name=".rps.RpsGame" />
         <activity android:name=".game_setup.JoinGameActivity" />
         <activity android:name=".game_setup.NewGameActivity" />
         <activity android:name=".MainActivity">
