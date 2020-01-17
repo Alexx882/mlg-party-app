@@ -9,7 +9,7 @@ import at.aau.ase.mlg_party_app.networking.dtos.TicTacToeErrorResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.TicTacToeMoveRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.TicTacToeMoveResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.MessageType;
-import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
+import at.aau.ase.mlg_party_app.networking.websocket.TicTacToeSocketClient;
 
 
 import android.content.Intent;
@@ -21,7 +21,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 
-//TODO: USE TICTACTOESOCKET
 public class TicTacToeActivity extends AppCompatActivity {
     //Variable Setup
     TicTacToeLogic gameLogic;
@@ -52,9 +51,9 @@ public class TicTacToeActivity extends AppCompatActivity {
           Register the callbacks for this game
      */
     private void registerTicTacToeCallbacks(){
-        WebSocketClient.getInstance().registerCallback(MessageType.TicTacToe_EndGame,this::showEndOfGameDialog);
-        WebSocketClient.getInstance().registerCallback(MessageType.TicTacToe_Move,this::addMove);
-        WebSocketClient.getInstance().registerCallback(MessageType.TicTacToe_Error,this::displayErrorMessage);
+        TicTacToeSocketClient.getInstance().registerCallback(MessageType.TicTacToe_EndGame,this::showEndOfGameDialog);
+        TicTacToeSocketClient.getInstance().registerCallback(MessageType.TicTacToe_Move,this::addMove);
+        TicTacToeSocketClient.getInstance().registerCallback(MessageType.TicTacToe_Error,this::displayErrorMessage);
     }
     /*
         Create a table for the game
@@ -83,7 +82,7 @@ public class TicTacToeActivity extends AppCompatActivity {
         //TODO: ?CheckMove (is it free?)
         TicTacToeMoveRequest req= new TicTacToeMoveRequest(playerId,x,y);
         req.type="TicTacToeMove";
-        WebSocketClient.getInstance().sendMessage(req);
+        TicTacToeSocketClient.getInstance().sendMessage(req);
     }
 
     /*
@@ -95,41 +94,13 @@ public class TicTacToeActivity extends AppCompatActivity {
     /*
         Add a move to the gameboard
         By checking if the move is valid and then updating the cell accordingly
-
-        TODO: Adjusting to networking
-                (called by response)
      */
     void addMove(TicTacToeMoveResponse response){
         TableRow row= (TableRow)gameTable.getChildAt(response.x);
         ImageView cell =(ImageView)row.getChildAt(response.y);
         setGameCell(cell,response.playerId);
     }
-     /* SinglePlayer Logic
-     void addMove(int x, int y, int pId){
 
-        TableRow row = (TableRow)gameTable.getChildAt(x);
-        ImageView cell= (ImageView)row.getChildAt(y);
-
-
-       switch(gameLogic.checkMoveStatus(x,y,pId)){
-            case 0:
-                //SHOW ENDGAME DIALOG + Move to Main-Activity
-                setGameCell(cell,pId);
-                showEndOfGameDialog(true);
-                break;
-            case 1:
-                gameMessage.setText(R.string.tictactoe_ongoing);
-                setGameCell(cell,pId);
-                break;
-            case 2:
-                gameMessage.setText(R.string.tictactoe_invalidmove);
-                break;
-            case 3:
-                setGameCell(cell,pId);
-                showEndOfGameDialog(false);
-                break;
-        }
-    }*/
 
 
     /*

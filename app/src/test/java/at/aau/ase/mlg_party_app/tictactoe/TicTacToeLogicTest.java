@@ -8,7 +8,7 @@ import org.junit.Test;
 
 
 import at.aau.ase.mlg_party_app.tictactoe.TicTacToeLogic;
-
+//TODO REMOVE ON CLIENTSIDE
 public class TicTacToeLogicTest {
     private TicTacToeLogic gameLogic;
     private  int[][] testBoard;
