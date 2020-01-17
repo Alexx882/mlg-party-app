@@ -6,9 +6,6 @@ import android.graphics.BitmapFactory;
 
 import at.aau.ase.mlg_party_app.R;
 
-/**
- * Created by Belal on 6/15/2016.
- */
 public class Boom {
 
     //bitmap object

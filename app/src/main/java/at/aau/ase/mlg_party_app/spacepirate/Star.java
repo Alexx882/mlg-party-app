@@ -2,9 +2,6 @@ package at.aau.ase.mlg_party_app.spacepirate;
 
 import java.util.Random;
 
-/**
- * Created by Belal on 6/15/2016.
- */
 public class Star {
     private int x;
     private int y;

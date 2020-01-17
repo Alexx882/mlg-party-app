@@ -7,9 +7,6 @@ import android.graphics.Rect;
 
 import at.aau.ase.mlg_party_app.R;
 
-/**
- * Created by Belal on 6/24/2016.
- */
 public class Player {
     private Bitmap bitmap;
     private int x;
