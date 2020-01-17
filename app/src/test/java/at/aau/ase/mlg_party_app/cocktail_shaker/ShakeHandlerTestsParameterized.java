@@ -10,10 +10,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import at.aau.ase.mlg_party_app.networking.MessageType;
-import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeHandler;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeIntensity;
 
 @RunWith(Parameterized.class)
 public class ShakeHandlerTestsParameterized {

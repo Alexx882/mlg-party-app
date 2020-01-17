@@ -4,21 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Matrix;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.Random;
 
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.cocktail_shaker.networking.CocktailShakerResult;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeHandler;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeResult;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakingArgs;
 import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
@@ -53,6 +50,7 @@ public class CocktailShakerActivity extends AppCompatActivity {
                 sensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_GAME);
 
+        shakeHandler.start();
         startTimer(gameDuration);
     }
 
@@ -73,17 +71,14 @@ public class CocktailShakerActivity extends AppCompatActivity {
     }
 
     private void timeUp() {
-        return;
-//
-//        shakeHandler.stop();
-//
-//        ShakeResult r = shakeHandler.getResults();
-//        sendResultToServer(r);
+        shakeHandler.stop();
+
+        ShakeResult r = shakeHandler.getResults();
+        sendResultToServer(r);
     }
 
     private void sendResultToServer(ShakeResult result) {
         CocktailShakerResult csr = new CocktailShakerResult();
-        csr.type = MessageType.CocktailShakerResult;
         csr.playerId = Game.getInstance().getPlayerId();
         csr.avg = result.avg;
         csr.max = result.max;

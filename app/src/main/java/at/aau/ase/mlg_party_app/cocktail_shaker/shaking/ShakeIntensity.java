@@ -1,4 +1,4 @@
-package at.aau.ase.mlg_party_app.cocktail_shaker;
+package at.aau.ase.mlg_party_app.cocktail_shaker.shaking;
 
 public enum ShakeIntensity {
     Low,
