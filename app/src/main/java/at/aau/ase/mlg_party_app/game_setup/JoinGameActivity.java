@@ -2,6 +2,7 @@ package at.aau.ase.mlg_party_app.game_setup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
@@ -19,9 +20,11 @@ import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class JoinGameActivity extends AppCompatActivity {
 
-    EditText editTextPlayerName, editTextLobbyName;
-    Button buttonConnect;
-    TextView textViewInformation, textViewPlayerList;
+    private  EditText editTextPlayerName, editTextLobbyName;
+    private  Button buttonConnect;
+    private  TextView textViewInformation, textViewPlayerList;
+
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,15 @@ public class JoinGameActivity extends AppCompatActivity {
 
         textViewInformation = findViewById(R.id.textViewError);
         textViewPlayerList = findViewById(R.id.textViewPlayerList);
+
+        playBackgroundSound();
+    }
+
+    private void playBackgroundSound() {
+       mediaPlayer = MediaPlayer.create(this, R.raw.lobby_basic);
+        mediaPlayer.setVolume(1.0f, 1.0f);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
     }
 
     /**
@@ -97,6 +109,7 @@ public class JoinGameActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         WebSocketClient.getInstance().disconnectFromServer();
+        mediaPlayer.stop();
         super.onDestroy();
     }
 }

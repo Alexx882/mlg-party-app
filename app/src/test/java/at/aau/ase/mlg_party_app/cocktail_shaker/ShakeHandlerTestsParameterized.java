@@ -19,27 +19,27 @@ import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
 public class ShakeHandlerTestsParameterized {
     private ShakeHandler h;
     private float pvalue;
-    private String pres;
+    private ShakeIntensity pres;
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
 
         Collection<Object[]> params = new LinkedList<>();
 
-        params.add(new Object[]{1.9f, "Noob"});
+        params.add(new Object[]{1.9f, ShakeIntensity.NonExistent});
 
-        params.add(new Object[]{2f, "Meh..."});
-        params.add(new Object[]{2.1f, "Meh..."});
-        params.add(new Object[]{3.9f, "Meh..."});
+        params.add(new Object[]{2f, ShakeIntensity.Low});
+        params.add(new Object[]{2.1f, ShakeIntensity.Low});
+        params.add(new Object[]{3.9f, ShakeIntensity.Low});
 
-        params.add(new Object[]{4f, "Edging master"});
-        params.add(new Object[]{4.1f, "Edging master"});
-        params.add(new Object[]{5.9f, "Edging master"});
+        params.add(new Object[]{4f, ShakeIntensity.Medium});
+        params.add(new Object[]{4.1f, ShakeIntensity.Medium});
+        params.add(new Object[]{5.9f, ShakeIntensity.Medium});
 
         return params;
     }
 
-    public ShakeHandlerTestsParameterized(float value, String res) {
+    public ShakeHandlerTestsParameterized(float value, ShakeIntensity res) {
         pvalue = value;
         pres = res;
     }
