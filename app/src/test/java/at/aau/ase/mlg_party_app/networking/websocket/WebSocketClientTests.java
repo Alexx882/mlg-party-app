@@ -24,6 +24,8 @@ public class WebSocketClientTests {
         client = WebSocketClient.getInstance();
     }
 
+    // todo no json
+
     @Test
     public void handleMessage_nullCallbacks_noError(){
         client.handleMessage("{}", null);
