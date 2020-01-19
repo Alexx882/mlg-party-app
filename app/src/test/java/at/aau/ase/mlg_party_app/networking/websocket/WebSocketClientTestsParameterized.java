@@ -23,6 +23,8 @@ import at.aau.ase.mlg_party_app.Callback;
 import at.aau.ase.mlg_party_app.SingletonTestsHelper;
 import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.game.StartGameResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
@@ -32,8 +34,6 @@ import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
  */
 @RunWith(Parameterized.class)
 public class WebSocketClientTestsParameterized {
-    private SingletonTestsHelper singletonHelper = new SingletonTestsHelper();
-    private WebSocketClient client;
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
@@ -43,10 +43,14 @@ public class WebSocketClientTestsParameterized {
         params.add(new Object[]{MessageType.CreateLobby, CreateLobbyResponse.class, "{\"type\":\"CreateLobby\", \"lobbyName\":\"String\", \"playerId\":\"String\"}"});
         params.add(new Object[]{MessageType.JoinLobby, JoinLobbyResponse.class, "{\"type\":\"JoinLobby\", \"status\":1, \"playerId\":\"String\"}"});
         params.add(new Object[]{MessageType.PlayerJoined, PlayerJoinedResponse.class, "{\"type\":\"PlayerJoined\", \"playerNames\":[\"Name1\", \"Name2\"]}"});
+        params.add(new Object[]{MessageType.StartGame, StartGameResponse.class, "{\"type\":\"StartGame\", \"gameEndpoint\":\"String\"}"});
+
+        params.add(new Object[]{MessageType.GameFinished, GameFinishedResponse.class, "{\"type\":\"GameFinished\", \"winnerId\":\"String\"}"});
 
         return params;
     }
 
+    private WebSocketClient client;
     private MessageType pMessageType;
     private Class responseClass;
     private String pJson;
@@ -59,7 +63,7 @@ public class WebSocketClientTestsParameterized {
 
     @Before
     public void before() {
-        singletonHelper.resetSingletonWithReflection(WebSocketClient.getInstance());
+        SingletonTestsHelper.tryResetSingletonWithReflection(WebSocketClient.getInstance());
         client = WebSocketClient.getInstance();
     }
 
