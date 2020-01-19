@@ -2,6 +2,8 @@ package at.aau.ase.mlg_party_app.game_setup;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Message;
@@ -15,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.NetworkConstants;
+import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.game.StartGameResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
@@ -65,14 +69,14 @@ public class JoinGameActivity extends AppCompatActivity {
             return;
         }
 
-        runOnUiThread(this::updateUiForGameStart);
-
         Game.getInstance().setPlayerId(response.playerId);
+
+        runOnUiThread(this::updateUiForGameStart);
     }
 
     private void updateUiForGameStart() {
-        textViewInformation.setText("Waiting for others...");
-        buttonConnect.setEnabled(false);
+        Intent intent = new Intent(this, BetweenGamesActivity.class);
+        startActivity(intent);
     }
 
     private void initUi() {

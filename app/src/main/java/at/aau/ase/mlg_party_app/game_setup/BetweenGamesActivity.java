@@ -33,10 +33,7 @@ public class BetweenGamesActivity extends AppCompatActivity {
 
     private void loadNextGame() {
         WebSocketClient.getInstance().registerCallback(MessageType.StartGame, this::handleStartGame);
-        startNextGame();
-    }
 
-    private void startNextGame() {
         if (!Game.getInstance().isLobbyOwner())
             return;
 
