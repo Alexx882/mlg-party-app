@@ -1,28 +1,28 @@
 package at.aau.ase.mlg_party_app.cocktail_shaker.shaking;
 
 public enum ShakeIntensity {
-    Low,
-    Medium,
-    Crazy,
-    Fast,
-    Deacent,
-    NonExistent;
+    LOW,
+    MEDIUM,
+    CRAZY,
+    FAST,
+    DEACENT,
+    NON_EXISTENT;
 
     public static ShakeIntensity convertFromFloat(float f) {
         ShakeIntensity res;
 
         if (f >= 12)
-            res = ShakeIntensity.Crazy;
+            res = ShakeIntensity.CRAZY;
         else if (f >= 8)
-            res = ShakeIntensity.Fast;
+            res = ShakeIntensity.FAST;
         else if (f >= 6)
-            res = ShakeIntensity.Deacent;
+            res = ShakeIntensity.DEACENT;
         else if (f >= 4)
-            res = ShakeIntensity.Medium;
+            res = ShakeIntensity.MEDIUM;
         else if (f >= 2)
-            res = ShakeIntensity.Low;
+            res = ShakeIntensity.LOW;
         else
-            res = ShakeIntensity.NonExistent;
+            res = ShakeIntensity.NON_EXISTENT;
 
         return res;
     }

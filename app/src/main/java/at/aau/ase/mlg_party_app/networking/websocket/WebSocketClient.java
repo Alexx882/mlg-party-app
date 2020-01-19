@@ -100,16 +100,4 @@ public class WebSocketClient extends WebSocketListener {
         }
     }
 
-    @Override
-    public void onClosing(WebSocket webSocket, int code, String reason) {
-        super.onClosing(webSocket, code, reason);
-        // todo
-    }
-
-    @Override
-    public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        super.onFailure(webSocket, t, response);
-        // todo
-    }
-
 }

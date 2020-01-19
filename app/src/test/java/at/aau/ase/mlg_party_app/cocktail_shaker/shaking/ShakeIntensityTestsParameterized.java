@@ -7,9 +7,6 @@ import org.junit.runners.Parameterized;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeIntensity;
 
 @RunWith(Parameterized.class)
 public class ShakeIntensityTestsParameterized {
@@ -21,28 +18,28 @@ public class ShakeIntensityTestsParameterized {
 
         Collection<Object[]> params = new LinkedList<>();
 
-        params.add(new Object[]{0f, ShakeIntensity.NonExistent});
-        params.add(new Object[]{1.9f, ShakeIntensity.NonExistent});
+        params.add(new Object[]{0f, ShakeIntensity.NON_EXISTENT});
+        params.add(new Object[]{1.9f, ShakeIntensity.NON_EXISTENT});
 
-        params.add(new Object[]{2f, ShakeIntensity.Low});
-        params.add(new Object[]{2.1f, ShakeIntensity.Low});
-        params.add(new Object[]{3.9f, ShakeIntensity.Low});
+        params.add(new Object[]{2f, ShakeIntensity.LOW});
+        params.add(new Object[]{2.1f, ShakeIntensity.LOW});
+        params.add(new Object[]{3.9f, ShakeIntensity.LOW});
 
-        params.add(new Object[]{4f, ShakeIntensity.Medium});
-        params.add(new Object[]{4.1f, ShakeIntensity.Medium});
-        params.add(new Object[]{5.9f, ShakeIntensity.Medium});
+        params.add(new Object[]{4f, ShakeIntensity.MEDIUM});
+        params.add(new Object[]{4.1f, ShakeIntensity.MEDIUM});
+        params.add(new Object[]{5.9f, ShakeIntensity.MEDIUM});
 
-        params.add(new Object[]{6f, ShakeIntensity.Deacent});
-        params.add(new Object[]{6.1f, ShakeIntensity.Deacent});
-        params.add(new Object[]{7.9f, ShakeIntensity.Deacent});
+        params.add(new Object[]{6f, ShakeIntensity.DEACENT});
+        params.add(new Object[]{6.1f, ShakeIntensity.DEACENT});
+        params.add(new Object[]{7.9f, ShakeIntensity.DEACENT});
 
-        params.add(new Object[]{8f, ShakeIntensity.Fast});
-        params.add(new Object[]{8.1f, ShakeIntensity.Fast});
-        params.add(new Object[]{11.9f, ShakeIntensity.Fast});
+        params.add(new Object[]{8f, ShakeIntensity.FAST});
+        params.add(new Object[]{8.1f, ShakeIntensity.FAST});
+        params.add(new Object[]{11.9f, ShakeIntensity.FAST});
 
-        params.add(new Object[]{12f, ShakeIntensity.Crazy});
-        params.add(new Object[]{12.1f, ShakeIntensity.Crazy});
-        params.add(new Object[]{100f, ShakeIntensity.Crazy});
+        params.add(new Object[]{12f, ShakeIntensity.CRAZY});
+        params.add(new Object[]{12.1f, ShakeIntensity.CRAZY});
+        params.add(new Object[]{100f, ShakeIntensity.CRAZY});
 
         return params;
     }

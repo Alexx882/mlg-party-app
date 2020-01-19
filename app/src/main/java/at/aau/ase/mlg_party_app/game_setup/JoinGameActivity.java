@@ -1,24 +1,20 @@
 package at.aau.ase.mlg_party_app.game_setup;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Message;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import at.aau.ase.mlg_party_app.Game;
 import androidx.appcompat.app.AppCompatActivity;
+
+import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.NetworkConstants;
-import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.game.StartGameResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
@@ -26,9 +22,11 @@ import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class JoinGameActivity extends AppCompatActivity {
 
-    private  EditText editTextPlayerName, editTextLobbyName;
-    private  Button buttonConnect;
-    private  TextView textViewInformation, textViewPlayerList;
+    private EditText editTextPlayerName,
+            editTextLobbyName;
+    private Button buttonConnect;
+    private TextView textViewInformation,
+            textViewPlayerList;
 
     private MediaPlayer mediaPlayer;
 
@@ -93,7 +91,7 @@ public class JoinGameActivity extends AppCompatActivity {
     }
 
     private void playBackgroundSound() {
-       mediaPlayer = MediaPlayer.create(this, R.raw.lobby_basic);
+        mediaPlayer = MediaPlayer.create(this, R.raw.lobby_basic);
         mediaPlayer.setVolume(1.0f, 1.0f);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();

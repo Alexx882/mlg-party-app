@@ -1,7 +1,5 @@
 package at.aau.ase.mlg_party_app.cocktail_shaker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.hardware.Sensor;
@@ -12,6 +10,8 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.cocktail_shaker.networking.CocktailShakerResult;
@@ -20,7 +20,6 @@ import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeResult;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakingArgs;
 import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
 import at.aau.ase.mlg_party_app.networking.MessageType;
-import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
@@ -28,11 +27,10 @@ public class CocktailShakerActivity extends AppCompatActivity {
     /**
      * Game duration in seconds
      */
-    private static final int gameDuration = 10;
+    private static final int GAME_DURATION = 10;
     private static final int HALF_IMG_SIZE = 600;
 
     private ImageView imageViewSonic;
-    private TextView textViewTimer;
     private ShakeHandler shakeHandler;
 
     @Override
@@ -41,7 +39,6 @@ public class CocktailShakerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cocktail_shaker);
 
         imageViewSonic = findViewById(R.id.imageViewSonic);
-        textViewTimer = findViewById(R.id.textViewTimer);
 
         Intent intent = getIntent();
         String wsEndpoint = intent.getStringExtra("WS");
@@ -69,7 +66,7 @@ public class CocktailShakerActivity extends AppCompatActivity {
                 SensorManager.SENSOR_DELAY_GAME);
 
         shakeHandler.start();
-        startTimer(gameDuration);
+        startTimer(GAME_DURATION);
     }
 
     private void startTimer(int seconds) {
@@ -85,6 +82,7 @@ public class CocktailShakerActivity extends AppCompatActivity {
     }
 
     private void updateRemainingTime(int remainingSeconds) {
+        TextView textViewTimer = findViewById(R.id.textViewTimer);
         runOnUiThread(() -> textViewTimer.setText(String.valueOf(remainingSeconds)));
     }
 
