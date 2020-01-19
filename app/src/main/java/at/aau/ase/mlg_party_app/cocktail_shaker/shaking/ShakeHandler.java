@@ -21,6 +21,9 @@ public class ShakeHandler implements SensorEventListener {
     }
 
     public void receiveShakeValue(float gForce) {
+        if (!running)
+            return;
+
         if (max < gForce)
             max = gForce;
 

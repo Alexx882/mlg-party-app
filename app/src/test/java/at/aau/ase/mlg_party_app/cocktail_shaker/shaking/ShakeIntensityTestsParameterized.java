@@ -1,7 +1,6 @@
-package at.aau.ase.mlg_party_app.cocktail_shaker;
+package at.aau.ase.mlg_party_app.cocktail_shaker.shaking;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -10,12 +9,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeHandler;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeIntensity;
 
 @RunWith(Parameterized.class)
-public class ShakeHandlerTestsParameterized {
-    private ShakeHandler h;
+public class ShakeIntensityTestsParameterized {
     private float pvalue;
     private ShakeIntensity pres;
 
@@ -24,6 +21,7 @@ public class ShakeHandlerTestsParameterized {
 
         Collection<Object[]> params = new LinkedList<>();
 
+        params.add(new Object[]{0f, ShakeIntensity.NonExistent});
         params.add(new Object[]{1.9f, ShakeIntensity.NonExistent});
 
         params.add(new Object[]{2f, ShakeIntensity.Low});
@@ -34,29 +32,28 @@ public class ShakeHandlerTestsParameterized {
         params.add(new Object[]{4.1f, ShakeIntensity.Medium});
         params.add(new Object[]{5.9f, ShakeIntensity.Medium});
 
+        params.add(new Object[]{6f, ShakeIntensity.Deacent});
+        params.add(new Object[]{6.1f, ShakeIntensity.Deacent});
+        params.add(new Object[]{7.9f, ShakeIntensity.Deacent});
+
+        params.add(new Object[]{8f, ShakeIntensity.Fast});
+        params.add(new Object[]{8.1f, ShakeIntensity.Fast});
+        params.add(new Object[]{11.9f, ShakeIntensity.Fast});
+
+        params.add(new Object[]{12f, ShakeIntensity.Crazy});
+        params.add(new Object[]{12.1f, ShakeIntensity.Crazy});
+        params.add(new Object[]{100f, ShakeIntensity.Crazy});
+
         return params;
     }
 
-    public ShakeHandlerTestsParameterized(float value, ShakeIntensity res) {
+    public ShakeIntensityTestsParameterized(float value, ShakeIntensity res) {
         pvalue = value;
         pres = res;
     }
 
-    @Before
-    public void before() {
-        h = new ShakeHandler();
-    }
-
     @Test
-    public void receiveShakeValue_stringCallback_meh() {
-        AtomicBoolean handled = new AtomicBoolean(false);
-
-        h.registerCallback((val) -> {
-            Assert.assertEquals(pres, val.message);
-            handled.set(true);
-        });
-
-        h.receiveShakeValue(pvalue);
-        Assert.assertTrue(handled.get());
+    public void convertFromFloat() {
+        Assert.assertEquals(pres, ShakeIntensity.convertFromFloat(pvalue));
     }
 }
