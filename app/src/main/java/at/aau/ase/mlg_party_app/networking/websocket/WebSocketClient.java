@@ -46,7 +46,7 @@ public class WebSocketClient extends WebSocketListener {
 
     public void disconnectFromServer() {
         if (webSocket != null) {
-            webSocket.close(1000, "closing app");
+            webSocket.close(1000, "closing");
             webSocket = null;
         }
     }
@@ -59,7 +59,7 @@ public class WebSocketClient extends WebSocketListener {
     public void handleMessage(String json, Map<MessageType, Callback> callbacks) {
         BaseResponse base = jsonParser.fromJson(json, BaseResponse.class);
 
-        if (!callbacks.containsKey(base.type))
+        if (callbacks == null || !callbacks.containsKey(base.type))
             return;
 
         Callback cb = callbacks.get(base.type);
