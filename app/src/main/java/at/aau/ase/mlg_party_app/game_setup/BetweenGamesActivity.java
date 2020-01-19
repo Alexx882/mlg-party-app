@@ -1,16 +1,15 @@
 package at.aau.ase.mlg_party_app.game_setup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.networking.MessageType;
-import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.game.StartGameResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.StartGameRequest;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
@@ -25,6 +24,7 @@ public class BetweenGamesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_between_games);
 
+        // todo show players
         textViewPlayerOrder = findViewById(R.id.textViewPlayerOrder);
         loadingBar = findViewById(R.id.progressBarLoadingGame);
 

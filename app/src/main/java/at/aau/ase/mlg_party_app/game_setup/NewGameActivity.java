@@ -1,11 +1,8 @@
 package at.aau.ase.mlg_party_app.game_setup;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,20 +18,19 @@ import java.util.TimerTask;
 
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
-
+import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.NetworkConstants;
-import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
-import at.aau.ase.mlg_party_app.networking.MessageType;
-import at.aau.ase.mlg_party_app.networking.dtos.lobby.StartGameRequest;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class NewGameActivity extends AppCompatActivity {
 
-   private  TextView textViewInformation, textViewPlayerList;
-    private Button buttonStartGame, buttonOpenLobby;
+   private  TextView textViewInformation,
+           textViewPlayerList;
+    private Button buttonStartGame,
+            buttonOpenLobby;
     private  EditText editTextPlayerName;
     private ProgressBar progressBar;
 
@@ -140,7 +136,7 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     private void updateUiForGameStart(String lobbyName) {
-        textViewInformation.setText("Lobby name: " + lobbyName);
+        textViewInformation.setText(String.format("Lobby name: %s", lobbyName));
         buttonStartGame.setEnabled(true);
     }
 

@@ -24,7 +24,25 @@ public class WebSocketClientTests {
         client = WebSocketClient.getInstance();
     }
 
-    // todo no json
+    @Test(expected = IllegalArgumentException.class)
+    public void handleMessage_nullJson_noError(){
+        client.handleMessage(null, null);
+    }
+
+    @Test
+    public void handleMessage_nonJsonString1_noError(){
+        client.handleMessage("", null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void handleMessage_nonJsonString2_noError(){
+        client.handleMessage("Test", null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void handleMessage_nonJsonString3_noError(){
+        client.handleMessage("{\"Test\"", null);
+    }
 
     @Test
     public void handleMessage_nullCallbacks_noError(){

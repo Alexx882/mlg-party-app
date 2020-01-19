@@ -10,9 +10,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeHandler;
-import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeIntensity;
-
 @RunWith(Parameterized.class)
 public class ShakeHandlerReceiveShakeValueTestsParameterized {
     private ShakeHandler h;
@@ -24,15 +21,15 @@ public class ShakeHandlerReceiveShakeValueTestsParameterized {
 
         Collection<Object[]> params = new LinkedList<>();
 
-        params.add(new Object[]{1.9f, ShakeIntensity.NonExistent});
+        params.add(new Object[]{1.9f, ShakeIntensity.NON_EXISTENT});
 
-        params.add(new Object[]{2f, ShakeIntensity.Low});
-        params.add(new Object[]{2.1f, ShakeIntensity.Low});
-        params.add(new Object[]{3.9f, ShakeIntensity.Low});
+        params.add(new Object[]{2f, ShakeIntensity.LOW});
+        params.add(new Object[]{2.1f, ShakeIntensity.LOW});
+        params.add(new Object[]{3.9f, ShakeIntensity.LOW});
 
-        params.add(new Object[]{4f, ShakeIntensity.Medium});
-        params.add(new Object[]{4.1f, ShakeIntensity.Medium});
-        params.add(new Object[]{5.9f, ShakeIntensity.Medium});
+        params.add(new Object[]{4f, ShakeIntensity.MEDIUM});
+        params.add(new Object[]{4.1f, ShakeIntensity.MEDIUM});
+        params.add(new Object[]{5.9f, ShakeIntensity.MEDIUM});
 
         return params;
     }
