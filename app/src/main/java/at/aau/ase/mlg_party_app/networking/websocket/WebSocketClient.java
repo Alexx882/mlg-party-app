@@ -1,6 +1,8 @@
 package at.aau.ase.mlg_party_app.networking.websocket;
 
 
+import com.google.gson.JsonSyntaxException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,9 +59,19 @@ public class WebSocketClient extends WebSocketListener {
     }
 
     public void handleMessage(String json, Map<MessageType, Callback> callbacks) {
-        BaseResponse base = jsonParser.fromJson(json, BaseResponse.class);
+        IllegalArgumentException notValidJsonArgumentException = new IllegalArgumentException("json is not valid");
 
-        if (callbacks == null || !callbacks.containsKey(base.type))
+        if (json == null)
+            throw notValidJsonArgumentException;
+
+        BaseResponse base = null;
+        try {
+            base = jsonParser.fromJson(json, BaseResponse.class);
+        } catch (JsonSyntaxException e) {
+            throw notValidJsonArgumentException;
+        }
+
+        if (base == null || callbacks == null || !callbacks.containsKey(base.type))
             return;
 
         Callback cb = callbacks.get(base.type);
