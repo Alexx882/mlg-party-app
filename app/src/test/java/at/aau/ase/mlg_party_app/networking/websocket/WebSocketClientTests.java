@@ -31,7 +31,7 @@ public class WebSocketClientTests {
 
     @Test
     public void handleMessage_emptyCallbacks_noError(){
-        client.handleMessage("{}", null);
+        client.handleMessage("{}", new HashMap<>());
     }
 
     @Test

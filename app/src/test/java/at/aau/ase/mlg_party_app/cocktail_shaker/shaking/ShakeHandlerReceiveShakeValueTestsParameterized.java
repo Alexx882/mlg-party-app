@@ -45,6 +45,7 @@ public class ShakeHandlerReceiveShakeValueTestsParameterized {
     @Before
     public void before() {
         h = new ShakeHandler();
+        h.start();
     }
 
     @Test
