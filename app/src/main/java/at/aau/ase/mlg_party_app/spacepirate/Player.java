@@ -16,6 +16,8 @@ public class Player {
     private int minY;
     private int maxX;
     private int minX;
+    private int bitmapHeight;
+    private int bitmapWidth;
 
 
     private Rect detectCollision;
@@ -24,16 +26,24 @@ public class Player {
 
         speed = 0;
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
-        maxY = screenY - bitmap.getHeight();
+        if (bitmap == null) {
+            bitmapHeight = 50;
+            bitmapWidth = 50;
+        } else {
+            bitmapHeight = bitmap.getHeight();
+            bitmapWidth = bitmap.getWidth();
+        }
+        maxY = screenY - bitmapHeight;
         minY = 0;
-        maxX = screenX - bitmap.getHeight();
+        maxX = screenX - bitmapHeight;
         minX = 0;
         x = maxX / 2;
         y = 0;
 
         //initializing rect object
-        detectCollision = new Rect(x, y, bitmap.getWidth(), bitmap.getHeight());
+        detectCollision = new Rect(x, y, bitmapWidth, bitmapHeight);
     }
+
 
     public void setRight() {
         speed = 10;

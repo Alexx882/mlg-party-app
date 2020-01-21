@@ -51,6 +51,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+    implementation fileTree(dir: 'C:\\Users\\Chris\\Downloads\\powermock-mockito2-testng-2.0.2\\powermock-mockito2-testng-2.0.2', include: ['*.aar', '*.jar'], exclude: [])
     repositories { jcenter() }
     dependencies { testCompile "org.mockito:mockito-core:2.+" }
 }
