@@ -1,10 +1,13 @@
 package at.aau.ase.mlg_party_app.spacepirate;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+
 import java.security.SecureRandom;
+
 import at.aau.ase.mlg_party_app.R;
 
 public class Enemy extends Logic {
@@ -38,20 +41,19 @@ public class Enemy extends Logic {
         activity = (Activity) context;
         generator = new SecureRandom();
         speed = generator.nextInt(6) + 10;
-        x = screenX;
-        y = generator.nextInt(maxY) - bitmap.getHeight();
+        x = generator.nextInt(maxX) - bitmap.getHeight();
+        y = screenY;
 
         //initializing rect object
         detectCollision = new Rect(x, y, bitmap.getWidth(), bitmap.getHeight());
     }
 
-    public void update(int playerSpeed) {
-        x -= playerSpeed;
-        x -= speed;
-        if (x < minX - bitmap.getWidth()) {
+    public void update() {
+        y -= speed;
+        if (y < minY - bitmap.getWidth()) {
             speed = generator.nextInt(10) + 10;
-            x = maxX;
-            y = generator.nextInt(maxY) - bitmap.getHeight();
+            y = maxY;
+            x = generator.nextInt(maxX) - bitmap.getHeight();
         }
 
 
@@ -68,6 +70,12 @@ public class Enemy extends Logic {
     public void setX(int x) {
 
         this.x = x;
+
+    }
+
+    public void setY(int y) {
+
+        this.y = y;
 
     }
 

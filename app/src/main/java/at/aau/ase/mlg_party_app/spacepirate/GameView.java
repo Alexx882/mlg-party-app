@@ -26,66 +26,43 @@ public class GameView extends SurfaceView implements Runnable {
 
     //a screenX holder
     int screenX;
-
-
+    int screenY;
     //context to be used in onTouchEvent to cause the activity tsition from GameAvtivity to MainActivity.
     Context context;
-
     //the score holder
     int score;
-
     //the high Scores Holder
     int[] highScore = new int[4];
-
     //Shared Prefernces to store the High Scores
     SharedPreferences sharedPreferences;
-
-
     //to count the number of Misses
     int countMisses;
-
     //indicator that the enemy has just entered the game screen
     boolean flag;
-
     //an indicator if the game is Over
     private boolean isGameOver;
-
     private Paint paint;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
-
     private Enemy enemies;
-
-
     //created a reference of the class Friend
     private Friend friend;
-
-
     private ArrayList<Star> stars = new
             ArrayList<Star>();
-
     //defining a boom object to display blast
     private Boom boom;
-
     //the mediaplayer objects to configure the background music
     static MediaPlayer gameOnsound;
-
     final MediaPlayer killedEnemysound;
-
     final MediaPlayer gameOversound;
 
 
     public GameView(Context context, int screenX, int screenY) {
         super(context);
         player = new Player(context, screenX, screenY);
-
-
         surfaceHolder = getHolder();
         paint = new Paint();
-
-        //initializing context
         this.context = context;
-
         int starNums = 100;
         for (int i = 0; i < starNums; i++) {
             Star s = new Star(screenX, screenY);
@@ -109,6 +86,7 @@ public class GameView extends SurfaceView implements Runnable {
 
 
         this.screenX = screenX;
+        this.screenY = screenY;
 
 
         isGameOver = false;
@@ -157,13 +135,13 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
         //setting the flag true when the enemy just enters the screen
-        if (enemies.getX() == screenX) {
+        if (enemies.getX() == 0) {
 
             flag = true;
         }
 
 
-        enemies.update(player.getSpeed());
+        enemies.update();
         //if collision occurs with player
         if (Rect.intersects(player.getDetectCollision(), enemies.getDetectCollision())) {
 
@@ -175,7 +153,7 @@ public class GameView extends SurfaceView implements Runnable {
             //playing a sound at the collision between player and the enemy
             killedEnemysound.start();
 
-            enemies.setX(-200);
+            enemies.setY(-200);
         } else {// the condition where player misses the enemy
 
             //if the enemy has just entered
@@ -360,14 +338,16 @@ public class GameView extends SurfaceView implements Runnable {
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-
-
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_UP:
-                player.stopBoosting();
-                break;
             case MotionEvent.ACTION_DOWN:
-                player.setBoosting();
+                if (motionEvent.getX() >= screenX / 2)
+                    player.setRight();
+                else
+                    player.setLeft();
+                break;
+            case MotionEvent.ACTION_UP:
+                player.dontmove();
+                Log.i("X", "");
                 break;
 
         }

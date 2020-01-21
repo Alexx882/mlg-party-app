@@ -15,7 +15,7 @@ public class Star {
 
 
     public Star(int screenX, int screenY) {
-        maxX = screenX;
+        maxX = screenX * 2;
         maxY = screenY;
         minX = 0;
         minY = 0;
@@ -32,13 +32,13 @@ public class Star {
         //animating the star horizontally left side
         //by decreasing x coordinate with player speed
         x -= playerSpeed;
-        x -= speed;
+        y -= speed;
         //if the star reached the left edge of the screen
-        if (x < 0) {
+        if (y < 0) {
             //again starting the star from right edge
             //this will give a infinite scrolling background effect
-            x = maxX;
-            y = generator.nextInt(maxY);
+            y = maxY;
+            x = generator.nextInt(maxX);
             speed = generator.nextInt(15);
         }
     }
