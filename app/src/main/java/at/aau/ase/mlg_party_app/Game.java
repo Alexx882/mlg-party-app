@@ -35,6 +35,7 @@ public class Game {
      */
     private int playerScore;
     private int otherPlayerScore;
+    private String lastWinnerId;
 
     public String getPlayerId() {
         return playerId;
@@ -82,5 +83,13 @@ public class Game {
 
     public void setOtherPlayerScore(int otherPlayerScore) {
         this.otherPlayerScore = otherPlayerScore;
+    }
+
+    public String getLastWinnerId() {
+        return lastWinnerId;
+    }
+
+    public void setLastWinnerId(String lastWinnerId) {
+        this.lastWinnerId = lastWinnerId;
     }
 }

@@ -40,7 +40,7 @@ public class BetweenGamesActivity extends AppCompatActivity {
 
         // todo show players
         textViewPlayer1 = findViewById(R.id.textViewPlayerOrder);
-        textViewPlayer2 = findViewById(R.id.textViewPlayerOrder);
+        textViewPlayer2 = findViewById(R.id.textViewPlayerOrder2);
         loadingBar = findViewById(R.id.progressBarLoadingGame);
         mapData();
         displayStatistics();
@@ -72,25 +72,33 @@ public class BetweenGamesActivity extends AppCompatActivity {
     private void mapData() {
         // Map result to variables
         if (Game.getInstance().getOtherPlayerScore() == 0 && Game.getInstance().getPlayerScore() == 0) {
-            
+
         }
 
     }
 
     private void displayStatistics() {
-        textViewPlayer1.setText(player1Name + ": " + player1Score);
-        textViewPlayer2.setText(player2Name + ": " + player2Score);
+        //Put overall winner on top
+        if(player1Score>=player2Score) {
+            textViewPlayer1.setText(player1Name + ": " + player1Score);
+            textViewPlayer2.setText(player2Name + ": " + player2Score);
 
-        // Make current leader bold
-        // If a draw make both bold
-        if(player1Score>player2Score) {
-            textViewPlayer1.setTypeface(null, Typeface.BOLD);
-        } else if (player1Score<player2Score) {
-            textViewPlayer2.setTypeface(null, Typeface.BOLD);
+            if(Game.getInstance().getLastWinnerId().equals(player1ID)) {
+                textViewPlayer1.setTypeface(null,Typeface.BOLD);
+            } else {
+                textViewPlayer2.setTypeface(null,Typeface.BOLD);
+            }
         } else {
-            textViewPlayer1.setTypeface(null, Typeface.BOLD);
-            textViewPlayer2.setTypeface(null, Typeface.BOLD);
+            textViewPlayer2.setText(player1Name + ": " + player1Score);
+            textViewPlayer1.setText(player2Name + ": " + player2Score);
+            if(Game.getInstance().getLastWinnerId().equals(player1ID)) {
+                textViewPlayer2.setTypeface(null,Typeface.BOLD);
+            } else {
+                textViewPlayer1.setTypeface(null,Typeface.BOLD);
+            }
+
         }
+
     }
     private void saveData() {
         Game.getInstance().setPlayerScore(player1Score);
