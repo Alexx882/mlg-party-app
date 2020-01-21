@@ -9,7 +9,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
+import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
+import at.aau.ase.mlg_party_app.rps.networking.RpsResult;
 
 public class RpsGame extends AppCompatActivity implements View.OnClickListener{
     ImageView enemyView;
@@ -22,6 +26,7 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
     RpsLogic.Result status;
     RpsLogic logic = new RpsLogic();
     RpsLogic.Option playerOption;
+    RpsGameResult result;
     CountDownTimer cTimer = null;
 
     @Override
@@ -104,7 +109,13 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
                 if (playerOption == null) {
                     playerOption = RpsLogic.Option.random();
                 }
+
+                sendDataToServer(result);
+                // Receive winner and set enemyoption based on the result
+                // Status is result of game
+                // status = receiveFromServer();
                 status = logic.checkResult(playerOption, enemyOption);
+                // enemyOption = logic.checkResult(playerOption, status);
                 setUserChoice(playerOption, enemyOption, status);
             }
 
@@ -126,5 +137,13 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
             cTimer.cancel();
         }
     }
+     private void sendDataToServer(RpsGameResult result) {
+         RpsResult rpsr = new RpsResult();
+         rpsr.type = MessageType.RpsResult;
+         rpsr.playerId = Game.getInstance().getPlayerId();
+         rpsr.option = result.option;
+
+         WebSocketClient.getInstance().sendMessage(rpsr);
+     }
 
 }

@@ -2,8 +2,8 @@ package at.aau.ase.mlg_party_app.rps;
 
 import java.security.SecureRandom;
 
-class RpsLogic {
-    enum Option {
+public class RpsLogic {
+    public enum Option {
         ROCK, PAPER, SCISSOR;
 
         public static Option random() {
