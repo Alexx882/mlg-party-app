@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Matrix;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -17,6 +18,7 @@ import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.cocktail_shaker.networking.CocktailShakerResult;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeHandler;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeIntensity;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeResult;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakingArgs;
 import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
@@ -33,6 +35,8 @@ public class CocktailShakerActivity extends BasicGameActivity {
 
     private ImageView imageViewSonic;
     private ShakeHandler shakeHandler;
+
+    MediaPlayer mediaPlayer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +102,12 @@ public class CocktailShakerActivity extends BasicGameActivity {
     }
 
     private void handleShake(ShakingArgs shakeResult) {
-        // factor = how hard it was shaken
-        float factor = (shakeResult.value - 1) / 5;
+       updateImage(shakeResult.value);
+       makeSound(shakeResult.message);
+    }
+
+    private void updateImage(float shakeValue) {
+        float factor = (shakeValue - 1) / 5;
         factor = Math.abs(factor) < .1 ? 0 : Math.abs(factor);
 
         Matrix matrix = new Matrix();
@@ -110,5 +118,42 @@ public class CocktailShakerActivity extends BasicGameActivity {
         matrix.postScale(1 + factor, 1 + factor, HALF_IMG_SIZE, HALF_IMG_SIZE);
 
         runOnUiThread(() -> imageViewSonic.setImageMatrix(matrix));
+    }
+
+    private void makeSound(ShakeIntensity intensity) {
+        switch (intensity) {
+            case CRAZY:
+            case FAST:
+                playSound(R.raw.air_horn_triple);
+                break;
+            case DEACENT:
+            case MEDIUM:
+                playSound(R.raw.air_horn_single);
+                break;
+            case LOW:
+            case NON_EXISTENT:
+                loopSound(R.raw.sad_violin);
+                break;
+        }
+    }
+
+    private void playSound(int sound){
+        if(mediaPlayer != null)
+            mediaPlayer.stop();
+
+        mediaPlayer = MediaPlayer.create(this, sound);
+        mediaPlayer.setVolume(1.0f, 1.0f);
+        mediaPlayer.start();
+        mediaPlayer = null;
+    }
+
+    private void loopSound(int sound){
+        if (mediaPlayer != null)
+            return;
+
+        mediaPlayer = MediaPlayer.create(this, sound);
+        mediaPlayer.setVolume(1.0f, 1.0f);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
     }
 }
