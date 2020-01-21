@@ -40,7 +40,7 @@ script:
   - ./gradlew test jacocoTestReport
 ## uncomment test exec if android integration tests are needed
 #  - ./gradlew connectedAndroidTest
-#  - ./gradlew lint
+  - ./gradlew lint
   - sonar-scanner
 
 addons:

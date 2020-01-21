@@ -9,13 +9,20 @@ import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class SingletonTestsHelper {
 
-    public  void resetSingletonWithReflection(Object instance) {
+    /**
+     * This method can be used to reset Singletons in the test fixture.
+     * @param instance A Singleton which stores the object in field "instance".
+     * @return True if the reset worked
+     */
+    public static boolean tryResetSingletonWithReflection(Object instance) {
         try {
             Field instanceField = instance.getClass().getDeclaredField("instance");
             instanceField.setAccessible(true);
             instanceField.set(instance, null);
+            return true;
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -25,7 +32,7 @@ public class SingletonTestsHelper {
         WebSocketClient c2 = WebSocketClient.getInstance();
         Assert.assertEquals(c1, c2);
 
-        resetSingletonWithReflection(WebSocketClient.getInstance());
+        tryResetSingletonWithReflection(WebSocketClient.getInstance());
 
         WebSocketClient c3 = WebSocketClient.getInstance();
         Assert.assertNotEquals(c1, c3);

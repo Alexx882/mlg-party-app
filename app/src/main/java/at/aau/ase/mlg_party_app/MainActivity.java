@@ -1,13 +1,12 @@
 package at.aau.ase.mlg_party_app;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import at.aau.ase.mlg_party_app.game_setup.JoinGameActivity;
 import at.aau.ase.mlg_party_app.game_setup.NewGameActivity;
-import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,17 +15,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.buttonJoinGame).setOnClickListener((view)->joinGame());
-        findViewById(R.id.buttonNewGame).setOnClickListener((view)->createGame());
+        findViewById(R.id.buttonJoinGame).setOnClickListener(view -> joinGame());
+        findViewById(R.id.buttonNewGame).setOnClickListener(view -> createGame());
 
     }
 
-    private void createGame(){
+    private void createGame() {
         Intent intent = new Intent(this, NewGameActivity.class);
         startActivity(intent);
     }
 
-    private void joinGame(){
+    private void joinGame() {
         Intent intent = new Intent(this, JoinGameActivity.class);
         startActivity(intent);
     }

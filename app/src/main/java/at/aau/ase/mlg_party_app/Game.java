@@ -24,6 +24,11 @@ public class Game {
      */
     private String lobbyId;
 
+    /**
+     * True if the user started the game and owns the lobby.
+     */
+    private boolean isLobbyOwner;
+
     public String getPlayerId() {
         return playerId;
     }
@@ -38,5 +43,13 @@ public class Game {
 
     public void setLobbyId(String lobbyId) {
         this.lobbyId = lobbyId;
+    }
+
+    public boolean isLobbyOwner() {
+        return isLobbyOwner;
+    }
+
+    public void setLobbyOwner(boolean lobbyOwner) {
+        isLobbyOwner = lobbyOwner;
     }
 }
