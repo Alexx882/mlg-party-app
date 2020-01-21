@@ -9,10 +9,10 @@ import org.junit.Test;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.TicTacToeEndGameResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.TicTacToeErrorResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.TicTacToeMoveRequest;
-import at.aau.ase.mlg_party_app.networking.dtos.TicTacToeMoveResponse;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeEndGameResponse;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeErrorResponse;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeMoveRequest;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeMoveResponse;
 
 public class JsonParserTests {
     private JsonParser parser;
@@ -69,9 +69,8 @@ public class JsonParserTests {
     @Test
     public void toJson_TicTacToeMoveRequest_validJson() {
         TicTacToeMoveRequest req = new TicTacToeMoveRequest("PID", 1, 2);
-        req.type = "test";
 
-        Assert.assertEquals("{\"playerId\":\"PID\",\"x\":1,\"y\":2,\"type\":\"test\"}", parser.toJson(req));
+        Assert.assertEquals("{\"playerId\":\"PID\",\"x\":1,\"y\":2,\"type\":\"TicTacToeMove\"}", parser.toJson(req));
     }
     @Test
     public void toJson_TicTacToeMoveResponse_validJson(){
@@ -80,21 +79,21 @@ public class JsonParserTests {
         res.x=1;
         res.y=2;
 
-        Assert.assertEquals("{\"playerId\":\"PID\",\"x\":1,\"y\":2}", parser.toJson(res));
+        Assert.assertEquals("{\"playerId\":\"PID\",\"x\":1,\"y\":2,\"type\":\"TicTacToeMove\"}", parser.toJson(res));
     }
     @Test
     public void toJson_TicTacToeErrorResponse_validJson(){
         TicTacToeErrorResponse res = new TicTacToeErrorResponse() ;
         res.errorMessage="A MESSAGE!";
 
-        Assert.assertEquals("{\"errorMessage\":\"A MESSAGE!\"}", parser.toJson(res));
+        Assert.assertEquals("{\"errorMessage\":\"A MESSAGE!\",\"type\":\"TicTacToeError\"}", parser.toJson(res));
     }
     @Test
     public void toJson_TicTacToeEndGameResponse_validJson(){
         TicTacToeEndGameResponse res = new TicTacToeEndGameResponse() ;
         res.endgameScenarioId=1;
 
-        Assert.assertEquals("{\"endgameScenarioId\":1}", parser.toJson(res));
+        Assert.assertEquals("{\"endgameScenarioId\":1,\"type\":\"TicTacToeEndGame\"}", parser.toJson(res));
     }
 
 }

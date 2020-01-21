@@ -2,14 +2,16 @@ package at.aau.ase.mlg_party_app.tictactoe;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.MainActivity;
 import at.aau.ase.mlg_party_app.R;
-import at.aau.ase.mlg_party_app.networking.dtos.TicTacToeEndGameResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.TicTacToeErrorResponse;
-import at.aau.ase.mlg_party_app.networking.dtos.TicTacToeMoveRequest;
-import at.aau.ase.mlg_party_app.networking.dtos.TicTacToeMoveResponse;
-import at.aau.ase.mlg_party_app.networking.websocket.MessageType;
-import at.aau.ase.mlg_party_app.networking.websocket.TicTacToeSocketClient;
+import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
+import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeEndGameResponse;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeErrorResponse;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeMoveRequest;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeMoveResponse;
+import at.aau.ase.mlg_party_app.networking.MessageType;
 
 
 import android.content.Intent;
@@ -55,10 +57,15 @@ public class TicTacToeActivity extends AppCompatActivity {
           Register the callbacks for this game
      */
     private void socketHandling(){
-        TicTacToeSocketClient.getInstance().connectToServer();
-        TicTacToeSocketClient.getInstance().registerCallback(MessageType.TicTacToe_EndGame,this::showEndOfGameDialog);
-        TicTacToeSocketClient.getInstance().registerCallback(MessageType.TicTacToe_Move,this::addMove);
-        TicTacToeSocketClient.getInstance().registerCallback(MessageType.TicTacToe_Error,this::displayErrorMessage);
+        Intent intent = getIntent();
+        String wsEndpoint = intent.getStringExtra("WS");
+        WebSocketClient.getInstance().connectToServer(wsEndpoint);
+        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
+        WebSocketClient.getInstance().sendMessage(helloReq);
+
+        WebSocketClient.getInstance().registerCallback(MessageType.TicTacToeEndGame,this::showEndOfGameDialog);
+        WebSocketClient.getInstance().registerCallback(MessageType.TicTacToeMove,this::addMove);
+        WebSocketClient.getInstance().registerCallback(MessageType.TicTacToeError,this::displayErrorMessage);
     }
     /*
         Create a table for the game
@@ -84,8 +91,7 @@ public class TicTacToeActivity extends AppCompatActivity {
         gameMessageTV.setText(""); //New attempt = no current messages to display
         if(gameLogic.validMove(x,y, playerId)) {
             TicTacToeMoveRequest req = new TicTacToeMoveRequest(playerId, x, y);
-            req.type = "TicTacToeMove";
-            TicTacToeSocketClient.getInstance().sendMessage(req);
+            WebSocketClient.getInstance().sendMessage(req);
         }else{
             gameMessageTV.setText(R.string.tictactoe_invalidmove);
         }

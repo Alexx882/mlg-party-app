@@ -1,4 +1,7 @@
-package at.aau.ase.mlg_party_app.networking.dtos;
+package at.aau.ase.mlg_party_app.tictactoe.networking;
+
+import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
 
 public class TicTacToeMoveRequest extends BaseRequest {
 
@@ -6,7 +9,7 @@ public class TicTacToeMoveRequest extends BaseRequest {
     int x,y;
 
     public TicTacToeMoveRequest(String playerId, int x, int y) {
-        super();
+        type= MessageType.TicTacToeMove;
         this.playerId = playerId;
         this.x = x;
         this.y = y;
