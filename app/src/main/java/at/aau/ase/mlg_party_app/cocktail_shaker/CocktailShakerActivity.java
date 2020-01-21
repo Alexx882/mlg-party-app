@@ -1,5 +1,6 @@
 package at.aau.ase.mlg_party_app.cocktail_shaker;
 
+import android.content.Intent;
 import android.graphics.Matrix;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -14,17 +15,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.cocktail_shaker.networking.CocktailShakerResult;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeHandler;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeResult;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakingArgs;
+import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
 import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class CocktailShakerActivity extends AppCompatActivity {
     /**
      * Game duration in seconds
      */
-    private int gameDuration = 10;
+    private static final int GAME_DURATION = 10;
+    private static final int HALF_IMG_SIZE = 600;
 
     private ImageView imageViewSonic;
-    private TextView textViewTimer;
     private ShakeHandler shakeHandler;
 
     @Override
@@ -33,9 +39,21 @@ public class CocktailShakerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cocktail_shaker);
 
         imageViewSonic = findViewById(R.id.imageViewSonic);
-        textViewTimer = findViewById(R.id.textViewTimer);
 
+        Intent intent = getIntent();
+        String wsEndpoint = intent.getStringExtra("WS");
+        WebSocketClient.getInstance().connectToServer(wsEndpoint);
+        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
+        WebSocketClient.getInstance().sendMessage(helloReq);
+
+        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
         initShakeDetection();
+    }
+
+    private void handleGameFinished(GameFinishedResponse r) {
+        Log.e("mlg", "finished with " + r.winnerId);
+
+        finish();
     }
 
     private void initShakeDetection() {
@@ -47,7 +65,8 @@ public class CocktailShakerActivity extends AppCompatActivity {
                 sensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_GAME);
 
-        startTimer(gameDuration);
+        shakeHandler.start();
+        startTimer(GAME_DURATION);
     }
 
     private void startTimer(int seconds) {
@@ -63,21 +82,19 @@ public class CocktailShakerActivity extends AppCompatActivity {
     }
 
     private void updateRemainingTime(int remainingSeconds) {
+        TextView textViewTimer = findViewById(R.id.textViewTimer);
         runOnUiThread(() -> textViewTimer.setText(String.valueOf(remainingSeconds)));
     }
 
     private void timeUp() {
-        return;
-//
-//        shakeHandler.stop();
-//
-//        ShakeResult r = shakeHandler.getResults();
-//        sendResultToServer(r);
+        shakeHandler.stop();
+
+        ShakeResult r = shakeHandler.getResults();
+        sendResultToServer(r);
     }
 
     private void sendResultToServer(ShakeResult result) {
         CocktailShakerResult csr = new CocktailShakerResult();
-        csr.type = MessageType.CocktailShakerResult;
         csr.playerId = Game.getInstance().getPlayerId();
         csr.avg = result.avg;
         csr.max = result.max;
@@ -86,21 +103,17 @@ public class CocktailShakerActivity extends AppCompatActivity {
     }
 
     private void handleShake(ShakingArgs shakeResult) {
-        Log.d("mlg-party", "" + shakeResult.value + " " + shakeResult.message);
-
-        float factor = (shakeResult.value - 1) / 10;
+        // factor = how hard it was shaken
+        float factor = (shakeResult.value - 1) / 5;
         factor = Math.abs(factor) < .1 ? 0 : Math.abs(factor);
-
-        float deg = 360f;
-
-        Log.d("mlg-party", String.valueOf(factor));
 
         Matrix matrix = new Matrix();
         imageViewSonic.setScaleType(ImageView.ScaleType.MATRIX);
-//        matrix.postRotate((float) (1.5 - .5) * factor * deg);
-//        matrix.postScale((float) (.5 * factor) + .5f, (float) (.5 * factor) + .5f);
 
+        float rotDegrees = 90 * factor * (Math.round(Math.random()) == 0 ? 1 : -1);
+        matrix.postRotate(rotDegrees, HALF_IMG_SIZE, HALF_IMG_SIZE);
+        matrix.postScale(1 + factor, 1 + factor, HALF_IMG_SIZE, HALF_IMG_SIZE);
 
-//        runOnUiThread(() -> imageViewSonic.setImageMatrix(matrix));
+        runOnUiThread(() -> imageViewSonic.setImageMatrix(matrix));
     }
 }

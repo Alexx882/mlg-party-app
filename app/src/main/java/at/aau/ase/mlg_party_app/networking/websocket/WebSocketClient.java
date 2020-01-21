@@ -1,6 +1,8 @@
 package at.aau.ase.mlg_party_app.networking.websocket;
 
 
+import com.google.gson.JsonSyntaxException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +12,8 @@ import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.NetworkConstants;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.game.StartGameResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
@@ -20,7 +24,7 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 public class WebSocketClient extends WebSocketListener {
-    private OkHttpClient client;
+    private OkHttpClient client = new OkHttpClient();
     private WebSocket webSocket;
     private JsonParser jsonParser = new JsonParser();
 
@@ -37,15 +41,16 @@ public class WebSocketClient extends WebSocketListener {
         return instance;
     }
 
-    public void connectToServer() {
-        client = new OkHttpClient();
-        Request request = new Request.Builder().url(NetworkConstants.LobbyEndpoint).build();
+    public void connectToServer(String endpoint) {
+        Request request = new Request.Builder().url(NetworkConstants.ENDPOINT_PREFIX + endpoint).build();
         webSocket = client.newWebSocket(request, this);
     }
 
     public void disconnectFromServer() {
-        if (webSocket != null)
-            webSocket.close(1000, "closing app");
+        if (webSocket != null) {
+            webSocket.close(1000, "closing");
+            webSocket = null;
+        }
     }
 
     @Override
@@ -54,18 +59,47 @@ public class WebSocketClient extends WebSocketListener {
     }
 
     public void handleMessage(String json, Map<MessageType, Callback> callbacks) {
-        BaseResponse base = jsonParser.fromJson(json, BaseResponse.class);
+        IllegalArgumentException notValidJsonArgumentException = new IllegalArgumentException("json is not valid");
 
-        if (callbacks.containsKey(base.type)) {
-            if (base.type == MessageType.CreateLobby)
-                callbacks.get(base.type).callback(jsonParser.fromJson(json, CreateLobbyResponse.class));
+        if (json == null)
+            throw notValidJsonArgumentException;
 
-            else if (base.type == MessageType.JoinLobby)
-                callbacks.get(base.type).callback(jsonParser.fromJson(json, JoinLobbyResponse.class));
-
-            else if (base.type == MessageType.PlayerJoined)
-                callbacks.get(base.type).callback(jsonParser.fromJson(json, PlayerJoinedResponse.class));
+        BaseResponse base = null;
+        try {
+            base = jsonParser.fromJson(json, BaseResponse.class);
+        } catch (JsonSyntaxException e) {
+            throw notValidJsonArgumentException;
         }
+
+        if (base == null || callbacks == null || !callbacks.containsKey(base.type))
+            return;
+
+        Callback cb = callbacks.get(base.type);
+        Class c = null;
+        switch (base.type) {
+            case CreateLobby:
+                c = CreateLobbyResponse.class;
+                break;
+
+            case JoinLobby:
+                c = JoinLobbyResponse.class;
+                break;
+
+            case PlayerJoined:
+                c = PlayerJoinedResponse.class;
+                break;
+
+            case GameFinished:
+                c = GameFinishedResponse.class;
+                break;
+
+            case StartGame:
+                c = StartGameResponse.class;
+                break;
+        }
+
+        if (c != null)
+            cb.callback(jsonParser.fromJson(json, c));
     }
 
     public void sendMessage(BaseRequest request) {
@@ -76,18 +110,6 @@ public class WebSocketClient extends WebSocketListener {
         if (!callbacks.containsKey(messageType)) {
             callbacks.put(messageType, callback);
         }
-    }
-
-    @Override
-    public void onClosing(WebSocket webSocket, int code, String reason) {
-        super.onClosing(webSocket, code, reason);
-        // todo
-    }
-
-    @Override
-    public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        super.onFailure(webSocket, t, response);
-        // todo
     }
 
 }

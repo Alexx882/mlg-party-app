@@ -1,6 +1,7 @@
 package at.aau.ase.mlg_party_app.game_setup;
 
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.NetworkConstants;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
@@ -20,9 +22,11 @@ import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class JoinGameActivity extends AppCompatActivity {
 
-    private  EditText editTextPlayerName, editTextLobbyName;
-    private  Button buttonConnect;
-    private  TextView textViewInformation, textViewPlayerList;
+    private EditText editTextPlayerName,
+            editTextLobbyName;
+    private Button buttonConnect;
+    private TextView textViewInformation,
+            textViewPlayerList;
 
     private MediaPlayer mediaPlayer;
 
@@ -31,12 +35,13 @@ public class JoinGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_game);
 
+        Game.getInstance().setLobbyOwner(false);
         initUi();
         initMessaging();
     }
 
     private void initMessaging() {
-        WebSocketClient.getInstance().connectToServer();
+        WebSocketClient.getInstance().connectToServer(NetworkConstants.ENDPOINT_LOBBY);
         WebSocketClient.getInstance().registerCallback(MessageType.JoinLobby, this::handleJoinLobby);
         WebSocketClient.getInstance().registerCallback(MessageType.PlayerJoined, this::handlePlayerJoined);
     }
@@ -62,14 +67,14 @@ public class JoinGameActivity extends AppCompatActivity {
             return;
         }
 
-        runOnUiThread(this::updateUiForGameStart);
-
         Game.getInstance().setPlayerId(response.playerId);
+
+        runOnUiThread(this::updateUiForGameStart);
     }
 
     private void updateUiForGameStart() {
-        textViewInformation.setText("Waiting for others...");
-        buttonConnect.setEnabled(false);
+        Intent intent = new Intent(this, BetweenGamesActivity.class);
+        startActivity(intent);
     }
 
     private void initUi() {
@@ -86,7 +91,7 @@ public class JoinGameActivity extends AppCompatActivity {
     }
 
     private void playBackgroundSound() {
-       mediaPlayer = MediaPlayer.create(this, R.raw.lobby_basic);
+        mediaPlayer = MediaPlayer.create(this, R.raw.lobby_basic);
         mediaPlayer.setVolume(1.0f, 1.0f);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();

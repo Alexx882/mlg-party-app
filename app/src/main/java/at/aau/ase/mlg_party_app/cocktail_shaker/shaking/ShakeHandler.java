@@ -1,4 +1,4 @@
-package at.aau.ase.mlg_party_app.cocktail_shaker;
+package at.aau.ase.mlg_party_app.cocktail_shaker.shaking;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -12,7 +12,7 @@ public class ShakeHandler implements SensorEventListener {
     private float max = 0;
     private float avg = 0;
     private float cnt = 0;
-    private boolean running = true;
+    private boolean running = false;
 
     private Callback<ShakingArgs> callback;
 
@@ -21,6 +21,9 @@ public class ShakeHandler implements SensorEventListener {
     }
 
     public void receiveShakeValue(float gForce) {
+        if (!running)
+            return;
+
         if (max < gForce)
             max = gForce;
 
@@ -38,6 +41,10 @@ public class ShakeHandler implements SensorEventListener {
 
     public void stop() {
         running = false;
+    }
+
+    public void start() {
+        running = true;
     }
 
     public ShakeResult getResults() {

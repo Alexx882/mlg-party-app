@@ -13,7 +13,6 @@ public class RpsLogicTest {
 
     @Before // setup()
     public void before() {
-        System.out.println("Setting up!");
         logic = new RpsLogic();
     }
 
@@ -105,7 +104,6 @@ public class RpsLogicTest {
 
     @After // tearDown
     public void after() {
-        System.out.println("Tearing down");
         logic = null;
         assertNull(logic);
 

@@ -9,6 +9,10 @@ public enum MessageType {
     , PlayerJoined
     , StartGame
 
+    // generic game
+    , GameFinished
+    , HelloGame
+
     // cocktail shaker
     , CocktailShakerResult
 }

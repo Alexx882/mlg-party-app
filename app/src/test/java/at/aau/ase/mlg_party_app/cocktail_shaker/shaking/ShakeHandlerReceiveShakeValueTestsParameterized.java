@@ -1,4 +1,4 @@
-package at.aau.ase.mlg_party_app.cocktail_shaker;
+package at.aau.ase.mlg_party_app.cocktail_shaker.shaking;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @RunWith(Parameterized.class)
-public class ShakeHandlerTestsParameterized {
+public class ShakeHandlerReceiveShakeValueTestsParameterized {
     private ShakeHandler h;
     private float pvalue;
     private ShakeIntensity pres;
@@ -21,20 +21,20 @@ public class ShakeHandlerTestsParameterized {
 
         Collection<Object[]> params = new LinkedList<>();
 
-        params.add(new Object[]{1.9f, ShakeIntensity.NonExistent});
+        params.add(new Object[]{1.9f, ShakeIntensity.NON_EXISTENT});
 
-        params.add(new Object[]{2f, ShakeIntensity.Low});
-        params.add(new Object[]{2.1f, ShakeIntensity.Low});
-        params.add(new Object[]{3.9f, ShakeIntensity.Low});
+        params.add(new Object[]{2f, ShakeIntensity.LOW});
+        params.add(new Object[]{2.1f, ShakeIntensity.LOW});
+        params.add(new Object[]{3.9f, ShakeIntensity.LOW});
 
-        params.add(new Object[]{4f, ShakeIntensity.Medium});
-        params.add(new Object[]{4.1f, ShakeIntensity.Medium});
-        params.add(new Object[]{5.9f, ShakeIntensity.Medium});
+        params.add(new Object[]{4f, ShakeIntensity.MEDIUM});
+        params.add(new Object[]{4.1f, ShakeIntensity.MEDIUM});
+        params.add(new Object[]{5.9f, ShakeIntensity.MEDIUM});
 
         return params;
     }
 
-    public ShakeHandlerTestsParameterized(float value, ShakeIntensity res) {
+    public ShakeHandlerReceiveShakeValueTestsParameterized(float value, ShakeIntensity res) {
         pvalue = value;
         pres = res;
     }
@@ -42,10 +42,11 @@ public class ShakeHandlerTestsParameterized {
     @Before
     public void before() {
         h = new ShakeHandler();
+        h.start();
     }
 
     @Test
-    public void receiveShakeValue_stringCallback_meh() {
+    public void receiveShakeValue_callback() {
         AtomicBoolean handled = new AtomicBoolean(false);
 
         h.registerCallback((val) -> {
