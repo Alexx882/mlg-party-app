@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import at.aau.ase.mlg_party_app.BasicGameActivity;
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.cocktail_shaker.networking.CocktailShakerResult;
@@ -23,7 +24,7 @@ import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
-public class CocktailShakerActivity extends AppCompatActivity {
+public class CocktailShakerActivity extends BasicGameActivity {
     /**
      * Game duration in seconds
      */
@@ -48,12 +49,6 @@ public class CocktailShakerActivity extends AppCompatActivity {
 
         WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
         initShakeDetection();
-    }
-
-    private void handleGameFinished(GameFinishedResponse r) {
-        Log.e("mlg", "finished with " + r.winnerId);
-
-        finish();
     }
 
     private void initShakeDetection() {

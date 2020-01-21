@@ -1,9 +1,12 @@
 package at.aau.ase.mlg_party_app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Game {
 
     private Game() {
-
+        playerRanking = new ArrayList<>(2);
     }
 
     private static Game instance = null;
@@ -18,7 +21,7 @@ public class Game {
      * The unique player id for the current lobby.
      */
     private String playerId;
-    private String otherPlayerId;
+
     /**
      * The global id  of the lobby.
      */
@@ -29,21 +32,13 @@ public class Game {
      */
     private boolean isLobbyOwner;
 
-    /**
-     *
-     * Score of players
-     */
-    private int playerScore;
-    private int otherPlayerScore;
     private String lastWinnerId;
+
+    private List<PlayerInfo> playerRanking;
 
     public String getPlayerId() {
         return playerId;
     }
-    public String getOtherPlayerId() {
-        return otherPlayerId;
-    }
-
 
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
@@ -65,24 +60,12 @@ public class Game {
         isLobbyOwner = lobbyOwner;
     }
 
-    public void setOtherPlayerId(String otherPlayerId) {
-        this.otherPlayerId = otherPlayerId;
+    public List<PlayerInfo> getPlayerRanking() {
+        return playerRanking;
     }
 
-    public int getPlayerScore() {
-        return playerScore;
-    }
-
-    public void setPlayerScore(int playerScore) {
-        this.playerScore = playerScore;
-    }
-
-    public int getOtherPlayerScore() {
-        return otherPlayerScore;
-    }
-
-    public void setOtherPlayerScore(int otherPlayerScore) {
-        this.otherPlayerScore = otherPlayerScore;
+    public void setPlayerRanking(List<PlayerInfo> playerRanking) {
+        this.playerRanking = playerRanking;
     }
 
     public String getLastWinnerId() {

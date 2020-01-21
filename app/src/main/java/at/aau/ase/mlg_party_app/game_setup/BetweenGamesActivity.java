@@ -12,8 +12,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import at.aau.ase.mlg_party_app.Game;
+import at.aau.ase.mlg_party_app.PlayerInfo;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.dtos.game.StartGameResponse;
@@ -22,15 +25,11 @@ import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class BetweenGamesActivity extends AppCompatActivity {
 
+    private static final int START_NEXT_GAME_DELAY_MS = 1000;
+
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
     private ProgressBar loadingBar;
-    private String player1ID;
-    private String player2ID;
-    private String player1Name;
-    private String player2Name;
-    private int player1Score;
-    private int player2Score;
 
 
     @Override
@@ -38,24 +37,29 @@ public class BetweenGamesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_between_games);
 
-        // todo show players
         textViewPlayer1 = findViewById(R.id.textViewPlayerOrder);
         textViewPlayer2 = findViewById(R.id.textViewPlayerOrder2);
         loadingBar = findViewById(R.id.progressBarLoadingGame);
-        mapData();
-        displayStatistics();
-        saveData();
-        loadNextGame();
-    }
 
-    private void loadNextGame() {
         WebSocketClient.getInstance().registerCallback(MessageType.StartGame, this::handleStartGame);
 
+        displayStatistics();
+
+        loadNextGameWithDelay();
+    }
+
+    private void loadNextGameWithDelay() {
         if (!Game.getInstance().isLobbyOwner())
             return;
 
-        StartGameRequest r = new StartGameRequest(Game.getInstance().getLobbyId());
-        WebSocketClient.getInstance().sendMessage(r);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                StartGameRequest r = new StartGameRequest(Game.getInstance().getLobbyId());
+                WebSocketClient.getInstance().sendMessage(r);
+            }
+        }, START_NEXT_GAME_DELAY_MS);
+
     }
 
     private void handleStartGame(StartGameResponse response) {
@@ -69,40 +73,42 @@ public class BetweenGamesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void mapData() {
-        // Map result to variables
-        if (Game.getInstance().getOtherPlayerScore() == 0 && Game.getInstance().getPlayerScore() == 0) {
-
-        }
-
-    }
-
     private void displayStatistics() {
+        if (Game.getInstance().getPlayerRanking() == null || Game.getInstance().getPlayerRanking().size() == 0)
+            // first round
+            return;
+
+        PlayerInfo p1 = Game.getInstance().getPlayerRanking().get(0);
+        PlayerInfo p2 = Game.getInstance().getPlayerRanking().get(1);
+
+        String player1ID = p1.id;
+        String player1Name = p1.name;
+        int player1Score = p1.points;
+        String player2ID = p2.id;
+        String player2Name = p2.name;
+        int player2Score = p2.points;
+
         //Put overall winner on top
-        if(player1Score>=player2Score) {
+        if (player1Score >= player2Score) {
             textViewPlayer1.setText(player1Name + ": " + player1Score);
             textViewPlayer2.setText(player2Name + ": " + player2Score);
 
-            if(Game.getInstance().getLastWinnerId().equals(player1ID)) {
-                textViewPlayer1.setTypeface(null,Typeface.BOLD);
+            if (Game.getInstance().getLastWinnerId().equals(player1ID)) {
+                textViewPlayer1.setTypeface(null, Typeface.BOLD);
             } else {
-                textViewPlayer2.setTypeface(null,Typeface.BOLD);
+                textViewPlayer2.setTypeface(null, Typeface.BOLD);
             }
         } else {
             textViewPlayer2.setText(player1Name + ": " + player1Score);
             textViewPlayer1.setText(player2Name + ": " + player2Score);
-            if(Game.getInstance().getLastWinnerId().equals(player1ID)) {
-                textViewPlayer2.setTypeface(null,Typeface.BOLD);
+            if (Game.getInstance().getLastWinnerId().equals(player2ID)) {
+                textViewPlayer2.setTypeface(null, Typeface.BOLD);
             } else {
-                textViewPlayer1.setTypeface(null,Typeface.BOLD);
+                textViewPlayer1.setTypeface(null, Typeface.BOLD);
             }
 
         }
 
-    }
-    private void saveData() {
-        Game.getInstance().setPlayerScore(player1Score);
-        Game.getInstance().setOtherPlayerScore(player2Score);
     }
 
 }
