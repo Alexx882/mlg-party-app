@@ -13,6 +13,7 @@ import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.dtos.game.StartGameResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.StartGameRequest;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
+import at.aau.ase.mlg_party_app.tictactoe.TicTacToeActivity;
 
 public class BetweenGamesActivity extends AppCompatActivity {
 
@@ -43,9 +44,8 @@ public class BetweenGamesActivity extends AppCompatActivity {
 
     private void handleStartGame(StartGameResponse response) {
         String wsEndpoint = response.gameEndpoint;
-
+        System.out.println(wsEndpoint);
         WebSocketClient.getInstance().disconnectFromServer();
-
         Class<? extends AppCompatActivity> c = MiniGameManager.getGameMap().get(wsEndpoint);
         Intent intent = new Intent(this, c);
         intent.putExtra("WS", wsEndpoint);

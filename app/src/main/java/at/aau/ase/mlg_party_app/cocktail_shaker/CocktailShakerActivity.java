@@ -98,8 +98,9 @@ public class CocktailShakerActivity extends AppCompatActivity {
         csr.playerId = Game.getInstance().getPlayerId();
         csr.avg = result.avg;
         csr.max = result.max;
-
         WebSocketClient.getInstance().sendMessage(csr);
+
+
     }
 
     private void handleShake(ShakingArgs shakeResult) {

@@ -184,13 +184,7 @@ public class TicTacToeActivity extends AppCompatActivity {
     private void showEndOfGameDialog(TicTacToeEndGameResponse response){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
-        if(response.endgameScenarioId==1) {
-            builder.setTitle(getString(R.string.tictactoe_gamewon));
-        }else if(response.endgameScenarioId==2){
-            builder.setTitle(getString(R.string.tictactoe_gamelost));
-        }else{
-            builder.setTitle(getString(R.string.tictactoe_gametied));
-        }
+       builder.setTitle(response.endGameScenario);
         builder.setMessage(R.string.backtolobby);
         builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
             Intent intent = new Intent(this, MainActivity.class);

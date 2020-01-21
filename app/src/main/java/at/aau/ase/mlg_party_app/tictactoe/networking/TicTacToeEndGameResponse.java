@@ -7,5 +7,5 @@ public class TicTacToeEndGameResponse extends BaseResponse {
     public TicTacToeEndGameResponse(){
         type= MessageType.TicTacToeEndGame;
     }
-    public int endgameScenarioId;
+    public String endGameScenario;
 }
