@@ -14,35 +14,36 @@ public class RpsLogic {
 
     enum Result {DRAW, WON, LOST, ERROR}
 
-    Result checkResult(Option userInput, Option enemyInput) {
+    Option checkEnemyOption(Option userInput, Result status) {
 
-        if (userInput == null || enemyInput == null) {
-            return Result.ERROR;
-        }
-        
-        if (userInput == enemyInput) {
+        if (status == Result.DRAW) {
             // Draw
-            return Result.DRAW;
-        } else if (userInput == Option.ROCK && enemyInput == Option.PAPER) {
-            // Lost
-            return Result.LOST;
-        } else if (userInput == Option.ROCK && enemyInput == Option.SCISSOR) {
-            // Won
-            return Result.WON;
-        } else if (userInput == Option.PAPER && enemyInput == Option.SCISSOR) {
-            // Lost
-            return Result.LOST;
-        } else if (userInput == Option.PAPER && enemyInput == Option.ROCK) {
-            // Won
-            return Result.WON;
-        } else if (userInput == Option.SCISSOR && enemyInput == Option.ROCK) {
-            // Lost
-            return Result.LOST;
-        } else if (userInput == Option.SCISSOR && enemyInput == Option.PAPER) {
-            // Won
-            return Result.WON;
+            return userInput;
+        } else if (status == Result.WON) {
+            switch (userInput) {
+                case ROCK:
+                    return Option.SCISSOR;
+                case PAPER:
+                    return Option.ROCK;
+                case SCISSOR:
+                    return Option.PAPER;
+                default:
+                    return userInput;
+            }
+        } else if (status == Result.LOST) {
+            switch (userInput) {
+                case ROCK:
+                    return Option.PAPER;
+                case PAPER:
+                    return Option.SCISSOR;
+                case SCISSOR:
+                    return Option.ROCK;
+                default:
+                    return userInput;
+            }
+
         }
-        return Result.ERROR;
+        return userInput;
     }
 }
 

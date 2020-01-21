@@ -12,6 +12,7 @@ import android.widget.TextView;
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 import at.aau.ase.mlg_party_app.rps.networking.RpsResult;
 
@@ -43,7 +44,26 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
         buttonPaper.setOnClickListener(this);
         buttonRock.setOnClickListener(this);
         buttonScissor.setOnClickListener(this);
+
+        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::receiveGameFinished);
+
         startTimer();
+    }
+
+    private void receiveGameFinished(GameFinishedResponse response){
+        // Receive winner and set enemyoption based on the result
+        // Status is result of game
+        if (Game.getInstance().getPlayerId().equals(response.winnerId)) {
+            status = RpsLogic.Result.WON;
+        } else if (response.winnerId.equals("Draw")) {
+            status = RpsLogic.Result.DRAW;
+        } else if (response.winnerId.equals("Error")) {
+            status = RpsLogic.Result.ERROR;
+        } else {
+            status = RpsLogic.Result.LOST;
+        }
+        RpsLogic.Option enemyOption = logic.checkEnemyOption(playerOption, status);
+        setUserChoice(playerOption, enemyOption, status);
     }
 
     @Override
@@ -97,28 +117,13 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
             }
             public void onFinish() {
                 textTimer.setText("Time out!");
-                // Send player option to microservice, so the result can be calculated
-
-                // Multiplayer: Enemy option has to be used to check the result
-
-
                 disableImageButton();
                 // Singleplayer: Enemy Option is random
-                RpsLogic.Option enemyOption = RpsLogic.Option.random();
                 // Choose a random option, if the player did not choose one
                 if (playerOption == null) {
                     playerOption = RpsLogic.Option.random();
                 }
-
                 sendDataToServer(result);
-                // Receive winner and set enemyoption based on the result
-                // Status is result of game
-                // status = receiveFromServer();
-
-                status = logic.checkResult(playerOption, enemyOption);
-
-                // enemyOption = logic.checkResult(playerOption, status);
-                setUserChoice(playerOption, enemyOption, status);
             }
 
 
