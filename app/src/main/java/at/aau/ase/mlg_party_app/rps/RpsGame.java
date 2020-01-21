@@ -114,7 +114,9 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
                 // Receive winner and set enemyoption based on the result
                 // Status is result of game
                 // status = receiveFromServer();
+
                 status = logic.checkResult(playerOption, enemyOption);
+
                 // enemyOption = logic.checkResult(playerOption, status);
                 setUserChoice(playerOption, enemyOption, status);
             }
