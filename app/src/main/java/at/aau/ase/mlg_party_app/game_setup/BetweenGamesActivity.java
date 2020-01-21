@@ -29,7 +29,6 @@ public class BetweenGamesActivity extends AppCompatActivity {
 
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
-    private ProgressBar loadingBar;
 
 
     @Override
@@ -39,7 +38,6 @@ public class BetweenGamesActivity extends AppCompatActivity {
 
         textViewPlayer1 = findViewById(R.id.textViewPlayerOrder);
         textViewPlayer2 = findViewById(R.id.textViewPlayerOrder2);
-        loadingBar = findViewById(R.id.progressBarLoadingGame);
 
         WebSocketClient.getInstance().registerCallback(MessageType.StartGame, this::handleStartGame);
 
