@@ -1,12 +1,12 @@
 package at.aau.ase.mlg_party_app;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import at.aau.ase.mlg_party_app.game_setup.JoinGameActivity;
 import at.aau.ase.mlg_party_app.game_setup.NewGameActivity;
-import at.aau.ase.mlg_party_app.tictactoe.TicTacToeActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,26 +15,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.buttonJoinGame).setOnClickListener((view)->joinGame());
-        findViewById(R.id.buttonNewGame).setOnClickListener((view)->createGame());
-
-        //DevHelper for TicTacToe
-        findViewById(R.id.buttonTicTacToeTest).setOnClickListener((view)->createTicTacToe());
+        findViewById(R.id.buttonJoinGame).setOnClickListener(view -> joinGame());
+        findViewById(R.id.buttonNewGame).setOnClickListener(view -> createGame());
 
     }
 
-    private void createGame(){
+    private void createGame() {
         Intent intent = new Intent(this, NewGameActivity.class);
         startActivity(intent);
     }
 
-    private void joinGame(){
-
-    }
-
-    //DevHelper for TicTacToe
-    private void createTicTacToe(){
-        Intent intent = new Intent(this, TicTacToeActivity.class);
+    private void joinGame() {
+        Intent intent = new Intent(this, JoinGameActivity.class);
         startActivity(intent);
     }
 
