@@ -9,7 +9,6 @@ import org.junit.Test;
 import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
-import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeEndGameResponse;
 import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeErrorResponse;
 import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeMoveRequest;
 import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeMoveResponse;
@@ -87,13 +86,6 @@ public class JsonParserTests {
         res.errorMessage="A MESSAGE!";
 
         Assert.assertEquals("{\"errorMessage\":\"A MESSAGE!\",\"type\":\"TicTacToeError\"}", parser.toJson(res));
-    }
-    @Test
-    public void toJson_TicTacToeEndGameResponse_validJson(){
-        TicTacToeEndGameResponse res = new TicTacToeEndGameResponse() ;
-        res.endgameScenarioId=1;
-
-        Assert.assertEquals("{\"endgameScenarioId\":1,\"type\":\"TicTacToeEndGame\"}", parser.toJson(res));
     }
 
 }

@@ -17,7 +17,6 @@ public enum MessageType {
     , CocktailShakerResult
 
     //TicTacToe
-    , TicTacToeEndGame
     , TicTacToeMove
     , TicTacToeError
 }

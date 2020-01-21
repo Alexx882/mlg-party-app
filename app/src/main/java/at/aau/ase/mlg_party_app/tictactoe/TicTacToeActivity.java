@@ -1,13 +1,11 @@
 package at.aau.ase.mlg_party_app.tictactoe;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import at.aau.ase.mlg_party_app.Game;
-import at.aau.ase.mlg_party_app.MainActivity;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
-import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeEndGameResponse;
 import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeErrorResponse;
 import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeMoveRequest;
 import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeMoveResponse;
@@ -62,8 +60,7 @@ public class TicTacToeActivity extends AppCompatActivity {
         WebSocketClient.getInstance().connectToServer(wsEndpoint);
         HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
         WebSocketClient.getInstance().sendMessage(helloReq);
-
-        WebSocketClient.getInstance().registerCallback(MessageType.TicTacToeEndGame,this::showEndOfGameDialog);
+        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
         WebSocketClient.getInstance().registerCallback(MessageType.TicTacToeMove,this::addMove);
         WebSocketClient.getInstance().registerCallback(MessageType.TicTacToeError,this::displayErrorMessage);
     }
@@ -173,6 +170,11 @@ public class TicTacToeActivity extends AppCompatActivity {
         return cell;
     }
 
+    private void handleGameFinished(GameFinishedResponse r) {
+        gameMessageTV.setText(r.winnerId);
+        finish();
+    }
+/** //NOT NEEDED
     /*
     Visual popup-shown at the end of the game, using predefined text for the textviews
 
@@ -180,7 +182,7 @@ public class TicTacToeActivity extends AppCompatActivity {
         1 = Player won
         2 = Player lost
         Everything else = Tie
-     */
+     /
     private void showEndOfGameDialog(TicTacToeEndGameResponse response){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
@@ -193,6 +195,6 @@ public class TicTacToeActivity extends AppCompatActivity {
         AlertDialog endGameDialog=builder.create();
         endGameDialog.show();
     }
-
+*/
 
 }
