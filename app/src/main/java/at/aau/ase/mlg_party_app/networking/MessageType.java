@@ -15,4 +15,7 @@ public enum MessageType {
 
     // cocktail shaker
     , CocktailShakerResult
+
+    //Clicker
+    , ClickerResults
 }

@@ -1,7 +1,10 @@
 package at.aau.ase.mlg_party_app.clicker;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -11,7 +14,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
+import at.aau.ase.mlg_party_app.clicker.networking.clickerResults;
+import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
+import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
+import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 import pl.droidsonroids.gif.GifImageView;
 
 public class ClickerGame extends AppCompatActivity {
@@ -32,6 +41,7 @@ public class ClickerGame extends AppCompatActivity {
         ivHitmarker = findViewById(R.id.iv_hitmarker);
         GifImageView gifBackground = findViewById(R.id.gifBackground);
         logic = new Logic();
+        socketHandling();
 
 
         ivClicker.setOnTouchListener((v, event) -> {
@@ -56,6 +66,48 @@ public class ClickerGame extends AppCompatActivity {
         });
     }
 
+    private void socketHandling() {
+        Intent intent = getIntent();
+        String wsEndpoint = intent.getStringExtra("WS");
+
+        WebSocketClient.getInstance().connectToServer(wsEndpoint);
+        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
+        WebSocketClient.getInstance().sendMessage(helloReq);
+
+        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleEnd);
+
+
+    }
+
+    private void handleEnd(GameFinishedResponse r) {
+        Log.e("mlg", "finished with " + r.winnerId);
+    }
+
+    private void startTimer(int seconds) {
+        new CountDownTimer(seconds * 1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                updateRemainingTime((int) millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                ivClicker.setOnTouchListener(null);
+                sendResultToServer();
+            }
+        }.start();
+    }
+
+    private void updateRemainingTime(int remainingSeconds) {
+        TextView textViewTimer = findViewById(R.id.tvTimer);
+        runOnUiThread(() -> textViewTimer.setText(remainingSeconds + " Sekunden"));
+    }
+
+    private void sendResultToServer() {
+        clickerResults cr = new clickerResults();
+        cr.max = logic.getCounter();
+        WebSocketClient.getInstance().sendMessage(cr);
+
+
+    }
 
     public void imageanimation() {
         ScaleAnimation animationBig = new ScaleAnimation(1f, 0.8f, 1f, 0.8f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -80,9 +132,6 @@ public class ClickerGame extends AppCompatActivity {
         ivHitmarker.setVisibility(View.VISIBLE);
 
     }
-
-
-
 
 
 }
