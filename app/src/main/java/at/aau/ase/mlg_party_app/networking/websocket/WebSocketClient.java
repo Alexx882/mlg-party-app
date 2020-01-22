@@ -1,8 +1,12 @@
 package at.aau.ase.mlg_party_app.networking.websocket;
 
+import android.util.Log;
 
 import com.google.gson.JsonSyntaxException;
 
+import org.java_websocket.handshake.ServerHandshake;
+
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,15 +21,9 @@ import at.aau.ase.mlg_party_app.networking.dtos.game.StartGameResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
 
-public class WebSocketClient extends WebSocketListener {
-    private OkHttpClient client = new OkHttpClient();
-    private WebSocket webSocket;
+public class WebSocketClient {
+    private org.java_websocket.client.WebSocketClient webSocketClient;
     private JsonParser jsonParser = new JsonParser();
 
     private Map<MessageType, Callback> callbacks = new HashMap<>();
@@ -44,23 +42,43 @@ public class WebSocketClient extends WebSocketListener {
     public void connectToServer(String endpoint) {
         disconnectFromServer();
 
-        Request request = new Request.Builder().url(NetworkConstants.ENDPOINT_PREFIX + endpoint).build();
-        webSocket = client.newWebSocket(request, this);
+        Log.d("[HERRYTEST]", "connecting to server ... ");
+
+        //Request request = new Request.Builder().url(NetworkConstants.ENDPOINT_PREFIX + endpoint).build();
+        // webSocket = client.newWebSocket(request, this);
+
+        webSocketClient = new org.java_websocket.client.WebSocketClient(URI.create(NetworkConstants.ENDPOINT_PREFIX + endpoint)) {
+            @Override
+            public void onOpen(ServerHandshake _) {
+                Log.d("[HERRYTEST]", "openend websocket connection :OOOOO");
+            }
+
+            @Override
+            public void onMessage(String message) {
+                handleMessage(message, callbacks);
+            }
+
+            @Override
+            public void onClose(int code, String reason, boolean remote) {
+
+            }
+
+            @Override
+            public void onError(Exception ex) {
+
+            }
+        };
+
+        webSocketClient.connect();
+        while(!webSocketClient.isOpen());
     }
 
     public void disconnectFromServer() {
-        if (webSocket != null) {
-            webSocket.close(1000, "closing");
-            webSocket = null;
-        }
+        if (webSocketClient != null)
+            webSocketClient.close(1000);
     }
 
-    @Override
-    public void onMessage(WebSocket webSocket, String text) {
-        handleMessage(text, callbacks);
-    }
-
-    public void handleMessage(String json, Map<MessageType, Callback> callbacks) {
+    void handleMessage(String json, Map<MessageType, Callback> callbacks) {
         IllegalArgumentException notValidJsonArgumentException = new IllegalArgumentException("json is not valid");
 
         if (json == null)
@@ -105,13 +123,12 @@ public class WebSocketClient extends WebSocketListener {
     }
 
     public void sendMessage(BaseRequest request) {
-        webSocket.send(jsonParser.toJson(request));
+        if (webSocketClient != null)
+            webSocketClient.send(jsonParser.toJson(request));
     }
 
     public <T extends BaseResponse> void registerCallback(MessageType messageType, Callback<T> callback) {
-        if (!callbacks.containsKey(messageType)) {
+        if (!callbacks.containsKey(messageType))
             callbacks.put(messageType, callback);
-        }
     }
-
 }
