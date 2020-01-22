@@ -3,15 +3,10 @@ package at.aau.ase.mlg_party_app.game_setup;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,34 +36,38 @@ public class BetweenGamesActivity extends AppCompatActivity {
 
         WebSocketClient.getInstance().registerCallback(MessageType.StartGame, this::handleStartGame);
 
-        displayStatistics();
-
-        loadNextGameWithDelay();
+        requestNextGame();
     }
 
-    private void loadNextGameWithDelay() {
+    @Override
+    protected void onPostResume() {
+        displayStatistics();
+
+        super.onPostResume();
+    }
+
+    private void requestNextGame() {
         if (!Game.getInstance().isLobbyOwner())
             return;
 
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                StartGameRequest r = new StartGameRequest(Game.getInstance().getLobbyId());
-                WebSocketClient.getInstance().sendMessage(r);
-            }
-        }, START_NEXT_GAME_DELAY_MS);
-
+        StartGameRequest r = new StartGameRequest(Game.getInstance().getLobbyId());
+        WebSocketClient.getInstance().sendMessage(r);
     }
 
     private void handleStartGame(StartGameResponse response) {
-        String wsEndpoint = response.gameEndpoint;
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                String wsEndpoint = response.gameEndpoint;
 
-        WebSocketClient.getInstance().disconnectFromServer();
+                WebSocketClient.getInstance().disconnectFromServer();
 
-        Class<? extends AppCompatActivity> c = MiniGameManager.getGameMap().get(wsEndpoint);
-        Intent intent = new Intent(this, c);
-        intent.putExtra("WS", wsEndpoint);
-        startActivity(intent);
+                Class<? extends AppCompatActivity> c = MiniGameManager.getGameMap().get(wsEndpoint);
+                Intent intent = new Intent(BetweenGamesActivity.this, c);
+                intent.putExtra("WS", wsEndpoint);
+                startActivity(intent);
+            }
+        }, START_NEXT_GAME_DELAY_MS);
     }
 
     private void displayStatistics() {
