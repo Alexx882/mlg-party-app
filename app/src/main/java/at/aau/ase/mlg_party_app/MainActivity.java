@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import at.aau.ase.mlg_party_app.game_setup.JoinGameActivity;
 import at.aau.ase.mlg_party_app.game_setup.NewGameActivity;
+import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
     private void joinGame() {
         Intent intent = new Intent(this, JoinGameActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onPostResume() {
+        WebSocketClient.getInstance().disconnectFromServer();
+        super.onPostResume();
     }
 
 }

@@ -4,26 +4,25 @@ import android.content.Intent;
 import android.graphics.Matrix;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import at.aau.ase.mlg_party_app.BasicGameActivity;
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.cocktail_shaker.networking.CocktailShakerResult;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeHandler;
+import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeIntensity;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeResult;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakingArgs;
 import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
 import at.aau.ase.mlg_party_app.networking.MessageType;
-import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
-public class CocktailShakerActivity extends AppCompatActivity {
+public class CocktailShakerActivity extends BasicGameActivity {
     /**
      * Game duration in seconds
      */
@@ -50,12 +49,6 @@ public class CocktailShakerActivity extends AppCompatActivity {
         initShakeDetection();
     }
 
-    private void handleGameFinished(GameFinishedResponse r) {
-        Log.e("mlg", "finished with " + r.winnerId);
-
-        finish();
-    }
-
     private void initShakeDetection() {
         shakeHandler = new ShakeHandler();
         shakeHandler.registerCallback(this::handleShake);
@@ -72,7 +65,7 @@ public class CocktailShakerActivity extends AppCompatActivity {
     private void startTimer(int seconds) {
         new CountDownTimer(seconds * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
-                updateRemainingTime((int) millisUntilFinished / 1000);
+                showRemainingTime((int) millisUntilFinished / 1000);
             }
 
             public void onFinish() {
@@ -81,13 +74,16 @@ public class CocktailShakerActivity extends AppCompatActivity {
         }.start();
     }
 
-    private void updateRemainingTime(int remainingSeconds) {
+    private void showRemainingTime(int remainingSeconds) {
         TextView textViewTimer = findViewById(R.id.textViewTimer);
         runOnUiThread(() -> textViewTimer.setText(String.valueOf(remainingSeconds)));
     }
 
     private void timeUp() {
         shakeHandler.stop();
+        stopViolin();
+        showRemainingTime(0);
+        updateImage(1);
 
         ShakeResult r = shakeHandler.getResults();
         sendResultToServer(r);
@@ -103,8 +99,12 @@ public class CocktailShakerActivity extends AppCompatActivity {
     }
 
     private void handleShake(ShakingArgs shakeResult) {
-        // factor = how hard it was shaken
-        float factor = (shakeResult.value - 1) / 5;
+        updateImage(shakeResult.value);
+        makeSound(shakeResult.message);
+    }
+
+    private void updateImage(float shakeValue) {
+        float factor = (shakeValue - 1) / 5;
         factor = Math.abs(factor) < .1 ? 0 : Math.abs(factor);
 
         Matrix matrix = new Matrix();
@@ -115,5 +115,69 @@ public class CocktailShakerActivity extends AppCompatActivity {
         matrix.postScale(1 + factor, 1 + factor, HALF_IMG_SIZE, HALF_IMG_SIZE);
 
         runOnUiThread(() -> imageViewSonic.setImageMatrix(matrix));
+    }
+
+    private void makeSound(ShakeIntensity intensity) {
+        switch (intensity) {
+            case CRAZY:
+                playLongAirhorn();
+                break;
+            case FAST:
+                if (Math.random() > 0.6)
+                    playShortAirhorn();
+                break;
+            case DEACENT:
+            case MEDIUM:
+            case LOW:
+                stopViolin();
+                break;
+            case NON_EXISTENT:
+                playViolin();
+                break;
+        }
+    }
+
+    MediaPlayer mediaPlayerAhVio = null;
+
+    private void playShortAirhorn() {
+        stopViolin();
+
+        MediaPlayer player = MediaPlayer.create(this, R.raw.air_horn_single);
+        player.setVolume(1.0f, 1.0f);
+        player.setOnCompletionListener(MediaPlayer::release);
+        player.start();
+    }
+
+    private void playLongAirhorn() {
+        stopViolin();
+
+        MediaPlayer player = MediaPlayer.create(this, R.raw.air_horn_triple);
+        player.setVolume(1.0f, 1.0f);
+        player.setOnCompletionListener(MediaPlayer::release);
+        player.start();
+    }
+
+    private void playViolin() {
+        if (mediaPlayerAhVio != null)
+            return;
+
+        mediaPlayerAhVio = MediaPlayer.create(this, R.raw.sad_violin);
+        mediaPlayerAhVio.setVolume(1.0f, 1.0f);
+        mediaPlayerAhVio.setLooping(true);
+        mediaPlayerAhVio.start();
+    }
+
+    private void stopViolin() {
+        if (mediaPlayerAhVio != null) {
+            mediaPlayerAhVio.stop();
+            mediaPlayerAhVio.release();
+            mediaPlayerAhVio = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopViolin();
+        super.onDestroy();
     }
 }
