@@ -76,8 +76,6 @@ public class WebSocketClient {
     }
 
     void handleMessage(String json, Map<MessageType, Callback> callbacks) {
-        Log.i("mlg-party", json);
-
         IllegalArgumentException notValidJsonArgumentException = new IllegalArgumentException("json is not valid");
 
         if (json == null)

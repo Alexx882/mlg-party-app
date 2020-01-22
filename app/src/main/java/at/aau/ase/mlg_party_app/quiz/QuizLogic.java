@@ -6,10 +6,17 @@ import android.widget.TextView;
 
 import java.security.SecureRandom;
 
-class QuizLogic {
-        private SecureRandom random = new SecureRandom();
-        int currentQuestion = random.nextInt(4);
-        Question[] questions = new Question[4];
+public class QuizLogic {
+    private static final int NUM_QUESTIONS = 6;
+
+        private SecureRandom random;
+        int currentQuestion;
+        Question[] questions = new Question[NUM_QUESTIONS];
+
+        public QuizLogic(String lobby){
+            random = new SecureRandom(lobby.getBytes());
+            currentQuestion = random.nextInt(NUM_QUESTIONS);
+        }
 
    void createQuestions() {
         Question q1 = new Question("What is the name of the network of computers from which the Internet has emerged?", "Arpanet", "Google", "Cyclades", "Milnet", 1);
@@ -20,6 +27,9 @@ class QuizLogic {
         questions[2] = q3;
         Question q4 = new Question("What colour is cobalt?", "Red", "Yellow", "Green", "Blue", 4);
         questions[3] = q4;
+
+        questions[4] = new Question("What is the average penis size in the Kongo?", "12", "22", "18", "40", 3);
+        questions[5] = new Question("What is the average number of individuals in orgies?", "7", "1", "5", "4", 3);
     }
    boolean checkAnswer(int ans) {
        //Checking answers

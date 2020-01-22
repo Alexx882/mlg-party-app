@@ -16,7 +16,7 @@ public class QuizTest {
 
     @Before // setup()
     public void before() {
-        logic = new QuizLogic();
+        logic = new QuizLogic("");
     }
     @Test
     public void checkQuestions() {

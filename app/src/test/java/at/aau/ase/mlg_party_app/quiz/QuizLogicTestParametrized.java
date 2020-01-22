@@ -21,7 +21,7 @@ public class QuizLogicTestParametrized {
 
     @Before // setup()
     public void before() {
-        logic = new QuizLogic();
+        logic = new QuizLogic("");
         logic.createQuestions();
     }
 
