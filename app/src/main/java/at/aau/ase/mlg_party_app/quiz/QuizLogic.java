@@ -8,8 +8,8 @@ import java.security.SecureRandom;
 
 class QuizLogic {
         private SecureRandom random = new SecureRandom();
-        private int currentQuestion = random.nextInt(4);
-        private Question[] questions = new Question[4];
+        int currentQuestion = random.nextInt(4);
+        Question[] questions = new Question[4];
 
    void createQuestions() {
         Question q1 = new Question("What is the name of the network of computers from which the Internet has emerged?", "Arpanet", "Google", "Cyclades", "Milnet", 1);
@@ -34,5 +34,8 @@ class QuizLogic {
         allButtons[1].setText(questions[currentQuestion].getAnswer2());
         allButtons[2].setText(questions[currentQuestion].getAnswer3());
         allButtons[3].setText(questions[currentQuestion].getAnswer4());
+    }
+    void changeQuestion(int newQuestion) {
+       this.currentQuestion = newQuestion;
     }
 }

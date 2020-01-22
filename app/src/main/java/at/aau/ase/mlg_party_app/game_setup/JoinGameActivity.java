@@ -20,15 +20,13 @@ import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
-public class JoinGameActivity extends AppCompatActivity {
+public class JoinGameActivity extends BasicLobbyActivity {
 
     private EditText editTextPlayerName,
             editTextLobbyName;
     private Button buttonConnect;
     private TextView textViewInformation,
             textViewPlayerList;
-
-    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +88,6 @@ public class JoinGameActivity extends AppCompatActivity {
         playBackgroundSound();
     }
 
-    private void playBackgroundSound() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.lobby_basic);
-        mediaPlayer.setVolume(1.0f, 1.0f);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
-    }
-
     /**
      * Connects to the lobby with lobbyname and playername.
      */
@@ -114,7 +105,6 @@ public class JoinGameActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         WebSocketClient.getInstance().disconnectFromServer();
-        mediaPlayer.stop();
         super.onDestroy();
     }
 }

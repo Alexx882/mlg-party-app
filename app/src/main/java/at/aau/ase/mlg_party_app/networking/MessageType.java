@@ -16,6 +16,9 @@ public enum MessageType {
     // cocktail shaker
     , CocktailShakerResult
 
-    //Clicker
-    , ClickerResults
+    // Rps
+    , RpsResult
+
+    // Quiz
+    , QuizResult
 }
