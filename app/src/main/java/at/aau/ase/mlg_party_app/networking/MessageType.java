@@ -15,4 +15,10 @@ public enum MessageType {
 
     // cocktail shaker
     , CocktailShakerResult
+
+    // Rps
+    , RpsResult
+
+    // Quiz
+    , QuizResult
 }

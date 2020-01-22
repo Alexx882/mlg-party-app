@@ -1,5 +1,6 @@
 package at.aau.ase.mlg_party_app.quiz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,9 +8,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import at.aau.ase.mlg_party_app.BasicGameActivity;
+import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
+import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
+import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
+import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
-public class QuizGame extends AppCompatActivity implements View.OnClickListener{
+public class QuizGame extends BasicGameActivity implements View.OnClickListener{
 
     TextView questionText;
     TextView questionResult;
@@ -46,6 +53,13 @@ public class QuizGame extends AppCompatActivity implements View.OnClickListener{
         allButtons[2] = buttonAnswer3;
         allButtons[3] = buttonAnswer4;
         qLogic.setAnswers(allButtons);
+        Intent intent = getIntent();
+        String wsEndpoint = intent.getStringExtra("WS");
+        WebSocketClient.getInstance().connectToServer(wsEndpoint);
+        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
+        WebSocketClient.getInstance().sendMessage(helloReq);
+
+        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
     }
 
     @Override
