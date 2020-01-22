@@ -1,9 +1,5 @@
 package at.aau.ase.mlg_party_app.networking.websocket;
 
-import android.util.Log;
-
-import android.util.Log;
-
 import com.google.gson.JsonSyntaxException;
 
 import org.java_websocket.handshake.ServerHandshake;
@@ -44,15 +40,9 @@ public class WebSocketClient {
     public void connectToServer(String endpoint) {
         disconnectFromServer();
 
-        Log.d("[HERRYTEST]", "connecting to server ... ");
-
-        //Request request = new Request.Builder().url(NetworkConstants.ENDPOINT_PREFIX + endpoint).build();
-        // webSocket = client.newWebSocket(request, this);
-
         webSocketClient = new org.java_websocket.client.WebSocketClient(URI.create(NetworkConstants.ENDPOINT_PREFIX + endpoint)) {
             @Override
             public void onOpen(ServerHandshake _) {
-                Log.d("[HERRYTEST]", "openend websocket connection :OOOOO");
             }
 
             @Override
@@ -62,22 +52,25 @@ public class WebSocketClient {
 
             @Override
             public void onClose(int code, String reason, boolean remote) {
-
             }
 
             @Override
             public void onError(Exception ex) {
-
             }
         };
 
-        webSocketClient.connect();
-        while(!webSocketClient.isOpen());
+        try {
+            webSocketClient.connectBlocking();
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Connection to ws could not be established");
+        }
     }
 
     public void disconnectFromServer() {
-        if (webSocketClient != null)
+        if (webSocketClient != null) {
             webSocketClient.close(1000);
+            webSocketClient = null;
+        }
     }
 
     void handleMessage(String json, Map<MessageType, Callback> callbacks) {
