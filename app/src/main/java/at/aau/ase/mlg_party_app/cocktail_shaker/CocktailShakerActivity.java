@@ -92,6 +92,7 @@ public class CocktailShakerActivity extends BasicGameActivity {
     private void sendResultToServer(ShakeResult result) {
         CocktailShakerResult csr = new CocktailShakerResult();
         csr.playerId = Game.getInstance().getPlayerId();
+        csr.lobbyId = Game.getInstance().getLobbyId();
         csr.avg = result.avg;
         csr.max = result.max;
 
@@ -99,6 +100,7 @@ public class CocktailShakerActivity extends BasicGameActivity {
     }
 
     private void handleShake(ShakingArgs shakeResult) {
+        // todo do this performant
         updateImage(shakeResult.value);
         makeSound(shakeResult.message);
     }

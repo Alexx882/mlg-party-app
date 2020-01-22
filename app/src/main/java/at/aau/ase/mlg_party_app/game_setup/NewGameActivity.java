@@ -21,14 +21,15 @@ import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
+import at.aau.ase.mlg_party_app.spacepirate.Player;
 
 public class NewGameActivity extends BasicLobbyActivity {
 
-   private  TextView textViewInformation,
-           textViewPlayerList;
+    private TextView textViewInformation,
+            textViewPlayerList;
     private Button buttonStartGame,
             buttonOpenLobby;
-    private  EditText editTextPlayerName;
+    private EditText editTextPlayerName;
     private ProgressBar progressBar;
 
     @Override
@@ -64,8 +65,8 @@ public class NewGameActivity extends BasicLobbyActivity {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                    Intent intent = new Intent(NewGameActivity.this, BetweenGamesActivity.class);
-                    startActivity(intent);
+                Intent intent = new Intent(NewGameActivity.this, BetweenGamesActivity.class);
+                startActivity(intent);
             }
         };
         t.schedule(task, 1000);
@@ -82,8 +83,9 @@ public class NewGameActivity extends BasicLobbyActivity {
         CreateLobbyRequest req = new CreateLobbyRequest();
         req.type = MessageType.CreateLobby;
         req.playerName = playerName;
-
         WebSocketClient.getInstance().sendMessage(req);
+
+        printConnectedPlayers(new String[]{playerName});
     }
 
     private void handleCreateLobby(CreateLobbyResponse response) {
@@ -104,8 +106,12 @@ public class NewGameActivity extends BasicLobbyActivity {
     }
 
     private void handlePlayerJoined(PlayerJoinedResponse response) {
+        printConnectedPlayers(response.playerNames);
+    }
+
+    private void printConnectedPlayers(String[] players) {
         StringBuilder sb = new StringBuilder();
-        for (String s : response.playerNames) {
+        for (String s : players) {
             sb.append(s);
             sb.append("\n");
         }

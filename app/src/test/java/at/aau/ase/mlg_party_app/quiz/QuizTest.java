@@ -16,7 +16,6 @@ public class QuizTest {
 
     @Before // setup()
     public void before() {
-        System.out.println("Setting up!");
         logic = new QuizLogic();
     }
     @Test
@@ -45,7 +44,6 @@ public class QuizTest {
     }
     @After // tearDown
     public void after() {
-        System.out.println("Tearing down");
         logic = null;
         assertNull(logic);
 
