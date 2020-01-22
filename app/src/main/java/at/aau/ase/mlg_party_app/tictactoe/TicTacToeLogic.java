@@ -16,21 +16,16 @@ class TicTacToeLogic {
         this.lastPlayer="";
     }
     void setMove(int x, int y,String playerId){
-        if(validMove(x,y,playerId)){
             this.gameBoard[x][y]=true;
             this.lastPlayer=playerId;
-        }
     }
 
     //Checks if the field is already set or if the position is out of bounds
     boolean validMove(int x, int y,String player){
-        if(     x<0 || x>2 ||
+        return !(x<0 || x>2 ||
                 y<0 || y>2 ||
-                gameBoard[x][y] ||
-                player.equals(lastPlayer)
-        )return false;
-
-        return true;
+                gameBoard[x][y]||
+                player.equals(lastPlayer));
     }
 
 
@@ -49,5 +44,7 @@ class TicTacToeLogic {
         return lastPlayer;
     };
 
-
+    public void setLastPlayer(String lastPlayer) {
+        this.lastPlayer = lastPlayer;
+    }
 }

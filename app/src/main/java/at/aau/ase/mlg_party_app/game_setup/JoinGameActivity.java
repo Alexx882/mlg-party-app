@@ -66,7 +66,6 @@ public class JoinGameActivity extends AppCompatActivity {
             });
             return;
         }
-
         Game.getInstance().setPlayerId(response.playerId);
 
         runOnUiThread(this::updateUiForGameStart);
@@ -109,6 +108,7 @@ public class JoinGameActivity extends AppCompatActivity {
         req.lobbyName = lobbyname;
         req.playerName = playername;
         WebSocketClient.getInstance().sendMessage(req);
+        Game.getInstance().setLobbyId(lobbyname);
     }
 
     @Override

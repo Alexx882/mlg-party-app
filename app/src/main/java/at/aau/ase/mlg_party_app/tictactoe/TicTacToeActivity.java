@@ -26,7 +26,6 @@ public class TicTacToeActivity extends AppCompatActivity {
     //Variable Setup
     TicTacToeLogic gameLogic;
     CountDownTimer timer;
-    String playerId; //TODO: Get this from server
     TextView gameMessageTV;
     TextView timerTV;
     TableLayout gameTable;
@@ -44,8 +43,8 @@ public class TicTacToeActivity extends AppCompatActivity {
             initialize all required parts of the game
         */
     private void initComponents() {
-
         gameLogic=new TicTacToeLogic();
+
         gameTable=findViewById(R.id.gameTable);
         gameMessageTV=findViewById(R.id.tVGameMessage);
         timerTV=findViewById(R.id.tVTimer);
@@ -57,12 +56,16 @@ public class TicTacToeActivity extends AppCompatActivity {
     private void socketHandling(){
         Intent intent = getIntent();
         String wsEndpoint = intent.getStringExtra("WS");
+
         WebSocketClient.getInstance().connectToServer(wsEndpoint);
         HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
         WebSocketClient.getInstance().sendMessage(helloReq);
+
         WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
         WebSocketClient.getInstance().registerCallback(MessageType.TicTacToeMove,this::addMove);
         WebSocketClient.getInstance().registerCallback(MessageType.TicTacToeError,this::displayErrorMessage);
+
+        if(!Game.getInstance().isLobbyOwner())gameLogic.setLastPlayer(Game.getInstance().getPlayerId());
     }
     /*
         Create a table for the game
@@ -86,8 +89,8 @@ public class TicTacToeActivity extends AppCompatActivity {
      */
     private void cellClickedHandler(int x , int y){
         gameMessageTV.setText(""); //New attempt = no current messages to display
-        if(gameLogic.validMove(x,y, playerId)) {
-            TicTacToeMoveRequest req = new TicTacToeMoveRequest(playerId, x, y);
+        if(gameLogic.validMove(x,y, Game.getInstance().getPlayerId())) {
+            TicTacToeMoveRequest req = new TicTacToeMoveRequest(Game.getInstance().getPlayerId(), x, y);
             WebSocketClient.getInstance().sendMessage(req);
         }else{
             gameMessageTV.setText(R.string.tictactoe_invalidmove);
@@ -105,17 +108,19 @@ public class TicTacToeActivity extends AppCompatActivity {
         By checking if the move is valid and then updating the cell accordingly
      */
     void addMove(TicTacToeMoveResponse response){
+        System.out.println("ADDING MOVE!!"+response.lobbyId+"/"+response.playerId);
         TableRow row= (TableRow)gameTable.getChildAt(response.x);
         ImageView cell =(ImageView)row.getChildAt(response.y);
         setGameCell(cell,response.playerId);
         gameLogic.setMove(response.x,response.y,response.playerId);
         //Start the timer if its your turn
-        if(!response.playerId.equals(playerId)){
+        /*if(!response.playerId.equals(Game.getInstance().getPlayerId())){
             if(timer!=null)timer.cancel();
             timerTV.setText(R.string.tictactoe_notyourturn);
         }else{
             startCountdown();
-        }
+        }*/
+
 
     }
 
@@ -142,7 +147,7 @@ public class TicTacToeActivity extends AppCompatActivity {
         Update the cell to show the proper image for the player
      */
     private void setGameCell(ImageView gameCell, String pId){
-        if(pId.equals(playerId)){
+        if(pId.equals(Game.getInstance().getPlayerId())){
             gameCell.setImageResource(R.drawable.tictactoe_mlg);
            // playerId=2; //For Singleplayer
         }else {

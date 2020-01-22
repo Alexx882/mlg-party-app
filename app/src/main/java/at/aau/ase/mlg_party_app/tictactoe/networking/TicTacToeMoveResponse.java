@@ -8,5 +8,6 @@ public class TicTacToeMoveResponse extends BaseResponse{
         type= MessageType.TicTacToeMove;
     }
     public String playerId;
+    public String lobbyId;
     public int x, y;
 }
