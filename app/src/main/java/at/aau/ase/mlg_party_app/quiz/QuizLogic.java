@@ -1,24 +1,42 @@
 package at.aau.ase.mlg_party_app.quiz;
 
 
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.security.SecureRandom;
+import java.util.Random;
 
 public class QuizLogic {
     private static final int NUM_QUESTIONS = 6;
 
-        private SecureRandom random;
-        int currentQuestion;
-        Question[] questions = new Question[NUM_QUESTIONS];
+    private static Random random;
+    int currentQuestion;
+    Question[] questions = new Question[NUM_QUESTIONS];
 
-        public QuizLogic(String lobby){
-            random = new SecureRandom(lobby.getBytes());
-            currentQuestion = random.nextInt(NUM_QUESTIONS);
+    public QuizLogic(String lobby) {
+
+        if (random == null) {
+            random = new Random();
+
+            int seed;
+
+            try {
+                seed = Integer.valueOf(lobby);
+            } catch (NumberFormatException e) {
+                seed = 420;
+                Log.e("Quiz", "Number %s could not be parsed to an int.");
+            }
+
+            random.setSeed(seed);
         }
 
-   void createQuestions() {
+
+        currentQuestion = random.nextInt(NUM_QUESTIONS);
+    }
+
+    void createQuestions() {
         Question q1 = new Question("What is the name of the network of computers from which the Internet has emerged?", "Arpanet", "Google", "Cyclades", "Milnet", 1);
         questions[0] = q1;
         Question q2 = new Question("In what year was Google founded?", "1996", "1998", "1999", "2000", 2);
@@ -31,21 +49,25 @@ public class QuizLogic {
         questions[4] = new Question("What is the average penis size in the Kongo?", "12", "22", "18", "40", 3);
         questions[5] = new Question("What is the average number of individuals in orgies?", "7", "1", "5", "4", 3);
     }
-   boolean checkAnswer(int ans) {
-       //Checking answers
-        if(questions[currentQuestion].getCorrectAnswer() == ans ) return true;
+
+    boolean checkAnswer(int ans) {
+        //Checking answers
+        if (questions[currentQuestion].getCorrectAnswer() == ans) return true;
         return false;
     }
+
     void setQuestion(TextView textViewQuestion) {
-       textViewQuestion.setText(questions[currentQuestion].getQuestionText());
+        textViewQuestion.setText(questions[currentQuestion].getQuestionText());
     }
+
     void setAnswers(Button[] allButtons) {
         allButtons[0].setText(questions[currentQuestion].getAnswer1());
         allButtons[1].setText(questions[currentQuestion].getAnswer2());
         allButtons[2].setText(questions[currentQuestion].getAnswer3());
         allButtons[3].setText(questions[currentQuestion].getAnswer4());
     }
+
     void changeQuestion(int newQuestion) {
-       this.currentQuestion = newQuestion;
+        this.currentQuestion = newQuestion;
     }
 }
