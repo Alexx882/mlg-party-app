@@ -12,8 +12,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import at.aau.ase.mlg_party_app.BasicGameActivity;
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.clicker.networking.clickerResults;
@@ -23,7 +22,7 @@ import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 import pl.droidsonroids.gif.GifImageView;
 
-public class ClickerGame extends AppCompatActivity {
+public class ClickerGame extends BasicGameActivity {
 
     private ImageView ivClicker;
     private TextView tvCounter;
@@ -40,8 +39,10 @@ public class ClickerGame extends AppCompatActivity {
         tvCounter = findViewById(R.id.tv_clicker);
         ivHitmarker = findViewById(R.id.iv_hitmarker);
         GifImageView gifBackground = findViewById(R.id.gifBackground);
-        logic = new Logic();
         socketHandling();
+
+        logic = new Logic();
+        startTimer(15);
 
 
         ivClicker.setOnTouchListener((v, event) -> {
@@ -81,6 +82,8 @@ public class ClickerGame extends AppCompatActivity {
 
     private void handleEnd(GameFinishedResponse r) {
         Log.e("mlg", "finished with " + r.winnerId);
+        finish();
+
     }
 
     private void startTimer(int seconds) {
@@ -102,7 +105,7 @@ public class ClickerGame extends AppCompatActivity {
     }
 
     private void sendResultToServer() {
-        clickerResults cr = new clickerResults();
+        clickerResults cr = new clickerResults(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId(), logic.getCounter());
         cr.max = logic.getCounter();
         WebSocketClient.getInstance().sendMessage(cr);
 

@@ -6,13 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".clicker.ClickerGame">
 
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/stars" />
-
+        android:src="@drawable/stars"
+        tools:layout_editor_absoluteX="-33dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <TextView
         android:id="@+id/tv_clicker"
@@ -58,8 +60,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="15 Sekunden"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="4dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,11 +5,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Display;
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.TextView;
+
+import at.aau.ase.mlg_party_app.BasicGameActivity;
+import at.aau.ase.mlg_party_app.Game;
+import at.aau.ase.mlg_party_app.R;
+import at.aau.ase.mlg_party_app.clicker.networking.clickerResults;
+import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
+import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
+import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends BasicGameActivity {
 
     //declaring gameview
     private GameView gameView;
@@ -25,6 +36,9 @@ public class GameActivity extends AppCompatActivity {
         Point size = new Point();
         display.getSize(size);
 
+        socketHandling();
+        startTimer(15);
+
         //Initializing game view object
         //this time we are also passing the screen size to the GameView constructor
         gameView = new GameView(this, size.x, size.y);
@@ -32,6 +46,51 @@ public class GameActivity extends AppCompatActivity {
         //adding it to contentview
         setContentView(gameView);
     }
+
+    private void socketHandling() {
+        Intent intent = getIntent();
+        String wsEndpoint = intent.getStringExtra("WS");
+
+        WebSocketClient.getInstance().connectToServer(wsEndpoint);
+        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
+        WebSocketClient.getInstance().sendMessage(helloReq);
+
+        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleEnd);
+
+
+    }
+
+    private void handleEnd(GameFinishedResponse r) {
+        Log.e("mlg", "finished with " + r.winnerId);
+        finish();
+
+    }
+
+    private void startTimer(int seconds) {
+        new CountDownTimer(seconds * 1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                updateRemainingTime((int) millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                sendResultToServer();
+            }
+        }.start();
+    }
+
+    private void updateRemainingTime(int remainingSeconds) {
+        TextView textViewTimer = findViewById(R.id.tvTimer);
+        runOnUiThread(() -> textViewTimer.setText(remainingSeconds + " Sekunden"));
+    }
+
+    private void sendResultToServer() {
+        clickerResults cr = new clickerResults(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId(), gameView.score);
+        cr.max = gameView.score;
+        WebSocketClient.getInstance().sendMessage(cr);
+
+
+    }
+
 
     //pausing the game when activity is paused
     @Override
