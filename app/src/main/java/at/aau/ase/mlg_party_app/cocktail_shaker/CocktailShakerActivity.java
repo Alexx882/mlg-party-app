@@ -7,11 +7,8 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import at.aau.ase.mlg_party_app.BasicGameActivity;
 import at.aau.ase.mlg_party_app.Game;
@@ -23,7 +20,6 @@ import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeResult;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakingArgs;
 import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
 import at.aau.ase.mlg_party_app.networking.MessageType;
-import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class CocktailShakerActivity extends BasicGameActivity {
@@ -35,8 +31,6 @@ public class CocktailShakerActivity extends BasicGameActivity {
 
     private ImageView imageViewSonic;
     private ShakeHandler shakeHandler;
-
-    MediaPlayer mediaPlayer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +65,7 @@ public class CocktailShakerActivity extends BasicGameActivity {
     private void startTimer(int seconds) {
         new CountDownTimer(seconds * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
-                updateRemainingTime((int) millisUntilFinished / 1000);
+                showRemainingTime((int) millisUntilFinished / 1000);
             }
 
             public void onFinish() {
@@ -80,13 +74,16 @@ public class CocktailShakerActivity extends BasicGameActivity {
         }.start();
     }
 
-    private void updateRemainingTime(int remainingSeconds) {
+    private void showRemainingTime(int remainingSeconds) {
         TextView textViewTimer = findViewById(R.id.textViewTimer);
         runOnUiThread(() -> textViewTimer.setText(String.valueOf(remainingSeconds)));
     }
 
     private void timeUp() {
         shakeHandler.stop();
+        stopViolin();
+        showRemainingTime(0);
+        updateImage(1);
 
         ShakeResult r = shakeHandler.getResults();
         sendResultToServer(r);
@@ -102,8 +99,8 @@ public class CocktailShakerActivity extends BasicGameActivity {
     }
 
     private void handleShake(ShakingArgs shakeResult) {
-       updateImage(shakeResult.value);
-       makeSound(shakeResult.message);
+        updateImage(shakeResult.value);
+        makeSound(shakeResult.message);
     }
 
     private void updateImage(float shakeValue) {
@@ -123,37 +120,64 @@ public class CocktailShakerActivity extends BasicGameActivity {
     private void makeSound(ShakeIntensity intensity) {
         switch (intensity) {
             case CRAZY:
+                playLongAirhorn();
+                break;
             case FAST:
-                playSound(R.raw.air_horn_triple);
+                if (Math.random() > 0.6)
+                    playShortAirhorn();
                 break;
             case DEACENT:
             case MEDIUM:
-                playSound(R.raw.air_horn_single);
-                break;
             case LOW:
+                stopViolin();
+                break;
             case NON_EXISTENT:
-                loopSound(R.raw.sad_violin);
+                playViolin();
                 break;
         }
     }
 
-    private void playSound(int sound){
-        if(mediaPlayer != null)
-            mediaPlayer.stop();
+    MediaPlayer mediaPlayerAhVio = null;
 
-        mediaPlayer = MediaPlayer.create(this, sound);
-        mediaPlayer.setVolume(1.0f, 1.0f);
-        mediaPlayer.start();
-        mediaPlayer = null;
+    private void playShortAirhorn() {
+        stopViolin();
+
+        MediaPlayer player = MediaPlayer.create(this, R.raw.air_horn_single);
+        player.setVolume(1.0f, 1.0f);
+        player.setOnCompletionListener(MediaPlayer::release);
+        player.start();
     }
 
-    private void loopSound(int sound){
-        if (mediaPlayer != null)
+    private void playLongAirhorn() {
+        stopViolin();
+
+        MediaPlayer player = MediaPlayer.create(this, R.raw.air_horn_triple);
+        player.setVolume(1.0f, 1.0f);
+        player.setOnCompletionListener(MediaPlayer::release);
+        player.start();
+    }
+
+    private void playViolin() {
+        if (mediaPlayerAhVio != null)
             return;
 
-        mediaPlayer = MediaPlayer.create(this, sound);
-        mediaPlayer.setVolume(1.0f, 1.0f);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
+        mediaPlayerAhVio = MediaPlayer.create(this, R.raw.sad_violin);
+        mediaPlayerAhVio.setVolume(1.0f, 1.0f);
+        mediaPlayerAhVio.setLooping(true);
+        mediaPlayerAhVio.start();
+    }
+
+    private void stopViolin() {
+        if (mediaPlayerAhVio != null) {
+            mediaPlayerAhVio.stop();
+            mediaPlayerAhVio.release();
+            mediaPlayerAhVio = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopViolin();
+        super.onDestroy();
     }
 }

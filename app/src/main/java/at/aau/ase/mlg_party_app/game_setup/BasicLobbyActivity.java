@@ -38,15 +38,16 @@ public abstract class BasicLobbyActivity extends AppCompatActivity {
         mediaPlayer.start();
     }
 
-    protected void stopBackgroundSound() {
-        if (mediaPlayer != null)
+    protected void stopSound() {
+        if (mediaPlayer != null) {
             mediaPlayer.stop();
+            mediaPlayer.release();
+        }
     }
 
     protected void playLoadingSound() {
         // stop background music
-        if (mediaPlayer != null)
-            mediaPlayer.stop();
+        stopSound();
 
         mediaPlayer = MediaPlayer.create(this, R.raw.lobby_loading);
         mediaPlayer.setVolume(1.0f, 1.0f);
@@ -55,7 +56,7 @@ public abstract class BasicLobbyActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        mediaPlayer.stop();
+        stopSound();
         super.onDestroy();
     }
 }

@@ -16,7 +16,7 @@ public abstract class BasicGameActivity extends AppCompatActivity {
      * @param r
      */
     public void handleGameFinished(GameFinishedResponse r) {
-        Log.e("mlg", "finished with " + r.winnerId);
+        Log.e("mlg-party", "finished with " + r.winnerId);
 
         Game.getInstance().setLastWinnerId(r.winnerId);
         Game.getInstance().setPlayerRanking(r.ranking);

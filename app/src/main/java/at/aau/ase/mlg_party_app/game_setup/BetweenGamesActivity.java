@@ -25,7 +25,7 @@ import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class BetweenGamesActivity extends AppCompatActivity {
 
-    private static final int START_NEXT_GAME_DELAY_MS = 1000;
+    private static final int START_NEXT_GAME_DELAY_MS = 4000;
 
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;

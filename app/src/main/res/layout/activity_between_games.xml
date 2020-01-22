@@ -46,15 +46,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.092" />
 
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imageView"
         android:layout_width="258dp"
         android:layout_height="275dp"
         android:scaleType="fitEnd"
+        android:scaleX="-1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/frog"
-        android:scaleX="-1" />
+        android:src="@drawable/frog" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
