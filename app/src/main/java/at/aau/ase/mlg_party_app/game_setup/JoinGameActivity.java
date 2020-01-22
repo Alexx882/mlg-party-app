@@ -101,6 +101,8 @@ public class JoinGameActivity extends BasicLobbyActivity {
         req.lobbyName = lobbyname;
         req.playerName = playername;
         WebSocketClient.getInstance().sendMessage(req);
+
+        Game.getInstance().setLobbyId(lobbyname);
     }
 
     @Override
