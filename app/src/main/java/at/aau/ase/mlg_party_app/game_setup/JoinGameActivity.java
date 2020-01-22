@@ -72,6 +72,7 @@ public class JoinGameActivity extends BasicLobbyActivity {
 
     private void updateUiForGameStart() {
         Intent intent = new Intent(this, BetweenGamesActivity.class);
+        intent.putExtra("game", Game.getInstance());
         startActivity(intent);
     }
 

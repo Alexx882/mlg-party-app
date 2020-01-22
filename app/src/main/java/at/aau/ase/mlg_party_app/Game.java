@@ -1,9 +1,10 @@
 package at.aau.ase.mlg_party_app;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+public class Game implements Serializable {
 
     private Game() {
         playerRanking = new ArrayList<>(2);
@@ -15,6 +16,10 @@ public class Game {
         if (instance == null)
             instance = new Game();
         return instance;
+    }
+
+    public static void setInstance(Game game){
+        instance = game;
     }
 
     /**
@@ -75,4 +80,6 @@ public class Game {
     public void setLastWinnerId(String lastWinnerId) {
         this.lastWinnerId = lastWinnerId;
     }
+
+
 }

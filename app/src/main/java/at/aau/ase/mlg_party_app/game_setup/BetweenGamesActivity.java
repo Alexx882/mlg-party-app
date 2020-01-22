@@ -34,6 +34,8 @@ public class BetweenGamesActivity extends AppCompatActivity {
         textViewPlayer1 = findViewById(R.id.textViewPlayerOrder);
         textViewPlayer2 = findViewById(R.id.textViewPlayerOrder2);
 
+        Game.setInstance((Game)getIntent().getSerializableExtra("game"));
+
         WebSocketClient.getInstance().registerCallback(MessageType.StartGame, this::handleStartGame);
 
         requestNextGame();
@@ -65,6 +67,7 @@ public class BetweenGamesActivity extends AppCompatActivity {
                 Class<? extends AppCompatActivity> c = MiniGameManager.getGameMap().get(wsEndpoint);
                 Intent intent = new Intent(BetweenGamesActivity.this, c);
                 intent.putExtra("WS", wsEndpoint);
+                intent.putExtra("game", Game.getInstance());
                 startActivity(intent);
             }
         }, START_NEXT_GAME_DELAY_MS);
