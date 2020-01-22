@@ -42,6 +42,8 @@ public class WebSocketClient extends WebSocketListener {
     }
 
     public void connectToServer(String endpoint) {
+        disconnectFromServer();
+
         Request request = new Request.Builder().url(NetworkConstants.ENDPOINT_PREFIX + endpoint).build();
         webSocket = client.newWebSocket(request, this);
     }
