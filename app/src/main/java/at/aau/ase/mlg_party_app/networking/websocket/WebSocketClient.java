@@ -42,7 +42,7 @@ public class WebSocketClient {
 
         webSocketClient = new org.java_websocket.client.WebSocketClient(URI.create(NetworkConstants.ENDPOINT_PREFIX + endpoint)) {
             @Override
-            public void onOpen(ServerHandshake _) {
+            public void onOpen(ServerHandshake hs) {
             }
 
             @Override
