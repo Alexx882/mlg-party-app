@@ -108,7 +108,6 @@ public class TicTacToeActivity extends AppCompatActivity {
         By checking if the move is valid and then updating the cell accordingly
      */
     void addMove(TicTacToeMoveResponse response){
-        System.out.println("ADDING MOVE!!"+response.lobbyId+"/"+response.playerId);
         TableRow row= (TableRow)gameTable.getChildAt(response.x);
         ImageView cell =(ImageView)row.getChildAt(response.y);
         setGameCell(cell,response.playerId);
@@ -177,29 +176,10 @@ public class TicTacToeActivity extends AppCompatActivity {
 
     private void handleGameFinished(GameFinishedResponse r) {
         gameMessageTV.setText(r.winnerId);
+        WebSocketClient.getInstance().removeCallback(MessageType.TicTacToeError);
+        WebSocketClient.getInstance().removeCallback(MessageType.TicTacToeMove);
+        WebSocketClient.getInstance().removeCallback(MessageType.GameFinished);
         finish();
     }
-/** //NOT NEEDED
-    /*
-    Visual popup-shown at the end of the game, using predefined text for the textviews
-
-    Parameter (response.endgameScenarioId)
-        1 = Player won
-        2 = Player lost
-        Everything else = Tie
-     /
-    private void showEndOfGameDialog(TicTacToeEndGameResponse response){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-       builder.setTitle(response.endGameScenario);
-        builder.setMessage(R.string.backtolobby);
-        builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        });
-        AlertDialog endGameDialog=builder.create();
-        endGameDialog.show();
-    }
-*/
 
 }

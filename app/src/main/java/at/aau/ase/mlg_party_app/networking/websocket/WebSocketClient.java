@@ -109,10 +109,12 @@ public class WebSocketClient extends WebSocketListener {
     }
 
     public void sendMessage(BaseRequest request) {
-        System.out.println(jsonParser.toJson(request));
         webSocket.send(jsonParser.toJson(request));
     }
 
+    public void removeCallback(MessageType messageType){
+            callbacks.remove(messageType);
+    }
     public <T extends BaseResponse> void registerCallback(MessageType messageType, Callback<T> callback) {
         if (!callbacks.containsKey(messageType)) {
             callbacks.put(messageType, callback);
