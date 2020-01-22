@@ -12,14 +12,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".quiz.QuizGame" />
         <activity android:name=".rps.RpsGame" />
         <activity android:name=".spacepirate.GameActivity"/>
         <activity android:name=".clicker.ClickerGame"/>
         <activity android:name=".cocktail_shaker.CocktailShakerActivity"/>
         <activity android:name=".game_setup.BetweenGamesActivity"/>
-        tools:ignore="GoogleAppIndexingWarning">
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         <activity android:name=".game_setup.JoinGameActivity" />
         <activity android:name=".game_setup.NewGameActivity"/>
         <activity android:name=".MainActivity">

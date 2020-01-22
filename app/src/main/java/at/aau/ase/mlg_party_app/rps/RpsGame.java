@@ -2,6 +2,7 @@ package at.aau.ase.mlg_party_app.rps;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -9,14 +10,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import at.aau.ase.mlg_party_app.BasicGameActivity;
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
+import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
 import at.aau.ase.mlg_party_app.networking.MessageType;
 import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 import at.aau.ase.mlg_party_app.rps.networking.RpsResult;
 
-public class RpsGame extends AppCompatActivity implements View.OnClickListener{
+public class RpsGame extends BasicGameActivity implements View.OnClickListener{
     ImageView enemyView;
     ImageView playerView;
     ImageButton buttonRock;
@@ -44,6 +47,11 @@ public class RpsGame extends AppCompatActivity implements View.OnClickListener{
         buttonPaper.setOnClickListener(this);
         buttonRock.setOnClickListener(this);
         buttonScissor.setOnClickListener(this);
+        Intent intent = getIntent();
+        String wsEndpoint = intent.getStringExtra("WS");
+        WebSocketClient.getInstance().connectToServer(wsEndpoint);
+        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
+        WebSocketClient.getInstance().sendMessage(helloReq);
 
         WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::receiveGameFinished);
 
