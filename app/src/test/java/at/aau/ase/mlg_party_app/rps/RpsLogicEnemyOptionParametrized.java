@@ -25,7 +25,7 @@ public class RpsLogicEnemyOptionParametrized {
     }
 
     @Parameterized.Parameters
-    public static Collection primeNumbers() {
+    public static Collection data() {
         return Arrays.asList(new Object[][] {
                 { RpsLogic.Option.SCISSOR, RpsLogic.Result.DRAW, RpsLogic.Option.SCISSOR },
                 { RpsLogic.Option.PAPER, RpsLogic.Result.DRAW, RpsLogic.Option.PAPER },

@@ -35,4 +35,7 @@ class QuizLogic {
         allButtons[2].setText(questions[currentQuestion].getAnswer3());
         allButtons[3].setText(questions[currentQuestion].getAnswer4());
     }
+    void changeQuestion(int newQuestion) {
+       this.currentQuestion = newQuestion;
+    }
 }
