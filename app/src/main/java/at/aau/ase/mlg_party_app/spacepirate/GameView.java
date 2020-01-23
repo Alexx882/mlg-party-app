@@ -309,7 +309,7 @@ public class GameView extends SurfaceView implements Runnable {
         } catch (InterruptedException e) {
             Log.e(TAG, "control: " + e + "");
             control();
-
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -320,6 +320,7 @@ public class GameView extends SurfaceView implements Runnable {
         } catch (InterruptedException e) {
             Log.e(TAG, "control: " + e + "");
             gameThread.getUncaughtExceptionHandler();
+            Thread.currentThread().interrupt();
         }
     }
 

@@ -24,6 +24,8 @@ import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
 import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeErrorResponse;
 import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeMoveResponse;
 
+import static android.content.ContentValues.TAG;
+
 public class WebSocketClient {
     private org.java_websocket.client.WebSocketClient webSocketClient;
     private JsonParser jsonParser = new JsonParser();
@@ -66,7 +68,8 @@ public class WebSocketClient {
         try {
             webSocketClient.connectBlocking();
         } catch (InterruptedException e) {
-            throw new RuntimeException("Connection to ws could not be established");
+            Log.e("mlg-party", String.format("websocket connection: %s", e));
+            Thread.currentThread().interrupt();
         }
     }
 
