@@ -86,6 +86,7 @@ public class JsonParserTests {
     }
 
     //TICTACTOE PARSER TESTS
+    /*
     @Test
     public void toJson_TicTacToeMoveRequest_validJson() {
         TicTacToeMoveRequest req = new TicTacToeMoveRequest( 1, 2);
@@ -107,6 +108,6 @@ public class JsonParserTests {
         res.errorMessage="A MESSAGE!";
 
         Assert.assertEquals("{\"errorMessage\":\"A MESSAGE!\",\"type\":\"TicTacToeError\"}", parser.toJson(res));
-    }
+    }*/
 
 }
