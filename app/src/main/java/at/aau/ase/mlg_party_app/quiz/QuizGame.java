@@ -60,7 +60,7 @@ public class QuizGame extends BasicGameActivity implements View.OnClickListener{
         Intent intent = getIntent();
         String wsEndpoint = intent.getStringExtra("WS");
         WebSocketClient.getInstance().connectToServer(wsEndpoint);
-        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
+        HelloGameRequest helloReq = new HelloGameRequest();
         WebSocketClient.getInstance().sendMessage(helloReq);
 
         WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
@@ -96,7 +96,7 @@ public class QuizGame extends BasicGameActivity implements View.OnClickListener{
     }
 
     private void sendResultToServer(boolean correct) {
-        BaseRequest r = new QuizResult(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId(), correct);
+        BaseRequest r = new QuizResult(correct);
         WebSocketClient.getInstance().sendMessage(r);
     }
 

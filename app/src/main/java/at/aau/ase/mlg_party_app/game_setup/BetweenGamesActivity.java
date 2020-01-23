@@ -21,7 +21,7 @@ import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class BetweenGamesActivity extends AppCompatActivity {
 
-    private static final int START_NEXT_GAME_DELAY_MS = 4000;
+    private static final int START_NEXT_GAME_DELAY_MS = 2000;
 
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
@@ -49,6 +49,13 @@ public class BetweenGamesActivity extends AppCompatActivity {
         super.onPostResume();
     }
 
+    @Override
+    protected void onDestroy() {
+        //cleaning up the callbacks, to always update the proper UI
+        WebSocketClient.getInstance().removeCallback(MessageType.StartGame);
+        super.onDestroy();
+    }
+
     private void requestNextGame() {
         if (!Game.getInstance().isLobbyOwner())
             return;
@@ -65,7 +72,7 @@ public class BetweenGamesActivity extends AppCompatActivity {
 
                 WebSocketClient.getInstance().disconnectFromServer();
 
-                Class<? extends BasicGameActivity> c = MiniGameManager.getGameMap().get(wsEndpoint);
+                Class<? extends BasicGameActivity> c = (Class<? extends BasicGameActivity>) MiniGameManager.getGameMap().get(wsEndpoint);
                 Intent intent = new Intent(BetweenGamesActivity.this, c);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("WS", wsEndpoint);

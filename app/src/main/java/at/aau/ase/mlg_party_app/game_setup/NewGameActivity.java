@@ -21,7 +21,6 @@ import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
-import at.aau.ase.mlg_party_app.spacepirate.Player;
 
 public class NewGameActivity extends BasicLobbyActivity {
 
@@ -90,7 +89,7 @@ public class NewGameActivity extends BasicLobbyActivity {
     }
 
     private void handleCreateLobby(CreateLobbyResponse response) {
-        if (response.lobbyName == null) {
+        if (response.lobbyId == null) {
             runOnUiThread(() ->
             {
                 String error = "Lobby could not be created";
@@ -100,10 +99,10 @@ public class NewGameActivity extends BasicLobbyActivity {
             return;
         }
 
-        runOnUiThread(() -> updateUiForGameStart(response.lobbyName));
+        runOnUiThread(() -> updateUiForGameStart(response.lobbyId));
 
         Game.getInstance().setPlayerId(response.playerId);
-        Game.getInstance().setLobbyId(response.lobbyName);
+        Game.getInstance().setLobbyId(response.lobbyId);
     }
 
     private void handlePlayerJoined(PlayerJoinedResponse response) {
@@ -127,6 +126,9 @@ public class NewGameActivity extends BasicLobbyActivity {
 
     @Override
     protected void onDestroy() {
+        //cleaning up the callbacks, to always update the proper UI
+        WebSocketClient.getInstance().removeCallback(MessageType.CreateLobby);
+        WebSocketClient.getInstance().removeCallback(MessageType.PlayerJoined);
         WebSocketClient.getInstance().disconnectFromServer();
         super.onDestroy();
     }

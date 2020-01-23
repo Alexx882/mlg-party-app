@@ -47,9 +47,9 @@ public class JsonParserTests {
     @Test
     public void toJson_CreateLobbyResponse_validJson() {
         CreateLobbyResponse res = new CreateLobbyResponse();
-        res.lobbyName = "nice lobby";
+        res.lobbyId = "nice lobby";
 
-        Assert.assertEquals("{\"lobbyName\":\"nice lobby\"}", parser.toJson(res));
+        Assert.assertEquals("{\"lobbyId\":\"nice lobby\"}", parser.toJson(res));
     }
 
     @Test(expected = JsonSyntaxException.class)
@@ -88,7 +88,7 @@ public class JsonParserTests {
     //TICTACTOE PARSER TESTS
     @Test
     public void toJson_TicTacToeMoveRequest_validJson() {
-        TicTacToeMoveRequest req = new TicTacToeMoveRequest("PID", 1, 2);
+        TicTacToeMoveRequest req = new TicTacToeMoveRequest( 1, 2);
 
         Assert.assertEquals("{\"playerId\":\"PID\",\"x\":1,\"y\":2,\"type\":\"TicTacToeMove\"}", parser.toJson(req));
     }

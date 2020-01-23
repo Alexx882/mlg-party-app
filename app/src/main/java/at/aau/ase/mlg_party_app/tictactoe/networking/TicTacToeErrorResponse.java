@@ -1,11 +1,7 @@
 package at.aau.ase.mlg_party_app.tictactoe.networking;
 
-import at.aau.ase.mlg_party_app.networking.MessageType;
-import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameBaseResponse;
 
-public class TicTacToeErrorResponse extends BaseResponse {
-   public TicTacToeErrorResponse(){
-      type= MessageType.TicTacToeError;
-   }
+public class TicTacToeErrorResponse extends GameBaseResponse {
    public String errorMessage;
 }

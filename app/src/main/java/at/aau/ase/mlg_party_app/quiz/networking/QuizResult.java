@@ -7,8 +7,8 @@ public class QuizResult extends GameBaseRequest {
 
     public boolean won;
 
-    public QuizResult(String lobbyId, String playerId, boolean won){
-        super(MessageType.QuizResult, lobbyId, playerId);
+    public QuizResult(boolean won){
+        super(MessageType.QuizResult);
         this.won = won;
     }
 

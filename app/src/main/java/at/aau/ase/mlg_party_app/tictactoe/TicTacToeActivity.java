@@ -1,6 +1,6 @@
 package at.aau.ase.mlg_party_app.tictactoe;
 
-import androidx.appcompat.app.AppCompatActivity;
+import at.aau.ase.mlg_party_app.BasicGameActivity;
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
@@ -22,7 +22,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 
-public class TicTacToeActivity extends AppCompatActivity {
+public class TicTacToeActivity extends BasicGameActivity {
     //Variable Setup
     TicTacToeLogic gameLogic;
     CountDownTimer timer;
@@ -58,12 +58,13 @@ public class TicTacToeActivity extends AppCompatActivity {
         String wsEndpoint = intent.getStringExtra("WS");
 
         WebSocketClient.getInstance().connectToServer(wsEndpoint);
-        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
+        HelloGameRequest helloReq = new HelloGameRequest();
         WebSocketClient.getInstance().sendMessage(helloReq);
 
         WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
         WebSocketClient.getInstance().registerCallback(MessageType.TicTacToeMove,this::addMove);
         WebSocketClient.getInstance().registerCallback(MessageType.TicTacToeError,this::displayErrorMessage);
+
 
         if(!Game.getInstance().isLobbyOwner())gameLogic.setLastPlayer(Game.getInstance().getPlayerId());
     }
@@ -90,7 +91,7 @@ public class TicTacToeActivity extends AppCompatActivity {
     private void cellClickedHandler(int x , int y){
         gameMessageTV.setText(""); //New attempt = no current messages to display
         if(gameLogic.validMove(x,y, Game.getInstance().getPlayerId())) {
-            TicTacToeMoveRequest req = new TicTacToeMoveRequest(Game.getInstance().getPlayerId(), x, y);
+            TicTacToeMoveRequest req = new TicTacToeMoveRequest(x, y);
             WebSocketClient.getInstance().sendMessage(req);
         }else{
             gameMessageTV.setText(R.string.tictactoe_invalidmove);
@@ -107,7 +108,7 @@ public class TicTacToeActivity extends AppCompatActivity {
         Add a move to the gameboard
         By checking if the move is valid and then updating the cell accordingly
      */
-    void addMove(TicTacToeMoveResponse response){
+    private void addMove(TicTacToeMoveResponse response){
         TableRow row= (TableRow)gameTable.getChildAt(response.x);
         ImageView cell =(ImageView)row.getChildAt(response.y);
         setGameCell(cell,response.playerId);
@@ -128,7 +129,7 @@ public class TicTacToeActivity extends AppCompatActivity {
     Start a Timer to show how much time remains
     This is visual only (cut-off+ random move happens @server)
      */
-    void startCountdown(){
+    private void startCountdown(){
         timer=new CountDownTimer(5000, 100) {
 
             public void onTick(long millisUntilFinished) {
@@ -174,12 +175,12 @@ public class TicTacToeActivity extends AppCompatActivity {
         return cell;
     }
 
-    private void handleGameFinished(GameFinishedResponse r) {
-        gameMessageTV.setText(r.winnerId);
+    @Override
+    public void handleGameFinished(GameFinishedResponse r) {
         WebSocketClient.getInstance().removeCallback(MessageType.TicTacToeError);
         WebSocketClient.getInstance().removeCallback(MessageType.TicTacToeMove);
         WebSocketClient.getInstance().removeCallback(MessageType.GameFinished);
-        finish();
+        super.handleGameFinished(r);
     }
 
 }

@@ -79,11 +79,12 @@ public class WebSocketClient {
 
     void handleMessage(String json, Map<MessageType, Callback> callbacks) {
         IllegalArgumentException notValidJsonArgumentException = new IllegalArgumentException("json is not valid");
-
+        System.out.println(json);
+        System.out.println("---------------------");
         if (json == null)
             throw notValidJsonArgumentException;
 
-        BaseResponse base = null;
+        BaseResponse base;
         try {
             base = jsonParser.fromJson(json, BaseResponse.class);
         } catch (JsonSyntaxException e) {
@@ -115,9 +116,11 @@ public class WebSocketClient {
             case StartGame:
                 c = StartGameResponse.class;
                 break;
+
             case TicTacToeError:
                 c=TicTacToeErrorResponse.class;
                 break;
+
             case TicTacToeMove:
                 c= TicTacToeMoveResponse.class;
                 break;
