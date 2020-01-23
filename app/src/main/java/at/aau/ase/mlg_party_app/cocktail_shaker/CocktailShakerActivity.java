@@ -20,6 +20,7 @@ import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakeResult;
 import at.aau.ase.mlg_party_app.cocktail_shaker.shaking.ShakingArgs;
 import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
 import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 
 public class CocktailShakerActivity extends BasicGameActivity {
@@ -42,11 +43,17 @@ public class CocktailShakerActivity extends BasicGameActivity {
         Intent intent = getIntent();
         String wsEndpoint = intent.getStringExtra("WS");
         WebSocketClient.getInstance().connectToServer(wsEndpoint);
+        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
         HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
         WebSocketClient.getInstance().sendMessage(helloReq);
 
-        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
         initShakeDetection();
+    }
+
+    @Override
+    public void handleGameFinished(GameFinishedResponse r) {
+        WebSocketClient.getInstance().removeCallback(MessageType.GameFinished);
+        super.handleGameFinished(r);
     }
 
     private void initShakeDetection() {
@@ -90,13 +97,14 @@ public class CocktailShakerActivity extends BasicGameActivity {
     }
 
     private void sendResultToServer(ShakeResult result) {
-        CocktailShakerResult csr = new CocktailShakerResult();
+        CocktailShakerResult csr = new CocktailShakerResult(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
         csr.playerId = Game.getInstance().getPlayerId();
         csr.lobbyId = Game.getInstance().getLobbyId();
         csr.avg = result.avg;
         csr.max = result.max;
-
         WebSocketClient.getInstance().sendMessage(csr);
+
+
     }
 
     private void handleShake(ShakingArgs shakeResult) {

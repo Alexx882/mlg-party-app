@@ -16,6 +16,10 @@ public enum MessageType {
     // cocktail shaker
     , CocktailShakerResult
 
+    //TicTacToe
+    , TicTacToeMove
+    , TicTacToeError
+
     // Rps
     , RpsResult
 

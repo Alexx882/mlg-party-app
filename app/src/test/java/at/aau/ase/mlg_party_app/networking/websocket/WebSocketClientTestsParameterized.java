@@ -40,7 +40,7 @@ public class WebSocketClientTestsParameterized {
 
         Collection<Object[]> params = new LinkedList<>();
 
-        params.add(new Object[]{MessageType.CreateLobby, CreateLobbyResponse.class, "{\"type\":\"CreateLobby\", \"lobbyName\":\"String\", \"playerId\":\"String\"}"});
+        params.add(new Object[]{MessageType.CreateLobby, CreateLobbyResponse.class, "{\"type\":\"CreateLobby\", \"lobbyId\":\"String\", \"playerId\":\"String\"}"});
         params.add(new Object[]{MessageType.JoinLobby, JoinLobbyResponse.class, "{\"type\":\"JoinLobby\", \"status\":1, \"playerId\":\"String\"}"});
         params.add(new Object[]{MessageType.PlayerJoined, PlayerJoinedResponse.class, "{\"type\":\"PlayerJoined\", \"playerNames\":[\"Name1\", \"Name2\"]}"});
         params.add(new Object[]{MessageType.StartGame, StartGameResponse.class, "{\"type\":\"StartGame\", \"gameEndpoint\":\"String\"}"});

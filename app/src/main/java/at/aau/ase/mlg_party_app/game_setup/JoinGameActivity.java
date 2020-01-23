@@ -2,14 +2,11 @@ package at.aau.ase.mlg_party_app.game_setup;
 
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
@@ -98,7 +95,7 @@ public class JoinGameActivity extends BasicLobbyActivity {
 
         JoinLobbyRequest req = new JoinLobbyRequest();
         req.type = MessageType.JoinLobby;
-        req.lobbyName = lobbyname;
+        req.lobbyId = lobbyname;
         req.playerName = playername;
         WebSocketClient.getInstance().sendMessage(req);
 
@@ -107,6 +104,9 @@ public class JoinGameActivity extends BasicLobbyActivity {
 
     @Override
     protected void onDestroy() {
+        //cleaning up the callbacks, to always update the proper UI
+        WebSocketClient.getInstance().removeCallback(MessageType.JoinLobby);
+        WebSocketClient.getInstance().removeCallback(MessageType.PlayerJoined);
         WebSocketClient.getInstance().disconnectFromServer();
         super.onDestroy();
     }

@@ -1,7 +1,6 @@
 package at.aau.ase.mlg_party_app;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +20,6 @@ public abstract class BasicGameActivity extends AppCompatActivity {
     public void handleGameFinished(GameFinishedResponse r) {
         Game.getInstance().setLastWinnerId(r.winnerId);
         Game.getInstance().setPlayerRanking(r.ranking);
-
         runOnUiThread(this::finish);
     }
 

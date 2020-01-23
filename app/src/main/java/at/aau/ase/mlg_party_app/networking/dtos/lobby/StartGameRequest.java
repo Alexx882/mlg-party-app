@@ -5,14 +5,14 @@ import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
 
 public class StartGameRequest extends BaseRequest {
 
-    public String lobbyName;
+    public String lobbyId;
 
     public StartGameRequest() {
     }
 
-    public StartGameRequest(String lobbyName) {
+    public StartGameRequest(String lobbyId) {
         super(MessageType.StartGame);
-        this.lobbyName = lobbyName;
+        this.lobbyId = lobbyId;
     }
 
 }

@@ -10,6 +10,9 @@ import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeErrorResponse;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeMoveRequest;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeMoveResponse;
 
 /**
  * Tests if the request and response classes are as defined in the wiki.
@@ -44,9 +47,9 @@ public class JsonParserTests {
     @Test
     public void toJson_CreateLobbyResponse_validJson() {
         CreateLobbyResponse res = new CreateLobbyResponse();
-        res.lobbyName = "nice lobby";
+        res.lobbyId = "nice lobby";
 
-        Assert.assertEquals("{\"lobbyName\":\"nice lobby\"}", parser.toJson(res));
+        Assert.assertEquals("{\"lobbyId\":\"nice lobby\"}", parser.toJson(res));
     }
 
     @Test(expected = JsonSyntaxException.class)
@@ -81,4 +84,30 @@ public class JsonParserTests {
         Assert.assertEquals(expectedPlayerName, req.ranking.get(0).name);
         Assert.assertEquals(expectedPlayerPoints, req.ranking.get(0).points);
     }
+
+    //TICTACTOE PARSER TESTS
+    /*
+    @Test
+    public void toJson_TicTacToeMoveRequest_validJson() {
+        TicTacToeMoveRequest req = new TicTacToeMoveRequest( 1, 2);
+
+        Assert.assertEquals("{\"playerId\":\"PID\",\"x\":1,\"y\":2,\"type\":\"TicTacToeMove\"}", parser.toJson(req));
+    }
+    @Test
+    public void toJson_TicTacToeMoveResponse_validJson(){
+        TicTacToeMoveResponse res = new TicTacToeMoveResponse() ;
+        res.playerId="PID";
+        res.x=1;
+        res.y=2;
+
+        Assert.assertEquals("{\"playerId\":\"PID\",\"x\":1,\"y\":2,\"type\":\"TicTacToeMove\"}", parser.toJson(res));
+    }
+    @Test
+    public void toJson_TicTacToeErrorResponse_validJson(){
+        TicTacToeErrorResponse res = new TicTacToeErrorResponse() ;
+        res.errorMessage="A MESSAGE!";
+
+        Assert.assertEquals("{\"errorMessage\":\"A MESSAGE!\",\"type\":\"TicTacToeError\"}", parser.toJson(res));
+    }*/
+
 }

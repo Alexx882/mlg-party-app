@@ -60,7 +60,7 @@ public class WebSocketClientTests {
             handled.set(true);
         });
 
-        client.handleMessage("{\"type\":\"CreateLobby\", \"lobbyName\":\"String\", \"playerId\":\"String\"}", callbacks);
+        client.handleMessage("{\"type\":\"CreateLobby\", \"lobbyId\":\"String\", \"playerId\":\"String\"}", callbacks);
 
         Assert.assertFalse(handled.get());
     }

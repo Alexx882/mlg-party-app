@@ -21,6 +21,8 @@ import at.aau.ase.mlg_party_app.networking.dtos.game.StartGameResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.JoinLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeErrorResponse;
+import at.aau.ase.mlg_party_app.tictactoe.networking.TicTacToeMoveResponse;
 
 public class WebSocketClient {
     private org.java_websocket.client.WebSocketClient webSocketClient;
@@ -77,11 +79,11 @@ public class WebSocketClient {
 
     void handleMessage(String json, Map<MessageType, Callback> callbacks) {
         IllegalArgumentException notValidJsonArgumentException = new IllegalArgumentException("json is not valid");
-
+        
         if (json == null)
             throw notValidJsonArgumentException;
 
-        BaseResponse base = null;
+        BaseResponse base;
         try {
             base = jsonParser.fromJson(json, BaseResponse.class);
         } catch (JsonSyntaxException e) {
@@ -113,6 +115,14 @@ public class WebSocketClient {
             case StartGame:
                 c = StartGameResponse.class;
                 break;
+
+            case TicTacToeError:
+                c=TicTacToeErrorResponse.class;
+                break;
+
+            case TicTacToeMove:
+                c= TicTacToeMoveResponse.class;
+                break;
         }
 
         if (c != null)
@@ -124,6 +134,9 @@ public class WebSocketClient {
             webSocketClient.send(jsonParser.toJson(request));
     }
 
+    public void removeCallback(MessageType messageType){
+            callbacks.remove(messageType);
+    }
     public <T extends BaseResponse> void registerCallback(MessageType messageType, Callback<T> callback) {
         if (!callbacks.containsKey(messageType))
             callbacks.put(messageType, callback);
