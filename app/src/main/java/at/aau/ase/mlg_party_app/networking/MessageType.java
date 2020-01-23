@@ -25,4 +25,11 @@ public enum MessageType {
 
     // Quiz
     , QuizResult
+
+    //Clicker
+    , ClickerResults
+
+    //SpacePirates
+    , SpacePiratesResults
+
 }

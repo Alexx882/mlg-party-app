@@ -5,13 +5,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.widget.Toast;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 import at.aau.ase.mlg_party_app.R;
 
-public class Enemy {
+public class Enemy extends Logic {
     private Bitmap bitmap;
     private int x;
     private int y;
@@ -22,6 +21,7 @@ public class Enemy {
 
     private int maxY;
     private int minY;
+    private SecureRandom generator;
 
     Context context;
     Activity activity;
@@ -39,23 +39,21 @@ public class Enemy {
         this.context = context;
 
         activity = (Activity) context;
-        Random generator = new Random();
+        generator = new SecureRandom();
         speed = generator.nextInt(6) + 10;
-        x = screenX;
-        y = generator.nextInt(maxY) - bitmap.getHeight();
+        x = generator.nextInt(maxX) - bitmap.getHeight();
+        y = screenY;
 
         //initializing rect object
         detectCollision = new Rect(x, y, bitmap.getWidth(), bitmap.getHeight());
     }
 
-    public void update(int playerSpeed) {
-        x -= playerSpeed;
-        x -= speed;
-        if (x < minX - bitmap.getWidth()) {
-            Random generator = new Random();
+    public void update() {
+        y -= speed;
+        if (y < minY - bitmap.getWidth()) {
             speed = generator.nextInt(10) + 10;
-            x = maxX;
-            y = generator.nextInt(maxY) - bitmap.getHeight();
+            y = maxY;
+            x = generator.nextInt(maxX) - bitmap.getHeight();
         }
 
 
@@ -72,6 +70,12 @@ public class Enemy {
     public void setX(int x) {
 
         this.x = x;
+
+    }
+
+    public void setY(int y) {
+
+        this.y = y;
 
     }
 
