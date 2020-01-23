@@ -9,15 +9,12 @@ public class GameBaseRequest extends at.aau.ase.mlg_party_app.networking.dtos.Ba
     public String playerId;
 
     public GameBaseRequest(){
-        this.lobbyId = Game.getInstance().getLobbyId();
-        this.playerId =  Game.getInstance().getPlayerId();
-
     }
 
-    public GameBaseRequest(MessageType type){
+    public GameBaseRequest(MessageType type,String lobbyId, String playerId){
         super(type);
-        this.lobbyId = Game.getInstance().getLobbyId();
-        this.playerId =  Game.getInstance().getPlayerId();
+        this.lobbyId =lobbyId;
+        this.playerId =playerId ;
     }
 
 }
