@@ -12,59 +12,63 @@ public class Player {
     private int x;
     private int y;
     private int speed = 0;
-    private boolean boosting;
-    private final int GRAVITY = -10;
     private int maxY;
     private int minY;
+    private int maxX;
+    private int minX;
+    private int bitmapHeight;
+    private int bitmapWidth;
 
-    private final int MIN_SPEED = 1;
-    private final int MAX_SPEED = 20;
 
     private Rect detectCollision;
 
     public Player(Context context, int screenX, int screenY) {
-        x = 75;
-        y = 50;
-        speed = 1;
+
+        speed = 0;
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
-        maxY = screenY - bitmap.getHeight();
+        if (bitmap == null) {
+            bitmapHeight = 50;
+            bitmapWidth = 50;
+        } else {
+            bitmapHeight = bitmap.getHeight();
+            bitmapWidth = bitmap.getWidth();
+        }
+        maxY = screenY - bitmapHeight;
         minY = 0;
-        boosting = false;
+        maxX = screenX - bitmapHeight;
+        minX = 0;
+        x = maxX / 2;
+        y = 0;
 
         //initializing rect object
-        detectCollision = new Rect(x, y, bitmap.getWidth(), bitmap.getHeight());
+        detectCollision = new Rect(x, y, bitmapWidth, bitmapHeight);
     }
 
-    public void setBoosting() {
-        boosting = true;
+
+    public void setRight() {
+        speed = 10;
     }
 
-    public void stopBoosting() {
-        boosting = false;
+    public void setLeft() {
+        speed = -10;
     }
+
+    public void dontmove() {
+        speed = 0;
+    }
+
 
     public void update() {
-        if (boosting) {
-            speed += 2;
-        } else {
-            speed -= 5;
-        }
 
-        if (speed > MAX_SPEED) {
-            speed = MAX_SPEED;
-        }
 
-        if (speed < MIN_SPEED) {
-            speed = MIN_SPEED;
-        }
+        x += speed;
 
-        y -= speed + GRAVITY;
 
-        if (y < minY) {
-            y = minY;
+        if (x < minX) {
+            x = minX;
         }
-        if (y > maxY) {
-            y = maxY;
+        if (x > maxX) {
+            x = maxX;
         }
 
         //adding top, left, bottom and right to the rect object

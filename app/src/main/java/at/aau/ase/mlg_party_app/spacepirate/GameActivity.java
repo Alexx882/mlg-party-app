@@ -1,15 +1,20 @@
 package at.aau.ase.mlg_party_app.spacepirate;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Display;
 
-import androidx.appcompat.app.AppCompatActivity;
+import at.aau.ase.mlg_party_app.BasicGameActivity;
+import at.aau.ase.mlg_party_app.Game;
+import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
+import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
+import at.aau.ase.mlg_party_app.spacepirate.networking.spacepirateResults;
 
-public class GameActivity extends AppCompatActivity {
+
+public class GameActivity extends BasicGameActivity {
 
     //declaring gameview
     private GameView gameView;
@@ -24,6 +29,9 @@ public class GameActivity extends AppCompatActivity {
         //Getting the screen resolution into point object
         Point size = new Point();
         display.getSize(size);
+        socketHandling();
+
+        startTimer(15);
 
         //Initializing game view object
         //this time we are also passing the screen size to the GameView constructor
@@ -31,7 +39,45 @@ public class GameActivity extends AppCompatActivity {
 
         //adding it to contentview
         setContentView(gameView);
+
     }
+
+    private void socketHandling() {
+        Intent intent = getIntent();
+        String wsEndpoint = intent.getStringExtra("WS");
+
+        WebSocketClient.getInstance().connectToServer(wsEndpoint);
+        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
+        WebSocketClient.getInstance().sendMessage(helloReq);
+
+        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
+
+
+    }
+
+    private void startTimer(int seconds) {
+        new CountDownTimer(seconds * 1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                sendResultToServer();
+            }
+        }.start();
+    }
+
+
+    private void sendResultToServer() {
+        spacepirateResults sr = new spacepirateResults();
+        sr.lobbyId = Game.getInstance().getLobbyId();
+        sr.playerId = Game.getInstance().getPlayerId();
+        sr.max = gameView.getScore();
+
+        WebSocketClient.getInstance().sendMessage(sr);
+
+
+    }
+
 
     //pausing the game when activity is paused
     @Override
@@ -47,31 +93,6 @@ public class GameActivity extends AppCompatActivity {
         gameView.resume();
     }
 
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to exit?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        GameView.stopMusic();
-                        Intent startMain = new Intent(Intent.ACTION_MAIN);
-                        startMain.addCategory(Intent.CATEGORY_HOME);
-                        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(startMain);
-                        finish();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-
-    }
 
 
 }

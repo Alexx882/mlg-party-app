@@ -1,11 +1,10 @@
 package at.aau.ase.mlg_party_app.game_setup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import at.aau.ase.mlg_party_app.BasicGameActivity;
+import at.aau.ase.mlg_party_app.clicker.ClickerGame;
 import at.aau.ase.mlg_party_app.cocktail_shaker.CocktailShakerActivity;
 import at.aau.ase.mlg_party_app.quiz.QuizGame;
 
@@ -18,6 +17,7 @@ public class MiniGameManager {
 
         games.put("/game/shaker", CocktailShakerActivity.class);
         games.put("/game/quiz", QuizGame.class);
+        games.put("/game/clicker", ClickerGame.class);
 
         return games;
     }
