@@ -18,20 +18,15 @@ public class QuizLogic {
     public QuizLogic(String lobby) {
 
         if (random == null) {
-            random = new Random();
-
             int seed;
-
             try {
                 seed = Integer.valueOf(lobby);
             } catch (NumberFormatException e) {
                 seed = 420;
-                Log.e("Quiz", "Number %s could not be parsed to an int.");
             }
 
-            random.setSeed(seed);
+            random = new Random(seed);
         }
-
 
         currentQuestion = random.nextInt(NUM_QUESTIONS);
     }
