@@ -15,20 +15,19 @@ public abstract class BasicGameActivity extends AppCompatActivity {
 
     /**
      * Handles the basic cleanup of the game including storing results and closing the activity.
+     *
      * @param r
      */
     public void handleGameFinished(GameFinishedResponse r) {
-        Log.e("mlg-party", "finished with " + r.winnerId);
-
         Game.getInstance().setLastWinnerId(r.winnerId);
         Game.getInstance().setPlayerRanking(r.ranking);
 
-        finish();
+        runOnUiThread(this::finish);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Game.setInstance((Game)getIntent().getSerializableExtra("game"));
+        Game.setInstance((Game) getIntent().getSerializableExtra("game"));
     }
 }

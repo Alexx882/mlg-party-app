@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import at.aau.ase.mlg_party_app.BasicGameActivity;
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.PlayerInfo;
 import at.aau.ase.mlg_party_app.R;
@@ -64,8 +65,9 @@ public class BetweenGamesActivity extends AppCompatActivity {
 
                 WebSocketClient.getInstance().disconnectFromServer();
 
-                Class<? extends AppCompatActivity> c = MiniGameManager.getGameMap().get(wsEndpoint);
+                Class<? extends BasicGameActivity> c = MiniGameManager.getGameMap().get(wsEndpoint);
                 Intent intent = new Intent(BetweenGamesActivity.this, c);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("WS", wsEndpoint);
                 intent.putExtra("game", Game.getInstance());
                 startActivity(intent);
