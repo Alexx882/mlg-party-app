@@ -54,17 +54,8 @@ public class TicTacToeActivity extends BasicGameActivity {
           Register the callbacks for this game
      */
     private void socketHandling(){
-        Intent intent = getIntent();
-        String wsEndpoint = intent.getStringExtra("WS");
-
-        WebSocketClient.getInstance().connectToServer(wsEndpoint);
-        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
-        WebSocketClient.getInstance().sendMessage(helloReq);
-
-        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
         WebSocketClient.getInstance().registerCallback(MessageType.TicTacToeMove,this::addMove);
         WebSocketClient.getInstance().registerCallback(MessageType.TicTacToeError,this::displayErrorMessage);
-
 
         if(!Game.getInstance().isLobbyOwner())gameLogic.setLastPlayer(Game.getInstance().getPlayerId());
     }
@@ -179,7 +170,6 @@ public class TicTacToeActivity extends BasicGameActivity {
     public void handleGameFinished(GameFinishedResponse r) {
         WebSocketClient.getInstance().removeCallback(MessageType.TicTacToeError);
         WebSocketClient.getInstance().removeCallback(MessageType.TicTacToeMove);
-        WebSocketClient.getInstance().removeCallback(MessageType.GameFinished);
         super.handleGameFinished(r);
     }
 

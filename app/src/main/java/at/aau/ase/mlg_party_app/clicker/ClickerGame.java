@@ -37,7 +37,6 @@ public class ClickerGame extends BasicGameActivity {
         tvCounter = findViewById(R.id.tv_clicker);
         ivHitmarker = findViewById(R.id.iv_hitmarker);
         GifImageView gifBackground = findViewById(R.id.gifBackground);
-        socketHandling();
 
         logic = new Logic();
         startTimer(15);
@@ -63,19 +62,6 @@ public class ClickerGame extends BasicGameActivity {
             }
             return true;
         });
-    }
-
-    private void socketHandling() {
-        Intent intent = getIntent();
-        String wsEndpoint = intent.getStringExtra("WS");
-
-        WebSocketClient.getInstance().connectToServer(wsEndpoint);
-        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
-        WebSocketClient.getInstance().sendMessage(helloReq);
-
-        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
-
-
     }
 
     private void startTimer(int seconds) {
