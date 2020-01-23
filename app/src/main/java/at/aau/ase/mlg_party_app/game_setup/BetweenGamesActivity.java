@@ -3,18 +3,14 @@ package at.aau.ase.mlg_party_app.game_setup;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import at.aau.ase.mlg_party_app.BasicGameActivity;
 import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.PlayerInfo;
 import at.aau.ase.mlg_party_app.R;
@@ -39,36 +35,44 @@ public class BetweenGamesActivity extends AppCompatActivity {
         textViewPlayer1 = findViewById(R.id.textViewPlayerOrder);
         textViewPlayer2 = findViewById(R.id.textViewPlayerOrder2);
 
+        Game.setInstance((Game)getIntent().getSerializableExtra("game"));
+
         WebSocketClient.getInstance().registerCallback(MessageType.StartGame, this::handleStartGame);
 
-        displayStatistics();
-
-        loadNextGameWithDelay();
+        requestNextGame();
     }
 
-    private void loadNextGameWithDelay() {
+    @Override
+    protected void onPostResume() {
+        displayStatistics();
+
+        super.onPostResume();
+    }
+
+    private void requestNextGame() {
         if (!Game.getInstance().isLobbyOwner())
             return;
 
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                StartGameRequest r = new StartGameRequest(Game.getInstance().getLobbyId());
-                WebSocketClient.getInstance().sendMessage(r);
-            }
-        }, START_NEXT_GAME_DELAY_MS);
-
+        StartGameRequest r = new StartGameRequest(Game.getInstance().getLobbyId());
+        WebSocketClient.getInstance().sendMessage(r);
     }
 
     private void handleStartGame(StartGameResponse response) {
-        String wsEndpoint = response.gameEndpoint;
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                String wsEndpoint = response.gameEndpoint;
 
-        WebSocketClient.getInstance().disconnectFromServer();
+                WebSocketClient.getInstance().disconnectFromServer();
 
-        Class<? extends AppCompatActivity> c = MiniGameManager.getGameMap().get(wsEndpoint);
-        Intent intent = new Intent(this, c);
-        intent.putExtra("WS", wsEndpoint);
-        startActivity(intent);
+                Class<? extends BasicGameActivity> c = MiniGameManager.getGameMap().get(wsEndpoint);
+                Intent intent = new Intent(BetweenGamesActivity.this, c);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("WS", wsEndpoint);
+                intent.putExtra("game", Game.getInstance());
+                startActivity(intent);
+            }
+        }, START_NEXT_GAME_DELAY_MS);
     }
 
     private void displayStatistics() {

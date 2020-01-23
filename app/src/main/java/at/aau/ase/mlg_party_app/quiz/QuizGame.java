@@ -13,8 +13,11 @@ import at.aau.ase.mlg_party_app.Game;
 import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
 import at.aau.ase.mlg_party_app.networking.MessageType;
+import at.aau.ase.mlg_party_app.networking.dtos.BaseRequest;
+import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
+import at.aau.ase.mlg_party_app.quiz.networking.QuizResult;
 
 public class QuizGame extends BasicGameActivity implements View.OnClickListener{
 
@@ -25,7 +28,7 @@ public class QuizGame extends BasicGameActivity implements View.OnClickListener{
     Button buttonAnswer3;
     Button buttonAnswer4;
     Button[] allButtons = new Button[4];
-    QuizLogic qLogic = new QuizLogic();
+    QuizLogic qLogic = new QuizLogic(Game.getInstance().getLobbyId());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class QuizGame extends BasicGameActivity implements View.OnClickListener{
         allButtons[2] = buttonAnswer3;
         allButtons[3] = buttonAnswer4;
         qLogic.setAnswers(allButtons);
+
         Intent intent = getIntent();
         String wsEndpoint = intent.getStringExtra("WS");
         WebSocketClient.getInstance().connectToServer(wsEndpoint);
@@ -65,25 +69,37 @@ public class QuizGame extends BasicGameActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         int id = v.getId();
+        boolean res = false;
+
+        // Disable all buttons so no option can be chosen anymore
+        disableButtons();
+
         switch (id) {
             case R.id.buttonAnswer1:
-                questionResult.setText(String.valueOf(qLogic.checkAnswer(1)));
+                res = qLogic.checkAnswer(1);
                 break;
             case R.id.buttonAnswer2:
-                questionResult.setText(String.valueOf(qLogic.checkAnswer(2)));
+                res = qLogic.checkAnswer(2);
                 break;
             case R.id.buttonAnswer3:
-                questionResult.setText(String.valueOf(qLogic.checkAnswer(3)));
+                res = qLogic.checkAnswer(3);
                 break;
             case R.id.buttonAnswer4:
-                questionResult.setText(String.valueOf(qLogic.checkAnswer(4)));
+                res = qLogic.checkAnswer(4);
                 break;
             default:
 
         }
-        // Disable all buttons so no option can be chosen anymore
-        disableButtons();
+
+        questionResult.setText(String.valueOf(res));
+        sendResultToServer(res);
     }
+
+    private void sendResultToServer(boolean correct) {
+        BaseRequest r = new QuizResult(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId(), correct);
+        WebSocketClient.getInstance().sendMessage(r);
+    }
+
     private void disableButtons() {
         for (int i=0; i<=3; i++) {
             allButtons[i].setEnabled(false);
