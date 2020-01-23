@@ -2,7 +2,6 @@ package at.aau.ase.mlg_party_app.game_setup;
 
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,8 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,17 +21,16 @@ import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyRequest;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.CreateLobbyResponse;
 import at.aau.ase.mlg_party_app.networking.dtos.lobby.PlayerJoinedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
+import at.aau.ase.mlg_party_app.spacepirate.Player;
 
-public class NewGameActivity extends AppCompatActivity {
+public class NewGameActivity extends BasicLobbyActivity {
 
-   private  TextView textViewInformation,
-           textViewPlayerList;
+    private TextView textViewInformation,
+            textViewPlayerList;
     private Button buttonStartGame,
             buttonOpenLobby;
-    private  EditText editTextPlayerName;
+    private EditText editTextPlayerName;
     private ProgressBar progressBar;
-
-    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +55,6 @@ public class NewGameActivity extends AppCompatActivity {
         playBackgroundSound();
     }
 
-    private void playBackgroundSound() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.lobby_basic);
-        mediaPlayer.setVolume(1.0f, 1.0f);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
-    }
-
     private void startGame() {
         buttonStartGame.setEnabled(false);
 
@@ -76,21 +65,12 @@ public class NewGameActivity extends AppCompatActivity {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                    Intent intent = new Intent(NewGameActivity.this, BetweenGamesActivity.class);
-                    startActivity(intent);
+                Intent intent = new Intent(NewGameActivity.this, BetweenGamesActivity.class);
+                intent.putExtra("game", Game.getInstance());
+                startActivity(intent);
             }
         };
         t.schedule(task, 1000);
-    }
-
-    private void playLoadingSound() {
-        // stop background music
-        if (mediaPlayer != null)
-            mediaPlayer.stop();
-
-        mediaPlayer = MediaPlayer.create(this, R.raw.lobby_loading);
-        mediaPlayer.setVolume(1.0f, 1.0f);
-        mediaPlayer.start();
     }
 
     private void openLobby() {
@@ -104,8 +84,9 @@ public class NewGameActivity extends AppCompatActivity {
         CreateLobbyRequest req = new CreateLobbyRequest();
         req.type = MessageType.CreateLobby;
         req.playerName = playerName;
-
         WebSocketClient.getInstance().sendMessage(req);
+
+        printConnectedPlayers(new String[]{playerName});
     }
 
     private void handleCreateLobby(CreateLobbyResponse response) {
@@ -126,8 +107,12 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     private void handlePlayerJoined(PlayerJoinedResponse response) {
+        printConnectedPlayers(response.playerNames);
+    }
+
+    private void printConnectedPlayers(String[] players) {
         StringBuilder sb = new StringBuilder();
-        for (String s : response.playerNames) {
+        for (String s : players) {
             sb.append(s);
             sb.append("\n");
         }
@@ -143,7 +128,6 @@ public class NewGameActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         WebSocketClient.getInstance().disconnectFromServer();
-        mediaPlayer.stop();
         super.onDestroy();
     }
 }

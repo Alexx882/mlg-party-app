@@ -19,4 +19,10 @@ public enum MessageType {
     //TicTacToe
     , TicTacToeMove
     , TicTacToeError
+
+    // Rps
+    , RpsResult
+
+    // Quiz
+    , QuizResult
 }

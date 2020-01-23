@@ -8,7 +8,7 @@ public class HelloGameRequest extends GameBaseRequest {
     public String lobbyName;
 
     public  HelloGameRequest(String lobbyName, String playerId){
-        super(MessageType.HelloGame, playerId);
+        super(MessageType.HelloGame, lobbyName, playerId);
         this.lobbyName = lobbyName;
     }
 
