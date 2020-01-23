@@ -57,13 +57,6 @@ public class QuizGame extends BasicGameActivity implements View.OnClickListener{
         allButtons[3] = buttonAnswer4;
         qLogic.setAnswers(allButtons);
 
-        Intent intent = getIntent();
-        String wsEndpoint = intent.getStringExtra("WS");
-        WebSocketClient.getInstance().connectToServer(wsEndpoint);
-        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
-        WebSocketClient.getInstance().sendMessage(helloReq);
-
-        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
     }
 
     @Override

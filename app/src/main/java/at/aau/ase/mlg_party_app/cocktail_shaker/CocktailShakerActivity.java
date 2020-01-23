@@ -40,20 +40,7 @@ public class CocktailShakerActivity extends BasicGameActivity {
 
         imageViewSonic = findViewById(R.id.imageViewSonic);
 
-        Intent intent = getIntent();
-        String wsEndpoint = intent.getStringExtra("WS");
-        WebSocketClient.getInstance().connectToServer(wsEndpoint);
-        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
-        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
-        WebSocketClient.getInstance().sendMessage(helloReq);
-
         initShakeDetection();
-    }
-
-    @Override
-    public void handleGameFinished(GameFinishedResponse r) {
-        WebSocketClient.getInstance().removeCallback(MessageType.GameFinished);
-        super.handleGameFinished(r);
     }
 
     private void initShakeDetection() {

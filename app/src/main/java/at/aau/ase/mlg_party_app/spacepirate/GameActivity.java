@@ -29,7 +29,6 @@ public class GameActivity extends BasicGameActivity {
         //Getting the screen resolution into point object
         Point size = new Point();
         display.getSize(size);
-        socketHandling();
 
         startTimer(15);
 
@@ -39,19 +38,6 @@ public class GameActivity extends BasicGameActivity {
 
         //adding it to contentview
         setContentView(gameView);
-
-    }
-
-    private void socketHandling() {
-        Intent intent = getIntent();
-        String wsEndpoint = intent.getStringExtra("WS");
-
-        WebSocketClient.getInstance().connectToServer(wsEndpoint);
-        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
-        WebSocketClient.getInstance().sendMessage(helloReq);
-
-        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
-
 
     }
 
