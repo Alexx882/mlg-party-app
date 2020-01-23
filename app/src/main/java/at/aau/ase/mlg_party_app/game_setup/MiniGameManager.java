@@ -13,8 +13,8 @@ public class MiniGameManager {
 
     private MiniGameManager(){}
 
-    public static Map<String, Class<? extends AppCompatActivity>> getGameMap() {
-        HashMap<String, Class<? extends AppCompatActivity>> games = new HashMap<>();
+    public static Map<String, Class<? extends BasicGameActivity>> getGameMap() {
+        HashMap<String, Class<? extends BasicGameActivity>> games = new HashMap<>();
         games.put("/game/shaker",CocktailShakerActivity.class );
         games.put("/game/tictactoe", TicTacToeActivity.class);
         games.put("/game/quiz", QuizGame.class);
