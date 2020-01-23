@@ -50,7 +50,7 @@ public class RpsGame extends BasicGameActivity implements View.OnClickListener{
         Intent intent = getIntent();
         String wsEndpoint = intent.getStringExtra("WS");
         WebSocketClient.getInstance().connectToServer(wsEndpoint);
-        HelloGameRequest helloReq = new HelloGameRequest();
+        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
         WebSocketClient.getInstance().sendMessage(helloReq);
 
         WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::receiveGameFinished);

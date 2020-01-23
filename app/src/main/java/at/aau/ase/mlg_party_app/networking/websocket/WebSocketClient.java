@@ -79,8 +79,7 @@ public class WebSocketClient {
 
     void handleMessage(String json, Map<MessageType, Callback> callbacks) {
         IllegalArgumentException notValidJsonArgumentException = new IllegalArgumentException("json is not valid");
-        System.out.println(json);
-        System.out.println("---------------------");
+        
         if (json == null)
             throw notValidJsonArgumentException;
 

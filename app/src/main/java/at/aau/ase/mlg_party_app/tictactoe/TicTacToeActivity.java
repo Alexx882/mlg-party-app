@@ -58,7 +58,7 @@ public class TicTacToeActivity extends BasicGameActivity {
         String wsEndpoint = intent.getStringExtra("WS");
 
         WebSocketClient.getInstance().connectToServer(wsEndpoint);
-        HelloGameRequest helloReq = new HelloGameRequest();
+        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
         WebSocketClient.getInstance().sendMessage(helloReq);
 
         WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
@@ -91,7 +91,7 @@ public class TicTacToeActivity extends BasicGameActivity {
     private void cellClickedHandler(int x , int y){
         gameMessageTV.setText(""); //New attempt = no current messages to display
         if(gameLogic.validMove(x,y, Game.getInstance().getPlayerId())) {
-            TicTacToeMoveRequest req = new TicTacToeMoveRequest(x, y);
+            TicTacToeMoveRequest req = new TicTacToeMoveRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId(), x, y);
             WebSocketClient.getInstance().sendMessage(req);
         }else{
             gameMessageTV.setText(R.string.tictactoe_invalidmove);

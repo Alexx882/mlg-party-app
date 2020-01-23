@@ -9,8 +9,8 @@ public class TicTacToeMoveRequest extends GameBaseRequest {
     int x;
     int y;
 
-    public TicTacToeMoveRequest(int x, int y) {
-        super(MessageType.TicTacToeMove, Game.getInstance().getLobbyId(),Game.getInstance().getPlayerId());
+    public TicTacToeMoveRequest(String lobbyId, String playerId, int x, int y) {
+        super(MessageType.TicTacToeMove, lobbyId, playerId);
         this.x = x;
         this.y = y;
     }

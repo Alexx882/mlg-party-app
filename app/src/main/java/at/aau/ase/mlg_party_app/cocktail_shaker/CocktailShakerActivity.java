@@ -44,7 +44,7 @@ public class CocktailShakerActivity extends BasicGameActivity {
         String wsEndpoint = intent.getStringExtra("WS");
         WebSocketClient.getInstance().connectToServer(wsEndpoint);
         WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
-        HelloGameRequest helloReq = new HelloGameRequest();
+        HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
         WebSocketClient.getInstance().sendMessage(helloReq);
 
         initShakeDetection();
@@ -97,7 +97,7 @@ public class CocktailShakerActivity extends BasicGameActivity {
     }
 
     private void sendResultToServer(ShakeResult result) {
-        CocktailShakerResult csr = new CocktailShakerResult();
+        CocktailShakerResult csr = new CocktailShakerResult(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
         csr.playerId = Game.getInstance().getPlayerId();
         csr.lobbyId = Game.getInstance().getLobbyId();
         csr.avg = result.avg;

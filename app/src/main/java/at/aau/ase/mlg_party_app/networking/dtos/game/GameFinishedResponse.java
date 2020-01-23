@@ -7,6 +7,5 @@ import at.aau.ase.mlg_party_app.networking.dtos.BaseResponse;
 
 public class GameFinishedResponse extends BaseResponse {
     public String winnerId;
-   //IS THIS EVEN DOING ANYTHING?
     public List<PlayerInfo> ranking;
 }
