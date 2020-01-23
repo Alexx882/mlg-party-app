@@ -66,6 +66,7 @@ public class NewGameActivity extends BasicLobbyActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(NewGameActivity.this, BetweenGamesActivity.class);
+                intent.putExtra("game", Game.getInstance());
                 startActivity(intent);
             }
         };

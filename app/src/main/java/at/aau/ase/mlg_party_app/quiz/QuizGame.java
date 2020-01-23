@@ -28,7 +28,7 @@ public class QuizGame extends BasicGameActivity implements View.OnClickListener{
     Button buttonAnswer3;
     Button buttonAnswer4;
     Button[] allButtons = new Button[4];
-    QuizLogic qLogic = new QuizLogic();
+    QuizLogic qLogic = new QuizLogic(Game.getInstance().getLobbyId());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,7 @@ public class QuizGame extends BasicGameActivity implements View.OnClickListener{
         allButtons[2] = buttonAnswer3;
         allButtons[3] = buttonAnswer4;
         qLogic.setAnswers(allButtons);
+
         Intent intent = getIntent();
         String wsEndpoint = intent.getStringExtra("WS");
         WebSocketClient.getInstance().connectToServer(wsEndpoint);

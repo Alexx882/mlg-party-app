@@ -42,6 +42,7 @@ public abstract class BasicLobbyActivity extends AppCompatActivity {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 
@@ -52,6 +53,12 @@ public abstract class BasicLobbyActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, R.raw.lobby_loading);
         mediaPlayer.setVolume(1.0f, 1.0f);
         mediaPlayer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        stopSound();
+        super.onPause();
     }
 
     @Override
