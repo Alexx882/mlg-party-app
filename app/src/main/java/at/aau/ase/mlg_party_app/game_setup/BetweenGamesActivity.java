@@ -90,6 +90,9 @@ public class BetweenGamesActivity extends AppCompatActivity {
         String player2Name = p2.name;
         int player2Score = p2.points;
 
+        textViewPlayer1.setTypeface(null, Typeface.ITALIC);
+        textViewPlayer2.setTypeface(null, Typeface.ITALIC);
+
         //Put overall winner on top
         if (player1Score >= player2Score) {
             textViewPlayer1.setText(player1Name + ": " + player1Score);

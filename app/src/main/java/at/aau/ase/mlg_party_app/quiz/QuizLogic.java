@@ -9,7 +9,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 public class QuizLogic {
-    private static final int NUM_QUESTIONS = 6;
+    private static final int NUM_QUESTIONS = 7;
 
     private static Random random;
     int currentQuestion;
@@ -43,6 +43,7 @@ public class QuizLogic {
 
         questions[4] = new Question("What is the average penis size in the Kongo?", "12", "22", "18", "40", 3);
         questions[5] = new Question("What is the average number of individuals in orgies?", "7", "1", "5", "4", 3);
+        questions[6] = new Question("What?", "false", "true", "null", "false", 2);
     }
 
     boolean checkAnswer(int ans) {
