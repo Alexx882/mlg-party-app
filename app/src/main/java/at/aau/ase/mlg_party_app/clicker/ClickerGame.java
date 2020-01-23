@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -18,7 +17,6 @@ import at.aau.ase.mlg_party_app.R;
 import at.aau.ase.mlg_party_app.clicker.networking.clickerResults;
 import at.aau.ase.mlg_party_app.game_setup.networking.HelloGameRequest;
 import at.aau.ase.mlg_party_app.networking.MessageType;
-import at.aau.ase.mlg_party_app.networking.dtos.game.GameFinishedResponse;
 import at.aau.ase.mlg_party_app.networking.websocket.WebSocketClient;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -75,14 +73,8 @@ public class ClickerGame extends BasicGameActivity {
         HelloGameRequest helloReq = new HelloGameRequest(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId());
         WebSocketClient.getInstance().sendMessage(helloReq);
 
-        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleEnd);
+        WebSocketClient.getInstance().registerCallback(MessageType.GameFinished, this::handleGameFinished);
 
-
-    }
-
-    private void handleEnd(GameFinishedResponse r) {
-        Log.e("mlg", "finished with " + r.winnerId);
-        finish();
 
     }
 
@@ -105,7 +97,9 @@ public class ClickerGame extends BasicGameActivity {
     }
 
     private void sendResultToServer() {
-        clickerResults cr = new clickerResults(Game.getInstance().getLobbyId(), Game.getInstance().getPlayerId(), logic.getCounter());
+        clickerResults cr = new clickerResults();
+        cr.lobbyId = Game.getInstance().getLobbyId();
+        cr.playerId = Game.getInstance().getPlayerId();
         cr.max = logic.getCounter();
         WebSocketClient.getInstance().sendMessage(cr);
 

@@ -24,4 +24,8 @@ public enum MessageType {
 
     //Clicker
     , ClickerResults
+
+    //SpacePirates
+    , SpacePiratesResults
+
 }
